@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    #    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3307/schedule?useSSL=false&serverTimezone=Asia/Seoul
+    username: test
+    password: test
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
