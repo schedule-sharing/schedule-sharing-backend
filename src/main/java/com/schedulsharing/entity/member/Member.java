@@ -1,4 +1,4 @@
-package com.schedulsharing.entity;
+package com.schedulsharing.entity.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,11 +27,10 @@ public class Member {
 
     private String nickname;
 
+    private String imagePath;
+
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<MemberRole> roles;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
 }

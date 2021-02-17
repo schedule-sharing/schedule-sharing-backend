@@ -1,14 +1,19 @@
 spring:
   datasource:
     #    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/schedule?useSSL=false&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://localhost:3307/scheduler?useSSL=false&serverTimezone=Asia/Seoul
     username: test
     password: test
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
-        format_sql: true`
+        format_sql: true
+
+jwt:
+  header: Authorization
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 60

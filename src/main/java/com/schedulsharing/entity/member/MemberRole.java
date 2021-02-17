@@ -1,4 +1,4 @@
-package com.schedulsharing.entity;
+package com.schedulsharing.entity.member;
 
 import lombok.Getter;
 

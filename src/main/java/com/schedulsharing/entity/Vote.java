@@ -1,5 +1,6 @@
 package com.schedulsharing.entity;
 
+import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

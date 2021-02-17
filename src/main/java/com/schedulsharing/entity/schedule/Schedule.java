@@ -1,4 +1,4 @@
-package com.schedulsharing.entity;
+package com.schedulsharing.entity.schedule;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
