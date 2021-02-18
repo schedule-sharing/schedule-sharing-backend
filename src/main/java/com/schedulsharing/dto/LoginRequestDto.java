@@ -2,6 +2,7 @@ package com.schedulsharing.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -14,6 +15,7 @@ public class LoginRequestDto {
 
     @NotNull
     @Size(min = 3, max = 50)
+    @Email
     private String email;
 
     @NotNull

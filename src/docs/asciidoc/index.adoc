@@ -1,0 +1,21 @@
+= Schedule_Sharing REST API
+김동희,송인철;
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+:operation-curl-request-title: Example request
+:operation-http-response-title: Example response
+
+[[resources]]
+= 리소스
+
+[[resources-index]]
+== 인덱스
+
+[[resources-member-signup]]
+== 회원가입
+operation::member-signup[snippets='request-fields,curl-request,http-request,request-headers,http-response,response-headers,response-fields,links']
+

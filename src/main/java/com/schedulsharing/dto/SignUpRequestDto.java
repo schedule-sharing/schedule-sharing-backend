@@ -1,0 +1,43 @@
+package com.schedulsharing.dto;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.schedulsharing.entity.member.Member;
+import com.schedulsharing.entity.member.MemberRole;
+import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class SignUpRequestDto {
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String email;
+
+    @NotNull
+    @Size(min = 3, max = 100)
+    private String password;
+
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String name;
+
+    private String imagePath;
+
+    public Member toEntity(PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .email(this.email)
+                .password(passwordEncoder.encode(this.password))
+                .name(this.name)
+                .imagePath(this.imagePath)
+                .roles(Collections.singletonList(MemberRole.USER))
+                .build();
+    }
+}

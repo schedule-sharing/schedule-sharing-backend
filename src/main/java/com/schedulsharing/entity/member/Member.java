@@ -25,12 +25,11 @@ public class Member {
 
     private String password;
 
-    private String nickname;
+    private String name;
 
     private String imagePath;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<MemberRole> roles;
-
 }

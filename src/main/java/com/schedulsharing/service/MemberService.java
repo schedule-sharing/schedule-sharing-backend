@@ -1,17 +1,26 @@
 package com.schedulsharing.service;
 
 
-import com.schedulsharing.dto.MemberDto;
+import com.schedulsharing.controller.MemberController;
+import com.schedulsharing.dto.SignUpRequestDto;
+import com.schedulsharing.dto.SignUpResponseDto;
 import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.entity.member.MemberRole;
+import com.schedulsharing.excpetion.EmailExistedException;
 import com.schedulsharing.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @Service
@@ -19,25 +28,26 @@ import java.util.List;
 public class MemberService {
     private final MemberRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
     @Transactional
-    public Member signup(MemberDto userDto) {
-        if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+    public EntityModel<SignUpResponseDto> signup(SignUpRequestDto signUpRequestDto) {
+        if (userRepository.findByEmail(signUpRequestDto.getEmail()).isPresent()) {
+            throw new EmailExistedException("이메일이 중복되었습니다.");
         }
 
-        List<MemberRole> role = new ArrayList<>();
-        role.add(MemberRole.USER);
+        Member memberEntity = signUpRequestDto.toEntity(passwordEncoder);
+        Member savedMember = userRepository.save(memberEntity);
 
-        Member user = Member.builder()
-                .email(userDto.getEmail())
-                .password(passwordEncoder.encode(userDto.getPassword()))
-                .nickname(userDto.getNickname())
-                .roles(role)
-                .build();
+        WebMvcLinkBuilder selfLinkBuilder = linkTo(MemberController.class).slash("signup");
 
+        List<Link> links = Arrays.asList(
+                selfLinkBuilder.withSelfRel(),
+                new Link("/docs/index.html#resources-events-create").withRel("profile")
+        );
 
-        return userRepository.save(user);
+        SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
+
+        return EntityModel.of(signUpResponseDto, links);
     }
-
 }
