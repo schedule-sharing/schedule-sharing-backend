@@ -18,4 +18,6 @@
 [[resources-member-signup]]
 == 회원가입
 operation::member-signup[snippets='request-fields,curl-request,http-request,request-headers,http-response,response-headers,response-fields,links']
-
+[[resources-member-checkEmail]]
+=== 이메일 중복 체크
+operation::member-checkEmail[snippets='request-fields,curl-request,http-request,request-headers,http-response,response-headers,response-fields,links']

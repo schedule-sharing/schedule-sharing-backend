@@ -2,6 +2,7 @@ package com.schedulsharing.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schedulsharing.config.RestDocsConfiguration;
+import com.schedulsharing.dto.EmailCheckRequestDto;
 import com.schedulsharing.dto.SignUpRequestDto;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.service.MemberService;
@@ -45,7 +46,7 @@ class MemberControllerTest {
     private MemberRepository memberRepository;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         memberRepository.deleteAll();
     }
 
@@ -59,7 +60,7 @@ class MemberControllerTest {
                 .imagePath("imagePath")
                 .build();
 
-        mvc.perform(post("/api/signup")
+        mvc.perform(post("/api/member/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(signUpRequestDto)))
                 .andDo(print())
@@ -116,6 +117,49 @@ class MemberControllerTest {
         mvc.perform(post("/api/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(signUpRequestDto2)))
-                .andDo(print());
+                .andDo(print())
+                .andExpect(jsonPath("error").exists());
+    }
+
+    @DisplayName("중복된 이메일 체크")
+    @Test
+    public void 중복된이메일체크() throws Exception{
+        String email = "test@example.com";
+        SignUpRequestDto signUpRequestDto1 = SignUpRequestDto.builder()
+                .email(email)
+                .name("tester")
+                .password("1234")
+                .imagePath("imagePath")
+                .build();
+        memberService.signup(signUpRequestDto1);
+        EmailCheckRequestDto emailCheckRequestDto=new EmailCheckRequestDto(email);
+
+        mvc.perform(post("/api/member/checkEmail")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(emailCheckRequestDto)))
+                .andDo(print())
+                .andExpect(jsonPath("message").exists())
+                .andExpect(jsonPath("duplicate").value(true))
+                .andDo(document("member-checkEmail",
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+                        ),
+                        requestFields(
+                                fieldWithPath("email").description("중복검사 이메일")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("duplicate").description("이메일이 중복되었다면 true 중복되지 않았다면 false"),
+                                fieldWithPath("message").description("이메일 중복 확인 메시지"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
     }
 }

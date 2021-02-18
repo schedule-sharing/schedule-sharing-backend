@@ -2,6 +2,7 @@ package com.schedulsharing.service;
 
 
 import com.schedulsharing.controller.MemberController;
+import com.schedulsharing.dto.EmailCheckResponseDto;
 import com.schedulsharing.dto.SignUpRequestDto;
 import com.schedulsharing.dto.SignUpResponseDto;
 import com.schedulsharing.entity.member.Member;
@@ -20,7 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 
 @Service
@@ -43,11 +43,21 @@ public class MemberService {
 
         List<Link> links = Arrays.asList(
                 selfLinkBuilder.withSelfRel(),
-                new Link("/docs/index.html#resources-events-create").withRel("profile")
+                new Link("/docs/index.html#resources-member-signup").withRel("profile")
         );
 
         SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
 
         return EntityModel.of(signUpResponseDto, links);
+    }
+
+    public EntityModel<EmailCheckResponseDto> emailCheck(String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new EmailExistedException("이메일이 중복되었습니다.");
+        }
+
+        EmailCheckResponseDto emailCheckResponseDto = new EmailCheckResponseDto(false, "사용가능한 이메일입니다.");
+
+        return emailCheckResponseDto.createSelfProfileLink();
     }
 }

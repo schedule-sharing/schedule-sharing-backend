@@ -35,7 +35,7 @@ public class TokenProvider implements InitializingBean {
         this.secret = secret;
         this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
-    // 빈이 생성되고 주입 받은 후에 secret 값을 base64 decode해서 key에 저장
+
     @Override
     public void afterPropertiesSet() {
         byte[] keyBytes = Decoders.BASE64.decode(secret);
@@ -57,7 +57,7 @@ public class TokenProvider implements InitializingBean {
                 .setExpiration(validity)
                 .compact();
     }
-    //토큰에 담겨있는 정보를 사용해서 Authentication 반환
+
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts
                 .parserBuilder()

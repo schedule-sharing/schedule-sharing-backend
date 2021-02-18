@@ -1,5 +1,7 @@
 package com.schedulsharing.controller;
 
+import com.schedulsharing.dto.EmailCheckRequestDto;
+import com.schedulsharing.dto.EmailCheckResponseDto;
 import com.schedulsharing.dto.SignUpRequestDto;
 import com.schedulsharing.dto.SignUpResponseDto;
 import com.schedulsharing.service.MemberService;
@@ -19,7 +21,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
@@ -31,4 +33,11 @@ public class MemberController {
 
         return ResponseEntity.ok(memberService.signup(signUpRequestDto));
     }
+
+    @PostMapping("/checkEmail")
+    public ResponseEntity existedEmailCheck(@RequestBody EmailCheckRequestDto emailCheckRequestDto){
+
+        return ResponseEntity.ok(memberService.emailCheck(emailCheckRequestDto.getEmail()));
+    }
+
 }
