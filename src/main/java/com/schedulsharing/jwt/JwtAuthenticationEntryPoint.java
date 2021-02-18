@@ -37,7 +37,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
             getResponse(response, "InsufficientAuthenticationException", "토큰이 잘못되었습니다.");
         }
         if (authException instanceof BadCredentialsException) {
-            getResponse(response, "BadCredentialsException", "비밀번호가 잘못되었습니다.");
+            getResponse(response, "BadCredentialsException", "아이디와 비밀번호를 확인해주세요");
         }
     }
 

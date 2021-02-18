@@ -25,4 +25,7 @@ operation::member-checkEmail[snippets='request-fields,http-request,request-heade
 === 로그인 성공
 [[resources-member-login]]
 operation::member-login[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+=== 로그인 실패
+[[resources-member-login-fail]]
+operation::member-login-fail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields']
 

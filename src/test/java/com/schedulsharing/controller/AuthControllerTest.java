@@ -105,4 +105,48 @@ class AuthControllerTest {
                 ));
     }
 
+    @DisplayName("로그인 실패")
+    @Test
+    public void 로그인실패() throws Exception{
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email("test@example.com")
+                .name("tester")
+                .password("1234")
+                .imagePath("imagePath")
+                .build();
+        memberService.signup(signUpRequestDto);
+
+
+        LoginRequestDto loginRequestDto = LoginRequestDto.builder()
+                .email("test@example.com")
+                .password("xxx")
+                .build();
+
+        mvc.perform(post("/api/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginRequestDto)))
+                .andDo(print())
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("httpStatus").exists())
+                .andExpect(jsonPath("message").exists())
+                .andExpect(jsonPath("error").exists())
+                .andDo(document("member-login-fail",
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+                        ),
+                        requestFields(
+                                fieldWithPath("email").description("로그인 이메일"),
+                                fieldWithPath("password").description("로그인 비밀번호")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").description("httpStatus"),
+                                fieldWithPath("error").description("Error Code"),
+                                fieldWithPath("message").description("아이디와 비밀번호를 확인해달라는 메시지")
+
+                        )
+                ));
+    }
 }
