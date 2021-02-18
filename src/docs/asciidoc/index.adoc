@@ -14,10 +14,15 @@
 
 [[resources-index]]
 == 인덱스
-
+[[resources-member]]
+== Member
 [[resources-member-signup]]
-== 회원가입
-operation::member-signup[snippets='request-fields,curl-request,http-request,request-headers,http-response,response-headers,response-fields,links']
+=== 회원가입
+operation::member-signup[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
 [[resources-member-checkEmail]]
 === 이메일 중복 체크
-operation::member-checkEmail[snippets='request-fields,curl-request,http-request,request-headers,http-response,response-headers,response-fields,links']
+operation::member-checkEmail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+=== 로그인 성공
+[[resources-member-login]]
+operation::member-login[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+

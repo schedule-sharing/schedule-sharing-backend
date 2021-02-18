@@ -1,16 +1,17 @@
 package com.schedulsharing.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.member.MemberRole;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,6 +20,7 @@ import java.util.List;
 public class SignUpRequestDto {
     @NotNull
     @Size(min = 3, max = 50)
+    @Email
     private String email;
 
     @NotNull

@@ -26,6 +26,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -64,6 +65,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(signUpRequestDto)))
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("email").exists())
                 .andExpect(jsonPath("name").exists())
                 .andExpect(jsonPath("imagePath").exists())
@@ -114,11 +116,13 @@ class MemberControllerTest {
                 .imagePath("imagePath2")
                 .build();
 
-        mvc.perform(post("/api/signup")
+        mvc.perform(post("/api/member/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(signUpRequestDto2)))
                 .andDo(print())
-                .andExpect(jsonPath("error").exists());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("message").exists())
+                .andExpect(jsonPath("duplicate").value(true));
     }
 
     @DisplayName("중복된 이메일 체크")
@@ -138,6 +142,7 @@ class MemberControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(emailCheckRequestDto)))
                 .andDo(print())
+                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message").exists())
                 .andExpect(jsonPath("duplicate").value(true))
                 .andDo(document("member-checkEmail",
