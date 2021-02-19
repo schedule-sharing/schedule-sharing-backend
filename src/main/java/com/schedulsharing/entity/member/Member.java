@@ -1,5 +1,6 @@
 package com.schedulsharing.entity.member;
 
+import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,4 +33,5 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<MemberRole> roles;
+
 }

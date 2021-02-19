@@ -13,12 +13,12 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "member_meeting")
-public class MemberMeeting {
+@Table(name = "member_club")
+public class MemberClub {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_meeting_id")
+    @Column(name = "member_club_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,6 +26,16 @@ public class MemberMeeting {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "meeting_id")
-    private Meeting group;
+    @JoinColumn(name = "club_id")
+    private Club club;
+
+    public void setClub(Club club){
+        this.club=club;
+    }
+
+    public static MemberClub createMemberClub(Member member){
+        return MemberClub.builder()
+                .member(member)
+                .build();
+    }
 }

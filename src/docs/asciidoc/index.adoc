@@ -29,3 +29,8 @@ operation::member-login[snippets='request-fields,http-request,request-headers,ht
 [[resources-member-login-fail]]
 operation::member-login-fail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields']
 
+[[resources-club]]
+== Club
+[[resources-club-create]]
+=== 모임 생성
+operation::club-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields']
