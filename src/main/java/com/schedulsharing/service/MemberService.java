@@ -2,25 +2,22 @@ package com.schedulsharing.service;
 
 
 import com.schedulsharing.controller.MemberController;
-import com.schedulsharing.dto.EmailCheckResponseDto;
-import com.schedulsharing.dto.SignUpRequestDto;
-import com.schedulsharing.dto.SignUpResponseDto;
+import com.schedulsharing.dto.member.EmailCheckResponseDto;
+import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.dto.member.SignUpResponseDto;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.excpetion.EmailExistedException;
 import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
 import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 
 @Service
@@ -38,13 +35,7 @@ public class MemberService {
 
         Member memberEntity = signUpRequestDto.toEntity(passwordEncoder);
         Member savedMember = userRepository.save(memberEntity);
-
-        WebMvcLinkBuilder selfLinkBuilder = linkTo(MemberController.class).slash("signup");
-
-        List<Link> links = Arrays.asList(
-                selfLinkBuilder.withSelfRel(),
-                new Link("/docs/index.html#resources-member-signup").withRel("profile")
-        );
+        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "signup", "/docs/index.html#resources-member-signup");
 
         SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
 
@@ -57,7 +48,8 @@ public class MemberService {
         }
 
         EmailCheckResponseDto emailCheckResponseDto = new EmailCheckResponseDto(false, "사용가능한 이메일입니다.");
+        final List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "checkEmail", "/docs/index.html#resources-member-checkEmail");
 
-        return emailCheckResponseDto.createSelfProfileLink();
+        return EntityModel.of(emailCheckResponseDto, links);
     }
 }

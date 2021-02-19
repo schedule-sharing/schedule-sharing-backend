@@ -1,4 +1,4 @@
-package com.schedulsharing.dto;
+package com.schedulsharing.dto.member;
 
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.member.MemberRole;

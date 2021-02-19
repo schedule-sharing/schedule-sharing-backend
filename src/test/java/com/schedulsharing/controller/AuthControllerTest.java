@@ -2,8 +2,8 @@ package com.schedulsharing.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schedulsharing.config.RestDocsConfiguration;
-import com.schedulsharing.dto.LoginRequestDto;
-import com.schedulsharing.dto.SignUpRequestDto;
+import com.schedulsharing.dto.member.LoginRequestDto;
+import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;

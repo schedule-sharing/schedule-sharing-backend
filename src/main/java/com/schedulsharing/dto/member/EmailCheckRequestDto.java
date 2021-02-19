@@ -1,4 +1,4 @@
-package com.schedulsharing.dto;
+package com.schedulsharing.dto.member;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

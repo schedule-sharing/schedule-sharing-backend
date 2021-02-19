@@ -1,24 +1,16 @@
 package com.schedulsharing.controller;
 
-import com.schedulsharing.dto.EmailCheckRequestDto;
-import com.schedulsharing.dto.EmailCheckResponseDto;
-import com.schedulsharing.dto.SignUpRequestDto;
-import com.schedulsharing.dto.SignUpResponseDto;
+import com.schedulsharing.dto.member.EmailCheckRequestDto;
+import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/api/member")
@@ -39,5 +31,4 @@ public class MemberController {
 
         return ResponseEntity.ok(memberService.emailCheck(emailCheckRequestDto.getEmail()));
     }
-
 }

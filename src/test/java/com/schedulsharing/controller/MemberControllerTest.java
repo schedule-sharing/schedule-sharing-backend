@@ -2,8 +2,8 @@ package com.schedulsharing.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schedulsharing.config.RestDocsConfiguration;
-import com.schedulsharing.dto.EmailCheckRequestDto;
-import com.schedulsharing.dto.SignUpRequestDto;
+import com.schedulsharing.dto.member.EmailCheckRequestDto;
+import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
