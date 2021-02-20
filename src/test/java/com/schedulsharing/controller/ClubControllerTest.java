@@ -139,14 +139,14 @@ class ClubControllerTest {
                 .name("테스터2")
                 .imagePath("imagePath10")
                 .build();
-        SignUpResponseDto signUpResponseDto1 = memberService.signup(signUpRequestDto1);
+        SignUpResponseDto signUpResponseDto1 = memberService.signup(signUpRequestDto1).getContent();
         SignUpRequestDto signUpRequestDto2 = SignUpRequestDto.builder()
                 .email("test3@example.com")
                 .password("123456")
                 .name("테스터3")
                 .imagePath("imagePath101")
                 .build();
-        SignUpResponseDto signUpResponseDto2 = memberService.signup(signUpRequestDto2);
+        SignUpResponseDto signUpResponseDto2 = memberService.signup(signUpRequestDto2).getContent();
 
         Long member1Id = signUpResponseDto1.getId();
         Long member2Id = signUpResponseDto2.getId();
@@ -155,7 +155,7 @@ class ClubControllerTest {
                 .clubName("동네친구")
                 .categories("밥")
                 .build();
-        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test@example.com");
+        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test@example.com").getContent();
         Long clubId = clubCreateResponse.getClubId();
 
         ClubInviteRequest clubInviteRequest = ClubInviteRequest.builder()
@@ -207,14 +207,14 @@ class ClubControllerTest {
                 .name("테스터2")
                 .imagePath("imagePath10")
                 .build();
-        SignUpResponseDto signUpResponseDto1 = memberService.signup(signUpRequestDto1);
+        SignUpResponseDto signUpResponseDto1 = memberService.signup(signUpRequestDto1).getContent();
         SignUpRequestDto signUpRequestDto2 = SignUpRequestDto.builder()
                 .email("test3@example.com")
                 .password("123456")
                 .name("테스터3")
                 .imagePath("imagePath101")
                 .build();
-        SignUpResponseDto signUpResponseDto2 = memberService.signup(signUpRequestDto2);
+        SignUpResponseDto signUpResponseDto2 = memberService.signup(signUpRequestDto2).getContent();
 
         Long member1Id = signUpResponseDto1.getId();
         Long member2Id = signUpResponseDto2.getId();
@@ -223,7 +223,7 @@ class ClubControllerTest {
                 .clubName("동네친구")
                 .categories("밥")
                 .build();
-        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test2@example.com");
+        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test2@example.com").getContent();
         Long clubId = clubCreateResponse.getClubId();
 
         ClubInviteRequest clubInviteRequest = ClubInviteRequest.builder()

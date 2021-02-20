@@ -22,13 +22,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberService {
     private final MemberRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
-    @Transactional
-    public SignUpResponseDto signup(SignUpRequestDto signUpRequestDto) {
+    public EntityModel<SignUpResponseDto> signup(SignUpRequestDto signUpRequestDto) {
         if (userRepository.findByEmail(signUpRequestDto.getEmail()).isPresent()) {
             throw new EmailExistedException("이메일이 중복되었습니다.");
         }
@@ -36,9 +36,14 @@ public class MemberService {
         Member memberEntity = signUpRequestDto.toEntity(passwordEncoder);
         Member savedMember = userRepository.save(memberEntity);
 
-        return modelMapper.map(savedMember, SignUpResponseDto.class);
+        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "signup", "/docs/index.html#resources-member-signup");
+
+        final SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
+
+        return EntityModel.of(signUpResponseDto,links);
     }
 
+    @Transactional(readOnly = true)
     public EntityModel<EmailCheckResponseDto> emailCheck(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new EmailExistedException("이메일이 중복되었습니다.");

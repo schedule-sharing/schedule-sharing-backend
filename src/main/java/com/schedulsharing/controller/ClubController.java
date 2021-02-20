@@ -26,20 +26,17 @@ public class ClubController {
 
     @PostMapping
     public ResponseEntity createClub(@RequestBody ClubCreateRequest clubCreateRequest, Authentication authentication) {
-        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, authentication.getName());
-        URI uri = LinkUtils.createURI(ClubController.class, clubCreateResponse.getClubId());
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubCreateResponse.getClubId(), "/docs/index.html#resources-club-create");
+        EntityModel<ClubCreateResponse> entityModel = clubService.createClub(clubCreateRequest, authentication.getName());
+        Link selfLink = entityModel.getLink("self").get();
 
-        return ResponseEntity.created(uri).body(EntityModel.of(clubCreateResponse, links));
+        return ResponseEntity.created(selfLink.toUri()).body(entityModel);
     }
 
     @PostMapping("/{clubId}/invite")
     public ResponseEntity inviteClub(@RequestBody ClubInviteRequest clubInviteRequest,
                                      @PathVariable("clubId") Long clubId,
                                      Authentication authentication) {
-        ClubInviteResponse clubInviteResponse = clubService.invite(clubInviteRequest, clubId, authentication.getName());
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, "invite", "/docs/index.html#resources-club-invite");
 
-        return ResponseEntity.ok(EntityModel.of(clubInviteResponse, links));
+        return ResponseEntity.ok(clubService.invite(clubInviteRequest, clubId, authentication.getName()));
     }
 }

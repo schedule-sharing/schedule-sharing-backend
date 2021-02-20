@@ -35,7 +35,7 @@ class ClubServiceTest {
                 .clubName(clubName)
                 .categories(categories)
                 .build();
-        ClubCreateResponse result = clubService.createClub(clubCreateRequest, savedMember.getEmail());
+        ClubCreateResponse result = clubService.createClub(clubCreateRequest, savedMember.getEmail()).getContent();
         assertEquals(result.getClubName(), clubName);
         assertEquals(result.getCategories(), categories);
         assertEquals(result.getLeaderId(),savedMember.getId());

@@ -10,14 +10,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 public class LinkUtils {
 
-    public static List<Link> createSelfProfileLink(Class<?> tClass, String slashNext, String profile) {
+    public static List<Link> createSelfProfileLink(Class<?> tClass, String slashNext, String profile,String... addLinks) {
         return Arrays.asList(
                 linkTo(tClass).slash(slashNext).withSelfRel(),
                 Link.of(profile, "profile")
         );
     }
 
-    public static URI createURI(Class<?> tClass, Long slashNext){
+    public static URI createURI(Class<?> tClass, Long slashNext) {
         return linkTo(tClass).slash(slashNext).toUri();
     }
 
@@ -27,4 +27,5 @@ public class LinkUtils {
                 Link.of(profile, "profile")
         );
     }
+
 }

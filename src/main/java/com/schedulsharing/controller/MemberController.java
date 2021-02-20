@@ -28,10 +28,8 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
         log.info("signUpRequestDto: " + signUpRequestDto);
-        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "signup", "/docs/index.html#resources-member-signup");
-        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto);
 
-        return ResponseEntity.ok().body(EntityModel.of(signUpResponseDto, links));
+        return ResponseEntity.ok().body(memberService.signup(signUpRequestDto));
     }
 
     @PostMapping("/checkEmail")
