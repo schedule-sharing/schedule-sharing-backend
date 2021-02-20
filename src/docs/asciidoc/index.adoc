@@ -37,3 +37,6 @@ operation::club-create[snippets='request-fields,http-request,request-headers,htt
 [[resources-club-invite]]
 === 모임 초대
 operation::club-invite[snippets='request-fields,path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+[[resources-club-delete]]
+=== 모임 삭제
+operation::club-delete[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']

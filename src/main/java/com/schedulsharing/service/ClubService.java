@@ -1,10 +1,7 @@
 package com.schedulsharing.service;
 
 import com.schedulsharing.controller.ClubController;
-import com.schedulsharing.dto.Club.ClubCreateRequest;
-import com.schedulsharing.dto.Club.ClubCreateResponse;
-import com.schedulsharing.dto.Club.ClubInviteRequest;
-import com.schedulsharing.dto.Club.ClubInviteResponse;
+import com.schedulsharing.dto.Club.*;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.member.Member;
@@ -22,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Service
 @RequiredArgsConstructor
@@ -42,8 +41,10 @@ public class ClubService {
 
         ClubCreateResponse clubCreateResponse = modelMapper.map(savedClub, ClubCreateResponse.class);
         List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubCreateResponse.getClubId(), "/docs/index.html#resources-club-create");
-
-        return EntityModel.of(clubCreateResponse, links);
+        EntityModel<ClubCreateResponse> entityModel = EntityModel.of(clubCreateResponse, links);
+        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).slash("invite").withRel("club-invite"));
+        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-delete"));
+        return entityModel;
     }
 
     public EntityModel<ClubInviteResponse> invite(ClubInviteRequest clubInviteRequest, Long clubId, String email) {
@@ -61,9 +62,28 @@ public class ClubService {
         List<MemberClub> memberClubs = MemberClub.inviteMemberClub(members);
         Club.inviteClub(club, memberClubs);
 
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, "invite", "/docs/index.html#resources-club-invite");
+        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId.toString() + "/invite", "/docs/index.html#resources-club-invite");
 
         ClubInviteResponse clubInviteResponse = new ClubInviteResponse(true, "초대를 완료하였습니다.");
-        return EntityModel.of(clubInviteResponse, links);
+        EntityModel<ClubInviteResponse> entityModel = EntityModel.of(clubInviteResponse, links);
+        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
+        entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
+        return entityModel;
+    }
+
+    public EntityModel<ClubDeleteResponse> delete(Long clubId, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        Club club = clubRepository.findById(clubId).get();
+        if (!member.getId().equals(club.getLeaderId())) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
+        clubRepository.deleteById(clubId);
+        ClubDeleteResponse clubDeleteResponse = new ClubDeleteResponse(true, "모임을 삭제하였습니다");
+        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId, "/docs/index.html#resources-club-delete");
+
+        EntityModel<ClubDeleteResponse> entityModel = EntityModel.of(clubDeleteResponse, links);
+        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
+
+        return entityModel;
     }
 }

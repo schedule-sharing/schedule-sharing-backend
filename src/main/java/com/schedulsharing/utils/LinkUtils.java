@@ -10,7 +10,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 public class LinkUtils {
 
-    public static List<Link> createSelfProfileLink(Class<?> tClass, String slashNext, String profile,String... addLinks) {
+    public static List<Link> createSelfProfileLink(Class<?> tClass, String slashNext, String profile) {
         return Arrays.asList(
                 linkTo(tClass).slash(slashNext).withSelfRel(),
                 Link.of(profile, "profile")

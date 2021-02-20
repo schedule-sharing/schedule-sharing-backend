@@ -15,13 +15,13 @@ import java.util.List;
 
 @RestControllerAdvice
 public class ClubControllerAdvice {
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(InvalidGrantException.class)
     public ResponseEntity invalidGrant() {
-        ClubInviteResponse clubInviteResponse = new ClubInviteResponse(false, "초대할 권한이 없습니다..");
+        ClubInviteResponse clubInviteResponse = new ClubInviteResponse(false, "권한이 없습니다..");
 
         List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, "invite", "/docs/index.html#resources-club-invite");
 
-        return ResponseEntity.badRequest().body(EntityModel.of(clubInviteResponse, links));
+        return new ResponseEntity(EntityModel.of(clubInviteResponse, links), HttpStatus.FORBIDDEN);
     }
 }

@@ -32,6 +32,12 @@ public class ClubController {
         return ResponseEntity.created(selfLink.toUri()).body(entityModel);
     }
 
+    @DeleteMapping("/{clubId}")
+    public ResponseEntity deleteClub(@PathVariable("clubId") Long clubId, Authentication authentication) {
+
+        return ResponseEntity.ok(clubService.delete(clubId, authentication.getName()));
+    }
+
     @PostMapping("/{clubId}/invite")
     public ResponseEntity inviteClub(@RequestBody ClubInviteRequest clubInviteRequest,
                                      @PathVariable("clubId") Long clubId,
