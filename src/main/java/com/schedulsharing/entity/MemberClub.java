@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -29,13 +31,29 @@ public class MemberClub {
     @JoinColumn(name = "club_id")
     private Club club;
 
-    public void setClub(Club club){
-        this.club=club;
+    public void setClub(Club club) {
+        this.club = club;
     }
 
-    public static MemberClub createMemberClub(Member member){
-        return MemberClub.builder()
-                .member(member)
-                .build();
+    public void addMember(Member member) {
+        member.getMemberClubs().add(this);
+        this.member = member;
+    }
+
+    public static MemberClub createMemberClub(Member member) {
+        MemberClub memberClub = MemberClub.builder().build();
+        memberClub.addMember(member);
+
+        return memberClub;
+    }
+
+    public static List<MemberClub> inviteMemberClub(List<Member> member) {
+        List<MemberClub> memberClubs = new ArrayList<>();
+        for (Member m : member) {
+            MemberClub memberClub = MemberClub.builder().build();
+            memberClub.addMember(m);
+            memberClubs.add(memberClub);
+        }
+        return memberClubs;
     }
 }

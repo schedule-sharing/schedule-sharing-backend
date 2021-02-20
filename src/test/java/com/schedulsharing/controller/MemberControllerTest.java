@@ -66,6 +66,7 @@ class MemberControllerTest {
                 .content(objectMapper.writeValueAsString(signUpRequestDto)))
                 .andDo(print())
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("email").exists())
                 .andExpect(jsonPath("name").exists())
                 .andExpect(jsonPath("imagePath").exists())
@@ -89,6 +90,7 @@ class MemberControllerTest {
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
                         ),
                         responseFields(
+                                fieldWithPath("id").description("회원가입한 멤버의 고유 아이디"),
                                 fieldWithPath("email").description("이메일"),
                                 fieldWithPath("name").description("애플리케이션에서 사용할 이름"),
                                 fieldWithPath("imagePath").description("프로필파일"),

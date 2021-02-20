@@ -28,18 +28,15 @@ public class MemberService {
     private final ModelMapper modelMapper;
 
     @Transactional
-    public EntityModel<SignUpResponseDto> signup(SignUpRequestDto signUpRequestDto) {
+    public SignUpResponseDto signup(SignUpRequestDto signUpRequestDto) {
         if (userRepository.findByEmail(signUpRequestDto.getEmail()).isPresent()) {
             throw new EmailExistedException("이메일이 중복되었습니다.");
         }
 
         Member memberEntity = signUpRequestDto.toEntity(passwordEncoder);
         Member savedMember = userRepository.save(memberEntity);
-        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "signup", "/docs/index.html#resources-member-signup");
 
-        SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
-
-        return EntityModel.of(signUpResponseDto, links);
+        return modelMapper.map(savedMember, SignUpResponseDto.class);
     }
 
     public EntityModel<EmailCheckResponseDto> emailCheck(String email) {

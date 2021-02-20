@@ -2,13 +2,19 @@ package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.member.EmailCheckRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.dto.member.SignUpResponseDto;
 import com.schedulsharing.service.MemberService;
+import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -22,12 +28,14 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
         log.info("signUpRequestDto: " + signUpRequestDto);
+        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "signup", "/docs/index.html#resources-member-signup");
+        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto);
 
-        return ResponseEntity.ok(memberService.signup(signUpRequestDto));
+        return ResponseEntity.ok().body(EntityModel.of(signUpResponseDto, links));
     }
 
     @PostMapping("/checkEmail")
-    public ResponseEntity existedEmailCheck(@RequestBody EmailCheckRequestDto emailCheckRequestDto){
+    public ResponseEntity existedEmailCheck(@RequestBody EmailCheckRequestDto emailCheckRequestDto) {
 
         return ResponseEntity.ok(memberService.emailCheck(emailCheckRequestDto.getEmail()));
     }

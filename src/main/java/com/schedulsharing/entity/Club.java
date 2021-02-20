@@ -1,5 +1,6 @@
 package com.schedulsharing.entity;
 
+import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -30,11 +31,19 @@ public class Club {
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     @Builder.Default
-    private List<MemberClub> memberClubs=new ArrayList<>();
+    private List<MemberClub> memberClubs = new ArrayList<>();
+
+    public void addMemberClubs(List<MemberClub> memberClub) {
+        for (MemberClub mClub : memberClub) {
+            memberClubs.add(mClub);
+            mClub.setClub(this);
+        }
+    }
 
     public void addMemberClub(MemberClub memberClub) {
         memberClubs.add(memberClub);
         memberClub.setClub(this);
+
     }
 
     public static Club createClub(String clubName, Long leaderId, String categories, MemberClub memberClub) {
@@ -43,9 +52,13 @@ public class Club {
                 .leaderId(leaderId)
                 .categories(categories)
                 .build();
-
         club.addMemberClub(memberClub);
 
+        return club;
+    }
+
+    public static Club inviteClub(Club club, List<MemberClub> memberClubs) {
+        club.addMemberClubs(memberClubs);
         return club;
     }
 }
