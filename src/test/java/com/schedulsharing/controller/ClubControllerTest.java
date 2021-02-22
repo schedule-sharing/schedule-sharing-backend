@@ -115,17 +115,17 @@ class ClubControllerTest {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
                         ),
                         requestFields(
-                                fieldWithPath("clubName").description("생성할 모임의 이름"),
-                                fieldWithPath("categories").description("생성할 모임의 카테고리")
+                                fieldWithPath("clubName").description("생성할 클럽의 이름"),
+                                fieldWithPath("categories").description("생성할 클럽의 카테고리")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
                         ),
                         responseFields(
-                                fieldWithPath("clubId").description("생성된 모임의 고유 아이디"),
-                                fieldWithPath("clubName").description("생성된 모임의 이름"),
-                                fieldWithPath("categories").description("생성된 모임의 카테고리"),
-                                fieldWithPath("leaderId").description("모임을 만든 멤버의 고유 아이디"),
+                                fieldWithPath("clubId").description("생성된 클럽의 고유 아이디"),
+                                fieldWithPath("clubName").description("생성된 클럽의 이름"),
+                                fieldWithPath("categories").description("생성된 클럽의 카테고리"),
+                                fieldWithPath("leaderId").description("클럽을 만든 멤버의 고유 아이디"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.club-delete.href").description("link to club-create"),
                                 fieldWithPath("_links.club-invite.href").description("link to club-invite"),
@@ -156,12 +156,7 @@ class ClubControllerTest {
         Long member1Id = signUpResponseDto1.getId();
         Long member2Id = signUpResponseDto2.getId();
 
-        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
-                .clubName("동네친구")
-                .categories("밥")
-                .build();
-        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test@example.com").getContent();
-        Long clubId = clubCreateResponse.getClubId();
+        Long clubId = createClub("test@example.com");
 
         ClubInviteRequest clubInviteRequest = ClubInviteRequest.builder()
                 .memberIds(List.of(member1Id, member2Id))
@@ -228,12 +223,7 @@ class ClubControllerTest {
         Long member1Id = signUpResponseDto1.getId();
         Long member2Id = signUpResponseDto2.getId();
 
-        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
-                .clubName("동네친구")
-                .categories("밥")
-                .build();
-        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test2@example.com").getContent();
-        Long clubId = clubCreateResponse.getClubId();
+        Long clubId = createClub("test2@example.com");
 
         ClubInviteRequest clubInviteRequest = ClubInviteRequest.builder()
                 .memberIds(List.of(member1Id, member2Id))
@@ -248,15 +238,92 @@ class ClubControllerTest {
                 .andExpect(jsonPath("success").value(false));
     }
 
+    @DisplayName("클럽장인 경우 클럽 조회하면 추가적인 링크가 보여야한다.")
+    @Test
+    public void 클럽장_클럽조회() throws Exception {
+        //TODO 수정 링크 추가
+        Long clubId = createClub("test@example.com");
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/club/{clubId}", clubId)
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("clubId").exists())
+                .andExpect(jsonPath("clubName").exists())
+                .andExpect(jsonPath("_links.self.href").exists())
+                .andExpect(jsonPath("_links.club-create.href").exists())
+                .andExpect(jsonPath("_links.club-invite.href").exists())
+                .andExpect(jsonPath("_links.club-delete.href").exists())
+                .andExpect(jsonPath("_links.profile.href").exists())
+                .andDo(document("club-getOne-leader",
+                        pathParameters(
+                                parameterWithName("clubId").description("조회할 클럽의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile"),
+                                linkWithRel("club-create").description("link to club-create"),
+                                linkWithRel("club-invite").description("link to club-invite"),
+                                linkWithRel("club-delete").description("link to club-delete")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("clubId").description("조회한 클럽의 고유아이디"),
+                                fieldWithPath("clubName").description("조회한 클럽의 이름"),
+                                fieldWithPath("categories").description("조회한 클럽의 카테고리"),
+                                fieldWithPath("leaderId").description("조회한 클럽을 만든 멤버의 고유아이디"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.club-create.href").description("link to club-create"),
+                                fieldWithPath("_links.club-invite.href").description("link to club-invite, 클럽장인경우에만 보입니다."),
+                                fieldWithPath("_links.club-delete.href").description("link to club-delete, 클럽장인경우에만 보입니다."),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("클럽장이 아닌 경우 클럽 조회하면 추가적인 안보여야한다.")
+    @Test
+    public void 클럽장이_아닌경우_클럽조회() throws Exception {
+        SignUpRequestDto signUpRequestDto1 = SignUpRequestDto.builder()
+                .email("test2@example.com")
+                .password("12345")
+                .name("테스터2")
+                .imagePath("imagePath10")
+                .build();
+        memberService.signup(signUpRequestDto1);
+        //TODO 수정 링크 추가
+        Long clubId = createClub("test2@example.com");
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/club/{clubId}", clubId)
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("clubId").exists())
+                .andExpect(jsonPath("clubName").exists())
+                .andExpect(jsonPath("_links.self.href").exists())
+                .andExpect(jsonPath("_links.club-create.href").exists())
+                .andExpect(jsonPath("_links.profile.href").exists());
+    }
+
+    @DisplayName("조회할 클럽이 없는 클럽인 경우")
+    @Test
+    public void 조회할_클럽_없음() throws Exception {
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/club/11111")
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("httpStatus").exists())
+                .andExpect(jsonPath("error").exists())
+                .andExpect(jsonPath("message").exists());
+    }
+
     @DisplayName("클럽 삭제 성공")
     @Test
     public void 클럽삭제성공() throws Exception {
-        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
-                .clubName("동네친구")
-                .categories("밥")
-                .build();
-        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test@example.com").getContent();
-        Long clubId = clubCreateResponse.getClubId();
+        Long clubId = createClub("test@example.com");
 
         mvc.perform(RestDocumentationRequestBuilders.delete("/api/club/{clubId}", clubId)
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
@@ -292,6 +359,7 @@ class ClubControllerTest {
                 ));
     }
 
+
     @DisplayName("권한이 없을 경우 클럽 삭제 실패")
     @Test
     public void 클럽삭제실패() throws Exception {
@@ -303,12 +371,7 @@ class ClubControllerTest {
                 .build();
         memberService.signup(signUpRequestDto).getContent();
 
-        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
-                .clubName("동네친구")
-                .categories("밥")
-                .build();
-        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, "test2@example.com").getContent();
-        Long clubId = clubCreateResponse.getClubId();
+        Long clubId = createClub("test2@example.com");
 
         mvc.perform(delete("/api/club/{clubId}", clubId)
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
@@ -318,6 +381,15 @@ class ClubControllerTest {
                 .andExpect(jsonPath("message").exists())
                 .andExpect(jsonPath("_links.self.href").exists())
                 .andExpect(jsonPath("_links.profile.href").exists());
+    }
+
+    private Long createClub(String email) {
+        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
+                .clubName("동네친구")
+                .categories("밥")
+                .build();
+        ClubCreateResponse clubCreateResponse = clubService.createClub(clubCreateRequest, email).getContent();
+        return clubCreateResponse.getClubId();
     }
 
     private String getBearToken() throws Exception {

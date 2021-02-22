@@ -32,11 +32,17 @@ operation::member-login-fail[snippets='request-fields,http-request,request-heade
 [[resources-club]]
 == Club
 [[resources-club-create]]
-=== 모임 생성
+=== 클럽 생성
 operation::club-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
 [[resources-club-invite]]
-=== 모임 초대
+=== 클럽 초대
 operation::club-invite[snippets='request-fields,path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-club-getOne-leader]]
+=== 클럽 조회(클럽장)
+operation::club-getOne-leader[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
 [[resources-club-delete]]
-=== 모임 삭제
+=== 클럽 삭제
 operation::club-delete[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']

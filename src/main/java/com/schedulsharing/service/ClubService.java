@@ -5,20 +5,24 @@ import com.schedulsharing.dto.Club.*;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.member.Member;
+import com.schedulsharing.excpetion.ClubNotFoundException;
 import com.schedulsharing.excpetion.InvalidGrantException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.utils.LinkUtils;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -44,6 +48,26 @@ public class ClubService {
         EntityModel<ClubCreateResponse> entityModel = EntityModel.of(clubCreateResponse, links);
         entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).slash("invite").withRel("club-invite"));
         entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-delete"));
+        return entityModel;
+    }
+
+    public EntityModel<ClubResponse> getClub(Long clubId, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        Optional<Club> optionalClub = clubRepository.findById(clubId);
+        if (optionalClub.isEmpty()) {
+            throw new ClubNotFoundException("클럽이 존재하지 않습니다.");
+        }
+        Club club = optionalClub.get();
+
+        ClubResponse clubResponse = modelMapper.map(club, ClubResponse.class);
+        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId, "/docs/index.html#resources-club-getOne");
+        EntityModel<ClubResponse> entityModel = EntityModel.of(clubResponse, links);
+        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
+        if (clubResponse.getLeaderId().equals(member.getId())) {
+            entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
+            entityModel.add(linkTo(ClubController.class).slash(clubId).slash("invite").withRel("club-invite"));
+        }
+
         return entityModel;
     }
 
@@ -86,4 +110,5 @@ public class ClubService {
 
         return entityModel;
     }
+
 }

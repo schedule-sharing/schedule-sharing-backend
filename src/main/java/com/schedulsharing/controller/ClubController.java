@@ -1,9 +1,7 @@
 package com.schedulsharing.controller;
 
-import com.schedulsharing.dto.Club.ClubCreateRequest;
-import com.schedulsharing.dto.Club.ClubCreateResponse;
-import com.schedulsharing.dto.Club.ClubInviteRequest;
-import com.schedulsharing.dto.Club.ClubInviteResponse;
+import com.schedulsharing.dto.Club.*;
+import com.schedulsharing.entity.Club;
 import com.schedulsharing.service.ClubService;
 import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +28,12 @@ public class ClubController {
         Link selfLink = entityModel.getLink("self").get();
 
         return ResponseEntity.created(selfLink.toUri()).body(entityModel);
+    }
+
+    @GetMapping("/{clubId}")
+    public ResponseEntity getClub(@PathVariable("clubId") Long clubId, Authentication authentication) {
+
+        return ResponseEntity.ok(clubService.getClub(clubId, authentication.getName()));
     }
 
     @DeleteMapping("/{clubId}")
