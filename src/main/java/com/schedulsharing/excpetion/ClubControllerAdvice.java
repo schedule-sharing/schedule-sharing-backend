@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestControllerAdvice
@@ -32,7 +30,6 @@ public class ClubControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ClubNotFoundException.class)
     public ResponseEntity notFoundClub() {
-        //TODO 링크 추가
         ApiError apiError = ApiError.builder()
                 .httpStatus(HttpStatus.NOT_FOUND)
                 .error("ClubNotFoundException")

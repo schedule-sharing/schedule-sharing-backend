@@ -45,6 +45,11 @@ public class Club {
 
     }
 
+    public void update(String clubName,String categories){
+        this.clubName=clubName;
+        this.categories=categories;
+    }
+
     public static Club createClub(String clubName, Long leaderId, String categories, MemberClub memberClub) {
         Club club = Club.builder()
                 .clubName(clubName)

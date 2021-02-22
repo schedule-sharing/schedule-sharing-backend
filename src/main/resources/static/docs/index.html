@@ -516,18 +516,29 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#resources-club-invite_links">Links</a></li>
 </ul>
 </li>
-<li><a href="#resources-club-getOne-leader">클럽 조회(클럽장)</a>
+<li><a href="#resources-club-getOne">클럽 조회(클럽장)</a>
 <ul class="sectlevel3">
-<li><a href="#resources-club-getOne-leader_path_parameters">Path parameters</a></li>
-<li><a href="#resources-club-getOne-leader_http_request">HTTP request</a></li>
-<li><a href="#resources-club-getOne-leader_request_headers">Request headers</a></li>
-<li><a href="#resources-club-getOne-leader_http_response">Example response</a></li>
-<li><a href="#resources-club-getOne-leader_response_headers">Response headers</a></li>
-<li><a href="#resources-club-getOne-leader_response_fields">Response fields</a></li>
-<li><a href="#resources-club-getOne-leader_links">Links</a></li>
+<li><a href="#resources-club-getOne_path_parameters">Path parameters</a></li>
+<li><a href="#resources-club-getOne_http_request">HTTP request</a></li>
+<li><a href="#resources-club-getOne_request_headers">Request headers</a></li>
+<li><a href="#resources-club-getOne_http_response">Example response</a></li>
+<li><a href="#resources-club-getOne_response_headers">Response headers</a></li>
+<li><a href="#resources-club-getOne_response_fields">Response fields</a></li>
+<li><a href="#resources-club-getOne_links">Links</a></li>
 </ul>
 </li>
-<li><a href="#resources-club-delete">클럽 삭제</a>
+<li><a href="#resources-club-update">클럽 수정(클럽장)</a>
+<ul class="sectlevel3">
+<li><a href="#resources-club-update_path_parameters">Path parameters</a></li>
+<li><a href="#resources-club-update_http_request">HTTP request</a></li>
+<li><a href="#resources-club-update_request_headers">Request headers</a></li>
+<li><a href="#resources-club-update_http_response">Example response</a></li>
+<li><a href="#resources-club-update_response_headers">Response headers</a></li>
+<li><a href="#resources-club-update_response_fields">Response fields</a></li>
+<li><a href="#resources-club-update_links">Links</a></li>
+</ul>
+</li>
+<li><a href="#resources-club-delete">클럽 삭제(클럽장)</a>
 <ul class="sectlevel3">
 <li><a href="#resources-club-delete_path_parameters">Path parameters</a></li>
 <li><a href="#resources-club-delete_http_request">HTTP request</a></li>
@@ -654,7 +665,7 @@ X-Frame-Options: SAMEORIGIN
 Content-Length: 291
 
 {
-  "id" : 19,
+  "id" : 20,
   "email" : "test@example.com",
   "name" : "tester",
   "imagePath" : "imagePath",
@@ -1022,7 +1033,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk2NDQ4OX0.VDJfAHtwopmCpL_YZmjceADTVrER3To7gIESHkMt4H1MEVcHpTyvteBjZD9SzpJAjJqndHZ9toflyrUuSON9aA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNX0.3puKTiiWymqAATt22xq53DyFMdZ3EzHuPA7k7ZIrXRi_4uBjMLk8n-vh-UvVhGLIQBoUDWz03fAzbFfsr3no3A
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -1037,7 +1048,7 @@ Content-Length: 503
   "name" : "tester",
   "email" : "test@example.com",
   "imagePath" : "imagePath",
-  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk2NDQ4OX0.VDJfAHtwopmCpL_YZmjceADTVrER3To7gIESHkMt4H1MEVcHpTyvteBjZD9SzpJAjJqndHZ9toflyrUuSON9aA",
+  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNX0.3puKTiiWymqAATt22xq53DyFMdZ3EzHuPA7k7ZIrXRi_4uBjMLk8n-vh-UvVhGLIQBoUDWz03fAzbFfsr3no3A",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/authenticate"
@@ -1342,7 +1353,7 @@ Content-Length: 143
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk2NDQ5MH0.jQgJ0tb1yN4zVKhJbrcyWyIkndNjgB7FXEWnI-Zs00ddMYNwMz41099sgp2A4HG_AcFLtMqBCTR0fiHjl5BFOQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNn0.Y-le3v5rAwtkQ89fKP-8CwnbkQksetHXoloITT2eHMH--1bv0uqSgfVa2SVI8mAXC9UC-Ek44Gzic1FUrTDz9Q
 Content-Length: 60
 Host: localhost:8080
 
@@ -1394,7 +1405,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 447
+Content-Length: 611
 
 {
   "clubId" : 2,
@@ -1410,6 +1421,12 @@ Content-Length: 447
     },
     "club-invite" : {
       "href" : "http://localhost:8080/api/club/2/invite"
+    },
+    "club-update" : {
+      "href" : "http://localhost:8080/api/club/2"
+    },
+    "club-getOne" : {
+      "href" : "http://localhost:8080/api/club/2"
     },
     "club-delete" : {
       "href" : "http://localhost:8080/api/club/2"
@@ -1482,14 +1499,24 @@ Content-Length: 447
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to self</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-delete.href</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-create</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-invite.href</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-invite</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-getOne.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-getOne</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-update.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-update</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-delete.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-delete</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.profile.href</code></p></td>
@@ -1520,6 +1547,14 @@ Content-Length: 447
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-invite</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-invite</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-getOne</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-getOne</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-update</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-update</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-delete</code></p></td>
@@ -1585,14 +1620,14 @@ Content-Length: 447
 <h4 id="resources-club-invite_http_request"><a class="link" href="#resources-club-invite_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club/6/invite HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club/7/invite HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk2NDQ5MX0.EWf_h-iNDLu2qkY1fNiHEjrbKl_ZFWDd_u53qNWvDEQWpUzWCuyJewINuIa2wPYMuWil9tWcCl9OZGf7Sh0YvA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzOH0.tsjQqTl_zN3FgFa3lqTTmTG1ZWvztQgofRYC5haN-ArJbxDXzzum1aqEZN8B-5VZ2SEO7OeF4g7ZcSEkx0QRYA
 Content-Length: 32
 Host: localhost:8080
 
 {
-  "memberIds" : [ 13, 14 ]
+  "memberIds" : [ 14, 15 ]
 }</code></pre>
 </div>
 </div>
@@ -1637,14 +1672,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 424
+Content-Length: 586
 
 {
   "success" : true,
   "message" : "초대를 완료하였습니다.",
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/club/6/invite"
+      "href" : "http://localhost:8080/api/club/7/invite"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-club-invite"
@@ -1652,8 +1687,14 @@ Content-Length: 424
     "club-create" : {
       "href" : "http://localhost:8080/api/club"
     },
+    "club-getOne" : {
+      "href" : "http://localhost:8080/api/club"
+    },
+    "club-update" : {
+      "href" : "http://localhost:8080/api/club/7"
+    },
     "club-delete" : {
-      "href" : "http://localhost:8080/api/club/6"
+      "href" : "http://localhost:8080/api/club/7"
     }
   }
 }</code></pre>
@@ -1718,6 +1759,16 @@ Content-Length: 424
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-create</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-update.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-update</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-getOne.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-getOne</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-delete.href</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-delete</p></td>
@@ -1757,6 +1808,14 @@ Content-Length: 424
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-create</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-update</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-update</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-getOne</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-getOne</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-delete</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-delete</p></td>
 </tr>
@@ -1765,9 +1824,9 @@ Content-Length: 424
 </div>
 </div>
 <div class="sect2">
-<h3 id="resources-club-getOne-leader"><a class="link" href="#resources-club-getOne-leader">클럽 조회(클럽장)</a></h3>
+<h3 id="resources-club-getOne"><a class="link" href="#resources-club-getOne">클럽 조회(클럽장)</a></h3>
 <div class="sect3">
-<h4 id="resources-club-getOne-leader_path_parameters"><a class="link" href="#resources-club-getOne-leader_path_parameters">Path parameters</a></h4>
+<h4 id="resources-club-getOne_path_parameters"><a class="link" href="#resources-club-getOne_path_parameters">Path parameters</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /api/club/{clubId}</caption>
 <colgroup>
@@ -1789,17 +1848,17 @@ Content-Length: 424
 </table>
 </div>
 <div class="sect3">
-<h4 id="resources-club-getOne-leader_http_request"><a class="link" href="#resources-club-getOne-leader_http_request">HTTP request</a></h4>
+<h4 id="resources-club-getOne_http_request"><a class="link" href="#resources-club-getOne_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/club/3 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk2NDQ5MH0.jQgJ0tb1yN4zVKhJbrcyWyIkndNjgB7FXEWnI-Zs00ddMYNwMz41099sgp2A4HG_AcFLtMqBCTR0fiHjl5BFOQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNn0.Y-le3v5rAwtkQ89fKP-8CwnbkQksetHXoloITT2eHMH--1bv0uqSgfVa2SVI8mAXC9UC-Ek44Gzic1FUrTDz9Q
 Host: localhost:8080</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="resources-club-getOne-leader_request_headers"><a class="link" href="#resources-club-getOne-leader_request_headers">Request headers</a></h4>
+<h4 id="resources-club-getOne_request_headers"><a class="link" href="#resources-club-getOne_request_headers">Request headers</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1820,7 +1879,7 @@ Host: localhost:8080</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="resources-club-getOne-leader_http_response"><a class="link" href="#resources-club-getOne-leader_http_response">Example response</a></h4>
+<h4 id="resources-club-getOne_http_response"><a class="link" href="#resources-club-getOne_http_response">Example response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -1834,7 +1893,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 527
+Content-Length: 609
 
 {
   "clubId" : 3,
@@ -1851,6 +1910,9 @@ Content-Length: 527
     "club-create" : {
       "href" : "http://localhost:8080/api/club"
     },
+    "club-update" : {
+      "href" : "http://localhost:8080/api/club/3"
+    },
     "club-delete" : {
       "href" : "http://localhost:8080/api/club/3"
     },
@@ -1863,7 +1925,7 @@ Content-Length: 527
 </div>
 </div>
 <div class="sect3">
-<h4 id="resources-club-getOne-leader_response_headers"><a class="link" href="#resources-club-getOne-leader_response_headers">Response headers</a></h4>
+<h4 id="resources-club-getOne_response_headers"><a class="link" href="#resources-club-getOne_response_headers">Response headers</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1884,7 +1946,7 @@ Content-Length: 527
 </table>
 </div>
 <div class="sect3">
-<h4 id="resources-club-getOne-leader_response_fields"><a class="link" href="#resources-club-getOne-leader_response_fields">Response fields</a></h4>
+<h4 id="resources-club-getOne_response_fields"><a class="link" href="#resources-club-getOne_response_fields">Response fields</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1930,6 +1992,11 @@ Content-Length: 527
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-create</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-update.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-update, 클럽장인경우에만 보입니다.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-invite.href</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-invite, 클럽장인경우에만 보입니다.</p></td>
@@ -1948,7 +2015,243 @@ Content-Length: 527
 </table>
 </div>
 <div class="sect3">
-<h4 id="resources-club-getOne-leader_links"><a class="link" href="#resources-club-getOne-leader_links">Links</a></h4>
+<h4 id="resources-club-getOne_links"><a class="link" href="#resources-club-getOne_links">Links</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Relation</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>self</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to self</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profile</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to profile</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-create</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-create</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-invite</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-invite</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-update</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-invite</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-delete</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-delete</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resources-club-update"><a class="link" href="#resources-club-update">클럽 수정(클럽장)</a></h3>
+<div class="sect3">
+<h4 id="resources-club-update_path_parameters"><a class="link" href="#resources-club-update_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/club/{clubId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clubId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수정할 클럽의 고유 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-club-update_http_request"><a class="link" href="#resources-club-update_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/club/6 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzN30.d_TywsSVo0jY-D4g-tjcmvm1hr7mjLl5EBCGub2mT7YLaofvkWNlcjFaZcsMFs2wmX5318hpFEm4ulqpYshP5g
+Content-Length: 95
+Host: localhost:8080
+
+{
+  "clubName" : "수정된 클럽이름",
+  "categories" : "수정된 클럽카테고리"
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="resources-club-update_request_headers"><a class="link" href="#resources-club-update_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Content type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인한 유저의 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-club-update_http_response"><a class="link" href="#resources-club-update_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/hal+json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: SAMEORIGIN
+Content-Length: 563
+
+{
+  "clubId" : 6,
+  "clubName" : "수정된 클럽이름",
+  "categories" : "수정된 클럽카테고리",
+  "leaderId" : 11,
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/api/club/6"
+    },
+    "profile" : {
+      "href" : "/docs/index.html#resources-club-update"
+    },
+    "club-create" : {
+      "href" : "http://localhost:8080/api/club"
+    },
+    "club-invite" : {
+      "href" : "http://localhost:8080/api/club/6/invite"
+    },
+    "club-delete" : {
+      "href" : "http://localhost:8080/api/club/6"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="resources-club-update_response_headers"><a class="link" href="#resources-club-update_response_headers">Response headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Content type</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-club-update_response_fields"><a class="link" href="#resources-club-update_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clubId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수정된 클럽의 고유 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>clubName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수정된 클럽의 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>categories</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">수정된 클럽의 카테고리</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>leaderId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">클럽을 만든 멤버의 고유 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.self.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to self</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-create.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-create</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-delete.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-delete</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-invite.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-invite</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.profile.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to profile</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-club-update_links"><a class="link" href="#resources-club-update_links">Links</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1986,7 +2289,7 @@ Content-Length: 527
 </div>
 </div>
 <div class="sect2">
-<h3 id="resources-club-delete"><a class="link" href="#resources-club-delete">클럽 삭제</a></h3>
+<h3 id="resources-club-delete"><a class="link" href="#resources-club-delete">클럽 삭제(클럽장)</a></h3>
 <div class="sect3">
 <h4 id="resources-club-delete_path_parameters"><a class="link" href="#resources-club-delete_path_parameters">Path parameters</a></h4>
 <table class="tableblock frame-all grid-all stretch">
@@ -2014,7 +2317,7 @@ Content-Length: 527
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/club/4 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk2NDQ5MX0.EWf_h-iNDLu2qkY1fNiHEjrbKl_ZFWDd_u53qNWvDEQWpUzWCuyJewINuIa2wPYMuWil9tWcCl9OZGf7Sh0YvA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzN30.d_TywsSVo0jY-D4g-tjcmvm1hr7mjLl5EBCGub2mT7YLaofvkWNlcjFaZcsMFs2wmX5318hpFEm4ulqpYshP5g
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2175,7 +2478,7 @@ Content-Length: 334
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-02-22 12:12:31 +0900
+Last updated 2021-02-22 15:24:22 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">

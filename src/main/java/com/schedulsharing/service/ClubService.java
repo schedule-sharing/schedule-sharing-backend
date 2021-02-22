@@ -47,23 +47,23 @@ public class ClubService {
         List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubCreateResponse.getClubId(), "/docs/index.html#resources-club-create");
         EntityModel<ClubCreateResponse> entityModel = EntityModel.of(clubCreateResponse, links);
         entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).slash("invite").withRel("club-invite"));
+        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-update"));
+        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-getOne"));
         entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-delete"));
         return entityModel;
     }
 
+    @Transactional(readOnly = true)
     public EntityModel<ClubResponse> getClub(Long clubId, String email) {
         Member member = memberRepository.findByEmail(email).get();
-        Optional<Club> optionalClub = clubRepository.findById(clubId);
-        if (optionalClub.isEmpty()) {
-            throw new ClubNotFoundException("클럽이 존재하지 않습니다.");
-        }
-        Club club = optionalClub.get();
+        Club club = findById(clubId);
 
         ClubResponse clubResponse = modelMapper.map(club, ClubResponse.class);
         List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId, "/docs/index.html#resources-club-getOne");
         EntityModel<ClubResponse> entityModel = EntityModel.of(clubResponse, links);
         entityModel.add(linkTo(ClubController.class).withRel("club-create"));
         if (clubResponse.getLeaderId().equals(member.getId())) {
+            entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-update"));
             entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
             entityModel.add(linkTo(ClubController.class).slash(clubId).slash("invite").withRel("club-invite"));
         }
@@ -74,7 +74,7 @@ public class ClubService {
     public EntityModel<ClubInviteResponse> invite(ClubInviteRequest clubInviteRequest, Long clubId, String email) {
         Member member = memberRepository.findByEmail(email).get();
 
-        Club club = clubRepository.findById(clubId).get();
+        Club club = findById(clubId);
         if (!member.getId().equals(club.getLeaderId())) {
             throw new InvalidGrantException("권한이 없습니다.");
         }
@@ -91,13 +91,15 @@ public class ClubService {
         ClubInviteResponse clubInviteResponse = new ClubInviteResponse(true, "초대를 완료하였습니다.");
         EntityModel<ClubInviteResponse> entityModel = EntityModel.of(clubInviteResponse, links);
         entityModel.add(linkTo(ClubController.class).withRel("club-create"));
+        entityModel.add(linkTo(ClubController.class).withRel("club-getOne"));
+        entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-update"));
         entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
         return entityModel;
     }
 
     public EntityModel<ClubDeleteResponse> delete(Long clubId, String email) {
         Member member = memberRepository.findByEmail(email).get();
-        Club club = clubRepository.findById(clubId).get();
+        Club club = findById(clubId);
         if (!member.getId().equals(club.getLeaderId())) {
             throw new InvalidGrantException("권한이 없습니다.");
         }
@@ -111,4 +113,29 @@ public class ClubService {
         return entityModel;
     }
 
+    public EntityModel<ClubUpdateResponse> update(Long clubId, ClubUpdateRequest clubUpdateRequest, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        Club club = findById(clubId);
+        if (!member.getId().equals(club.getLeaderId())) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
+        club.update(clubUpdateRequest.getClubName(), clubUpdateRequest.getCategories());
+
+        ClubUpdateResponse clubUpdateResponse = modelMapper.map(club, ClubUpdateResponse.class);
+        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId, "/docs/index.html#resources-club-update");
+        EntityModel<ClubUpdateResponse> entityModel = EntityModel.of(clubUpdateResponse, links);
+        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
+        entityModel.add(linkTo(ClubController.class).slash(clubId).slash("invite").withRel("club-invite"));
+        entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
+
+        return entityModel;
+    }
+
+    private Club findById(Long clubId) {
+        Optional<Club> optionalClub = clubRepository.findById(clubId);
+        if (optionalClub.isEmpty()) {
+            throw new ClubNotFoundException("클럽이 존재하지 않습니다.");
+        }
+        return optionalClub.get();
+    }
 }

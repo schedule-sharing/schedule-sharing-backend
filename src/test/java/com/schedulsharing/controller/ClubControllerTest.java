@@ -5,6 +5,7 @@ import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.Club.ClubInviteRequest;
+import com.schedulsharing.dto.Club.ClubUpdateRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.dto.member.SignUpResponseDto;
@@ -107,6 +108,8 @@ class ClubControllerTest {
                         links(
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("club-invite").description("link to club-invite"),
+                                linkWithRel("club-getOne").description("link to club-getOne"),
+                                linkWithRel("club-update").description("link to club-update"),
                                 linkWithRel("club-delete").description("link to club-delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
@@ -127,8 +130,10 @@ class ClubControllerTest {
                                 fieldWithPath("categories").description("생성된 클럽의 카테고리"),
                                 fieldWithPath("leaderId").description("클럽을 만든 멤버의 고유 아이디"),
                                 fieldWithPath("_links.self.href").description("link to self"),
-                                fieldWithPath("_links.club-delete.href").description("link to club-create"),
                                 fieldWithPath("_links.club-invite.href").description("link to club-invite"),
+                                fieldWithPath("_links.club-getOne.href").description("link to club-getOne"),
+                                fieldWithPath("_links.club-update.href").description("link to club-update"),
+                                fieldWithPath("_links.club-delete.href").description("link to club-delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -179,6 +184,8 @@ class ClubControllerTest {
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("profile").description("link to profile"),
                                 linkWithRel("club-create").description("link to club-create"),
+                                linkWithRel("club-update").description("link to club-update"),
+                                linkWithRel("club-getOne").description("link to club-getOne"),
                                 linkWithRel("club-delete").description("link to club-delete")
                         ),
                         requestHeaders(
@@ -196,6 +203,8 @@ class ClubControllerTest {
                                 fieldWithPath("message").description("초대를 성공했는지에 대한 메시지"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.club-create.href").description("link to club-create"),
+                                fieldWithPath("_links.club-update.href").description("link to club-update"),
+                                fieldWithPath("_links.club-getOne.href").description("link to club-getOne"),
                                 fieldWithPath("_links.club-delete.href").description("link to club-delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
@@ -241,7 +250,6 @@ class ClubControllerTest {
     @DisplayName("클럽장인 경우 클럽 조회하면 추가적인 링크가 보여야한다.")
     @Test
     public void 클럽장_클럽조회() throws Exception {
-        //TODO 수정 링크 추가
         Long clubId = createClub("test@example.com");
         mvc.perform(RestDocumentationRequestBuilders.get("/api/club/{clubId}", clubId)
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
@@ -252,9 +260,10 @@ class ClubControllerTest {
                 .andExpect(jsonPath("_links.self.href").exists())
                 .andExpect(jsonPath("_links.club-create.href").exists())
                 .andExpect(jsonPath("_links.club-invite.href").exists())
+                .andExpect(jsonPath("_links.club-update.href").exists())
                 .andExpect(jsonPath("_links.club-delete.href").exists())
                 .andExpect(jsonPath("_links.profile.href").exists())
-                .andDo(document("club-getOne-leader",
+                .andDo(document("club-getOne",
                         pathParameters(
                                 parameterWithName("clubId").description("조회할 클럽의 고유 아이디")
                         ),
@@ -263,6 +272,7 @@ class ClubControllerTest {
                                 linkWithRel("profile").description("link to profile"),
                                 linkWithRel("club-create").description("link to club-create"),
                                 linkWithRel("club-invite").description("link to club-invite"),
+                                linkWithRel("club-update").description("link to club-invite"),
                                 linkWithRel("club-delete").description("link to club-delete")
                         ),
                         requestHeaders(
@@ -278,6 +288,7 @@ class ClubControllerTest {
                                 fieldWithPath("leaderId").description("조회한 클럽을 만든 멤버의 고유아이디"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.club-create.href").description("link to club-create"),
+                                fieldWithPath("_links.club-update.href").description("link to club-update, 클럽장인경우에만 보입니다."),
                                 fieldWithPath("_links.club-invite.href").description("link to club-invite, 클럽장인경우에만 보입니다."),
                                 fieldWithPath("_links.club-delete.href").description("link to club-delete, 클럽장인경우에만 보입니다."),
                                 fieldWithPath("_links.profile.href").description("link to profile")
@@ -295,7 +306,6 @@ class ClubControllerTest {
                 .imagePath("imagePath10")
                 .build();
         memberService.signup(signUpRequestDto1);
-        //TODO 수정 링크 추가
         Long clubId = createClub("test2@example.com");
         mvc.perform(RestDocumentationRequestBuilders.get("/api/club/{clubId}", clubId)
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
@@ -318,6 +328,61 @@ class ClubControllerTest {
                 .andExpect(jsonPath("httpStatus").exists())
                 .andExpect(jsonPath("error").exists())
                 .andExpect(jsonPath("message").exists());
+    }
+
+    @DisplayName("클럽 수정 성공")
+    @Test
+    public void 클럽수정성공() throws Exception {
+        Long clubId = createClub("test@example.com");
+        ClubUpdateRequest clubUpdateRequest = ClubUpdateRequest.builder()
+                .clubName("수정된 클럽이름")
+                .categories("수정된 클럽카테고리")
+                .build();
+        mvc.perform(RestDocumentationRequestBuilders.put("/api/club/{clubId}", clubId)
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clubUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("clubId").exists())
+                .andExpect(jsonPath("clubName").exists())
+                .andExpect(jsonPath("categories").exists())
+                .andExpect(jsonPath("leaderId").exists())
+                .andExpect(jsonPath("_links.self.href").exists())
+                .andExpect(jsonPath("_links.club-create.href").exists())
+                .andExpect(jsonPath("_links.club-invite.href").exists())
+                .andExpect(jsonPath("_links.club-delete.href").exists())
+                .andExpect(jsonPath("_links.profile.href").exists())
+                .andDo(document("club-update",
+                        pathParameters(
+                                parameterWithName("clubId").description("수정할 클럽의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile"),
+                                linkWithRel("club-create").description("link to club-create"),
+                                linkWithRel("club-invite").description("link to club-invite"),
+                                linkWithRel("club-delete").description("link to club-delete")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("clubId").description("수정된 클럽의 고유 아이디"),
+                                fieldWithPath("clubName").description("수정된 클럽의 이름"),
+                                fieldWithPath("categories").description("수정된 클럽의 카테고리"),
+                                fieldWithPath("leaderId").description("클럽을 만든 멤버의 고유 아이디"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.club-create.href").description("link to club-create"),
+                                fieldWithPath("_links.club-delete.href").description("link to club-delete"),
+                                fieldWithPath("_links.club-invite.href").description("link to club-invite"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
     }
 
     @DisplayName("클럽 삭제 성공")

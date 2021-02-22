@@ -36,6 +36,13 @@ public class ClubController {
         return ResponseEntity.ok(clubService.getClub(clubId, authentication.getName()));
     }
 
+    @PutMapping("/{clubId}")
+    public ResponseEntity updateClub(@PathVariable("clubId") Long clubId,
+                                     @RequestBody ClubUpdateRequest clubUpdateRequest,
+                                     Authentication authentication) {
+        return ResponseEntity.ok(clubService.update(clubId,clubUpdateRequest, authentication.getName()));
+    }
+
     @DeleteMapping("/{clubId}")
     public ResponseEntity deleteClub(@PathVariable("clubId") Long clubId, Authentication authentication) {
 
