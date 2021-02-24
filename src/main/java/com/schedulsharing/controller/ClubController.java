@@ -1,6 +1,7 @@
 package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.Club.*;
+import com.schedulsharing.dto.resource.ClubResource;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.service.ClubService;
 import com.schedulsharing.utils.LinkUtils;
@@ -25,9 +26,9 @@ public class ClubController {
     @PostMapping
     public ResponseEntity createClub(@RequestBody ClubCreateRequest clubCreateRequest, Authentication authentication) {
         EntityModel<ClubCreateResponse> entityModel = clubService.createClub(clubCreateRequest, authentication.getName());
-        Link selfLink = entityModel.getLink("self").get();
 
-        return ResponseEntity.created(selfLink.toUri()).body(entityModel);
+
+        return ResponseEntity.created(ClubResource.getCreatedUri(entityModel.getContent().getClubId())).body(entityModel);
     }
 
     @GetMapping("/{clubId}")

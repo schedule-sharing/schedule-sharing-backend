@@ -361,6 +361,7 @@ class ClubControllerTest {
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("profile").description("link to profile"),
                                 linkWithRel("club-create").description("link to club-create"),
+                                linkWithRel("club-getOne").description("link to club-getOne"),
                                 linkWithRel("club-invite").description("link to club-invite"),
                                 linkWithRel("club-delete").description("link to club-delete")
                         ),
@@ -379,6 +380,7 @@ class ClubControllerTest {
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.club-create.href").description("link to club-create"),
                                 fieldWithPath("_links.club-delete.href").description("link to club-delete"),
+                                fieldWithPath("_links.club-getOne.href").description("link to club-getOne"),
                                 fieldWithPath("_links.club-invite.href").description("link to club-invite"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )

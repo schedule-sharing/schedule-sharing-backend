@@ -1033,7 +1033,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNX0.3puKTiiWymqAATt22xq53DyFMdZ3EzHuPA7k7ZIrXRi_4uBjMLk8n-vh-UvVhGLIQBoUDWz03fAzbFfsr3no3A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDE0NjE3M30.wo4Xj8bUG2bUOEN__dGGdp3UcYRXMN45ViyoJAor1X5dWJfnotr9r1h5ibsHDXGGeURmN6HZUjvTBN5_J5uZ0g
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -1048,7 +1048,7 @@ Content-Length: 503
   "name" : "tester",
   "email" : "test@example.com",
   "imagePath" : "imagePath",
-  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNX0.3puKTiiWymqAATt22xq53DyFMdZ3EzHuPA7k7ZIrXRi_4uBjMLk8n-vh-UvVhGLIQBoUDWz03fAzbFfsr3no3A",
+  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDE0NjE3M30.wo4Xj8bUG2bUOEN__dGGdp3UcYRXMN45ViyoJAor1X5dWJfnotr9r1h5ibsHDXGGeURmN6HZUjvTBN5_J5uZ0g",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/authenticate"
@@ -1353,7 +1353,7 @@ Content-Length: 143
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNn0.Y-le3v5rAwtkQ89fKP-8CwnbkQksetHXoloITT2eHMH--1bv0uqSgfVa2SVI8mAXC9UC-Ek44Gzic1FUrTDz9Q
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDE0NjE3NH0.POOWvBtiwN8F9N7oMXGQ1EcdeCJp2-uK79I-rAOzhou4HTBLvGyKvqrkmGJnmltKW0aKe470Nsqs9dcLMRYOyw
 Content-Length: 60
 Host: localhost:8080
 
@@ -1397,7 +1397,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: http://localhost:8080/api/club/2
+Location: http://localhost/api/club/2
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -1405,7 +1405,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 611
+Content-Length: 584
 
 {
   "clubId" : 2,
@@ -1414,22 +1414,22 @@ Content-Length: 611
   "leaderId" : 6,
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/club/2"
+      "href" : "http://localhost/api/club"
+    },
+    "club-invite" : {
+      "href" : "http://localhost/api/club/2/invite"
+    },
+    "club-update" : {
+      "href" : "http://localhost/api/club/2"
+    },
+    "club-getOne" : {
+      "href" : "http://localhost/api/club/2"
+    },
+    "club-delete" : {
+      "href" : "http://localhost/api/club/2"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-club-create"
-    },
-    "club-invite" : {
-      "href" : "http://localhost:8080/api/club/2/invite"
-    },
-    "club-update" : {
-      "href" : "http://localhost:8080/api/club/2"
-    },
-    "club-getOne" : {
-      "href" : "http://localhost:8080/api/club/2"
-    },
-    "club-delete" : {
-      "href" : "http://localhost:8080/api/club/2"
     }
   }
 }</code></pre>
@@ -1622,7 +1622,7 @@ Content-Length: 611
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club/7/invite HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzOH0.tsjQqTl_zN3FgFa3lqTTmTG1ZWvztQgofRYC5haN-ArJbxDXzzum1aqEZN8B-5VZ2SEO7OeF4g7ZcSEkx0QRYA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDE0NjE3NX0.W5fphTupJvPx7RiHL6yfRxKq5ofb7jCs8ffr42ruot7wzKwTDG5zl2Z1BaG96wfZyK4oSSWJx7Z2Sv-ZGa8npQ
 Content-Length: 32
 Host: localhost:8080
 
@@ -1672,29 +1672,29 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 586
+Content-Length: 554
 
 {
   "success" : true,
   "message" : "초대를 완료하였습니다.",
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/club/7/invite"
+      "href" : "http://localhost/api/club"
+    },
+    "club-create" : {
+      "href" : "http://localhost/api/club"
+    },
+    "club-getOne" : {
+      "href" : "http://localhost/api/club/7"
+    },
+    "club-update" : {
+      "href" : "http://localhost/api/club/7"
+    },
+    "club-delete" : {
+      "href" : "http://localhost/api/club/7"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-club-invite"
-    },
-    "club-create" : {
-      "href" : "http://localhost:8080/api/club"
-    },
-    "club-getOne" : {
-      "href" : "http://localhost:8080/api/club"
-    },
-    "club-update" : {
-      "href" : "http://localhost:8080/api/club/7"
-    },
-    "club-delete" : {
-      "href" : "http://localhost:8080/api/club/7"
     }
   }
 }</code></pre>
@@ -1852,7 +1852,7 @@ Content-Length: 586
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/club/3 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzNn0.Y-le3v5rAwtkQ89fKP-8CwnbkQksetHXoloITT2eHMH--1bv0uqSgfVa2SVI8mAXC9UC-Ek44Gzic1FUrTDz9Q
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDE0NjE3NH0.POOWvBtiwN8F9N7oMXGQ1EcdeCJp2-uK79I-rAOzhou4HTBLvGyKvqrkmGJnmltKW0aKe470Nsqs9dcLMRYOyw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -1893,7 +1893,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 609
+Content-Length: 584
 
 {
   "clubId" : 3,
@@ -1902,22 +1902,22 @@ Content-Length: 609
   "leaderId" : 7,
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/club/3"
+      "href" : "http://localhost/api/club"
+    },
+    "club-create" : {
+      "href" : "http://localhost/api/club/3"
+    },
+    "club-invite" : {
+      "href" : "http://localhost/api/club/3/invite"
+    },
+    "club-update" : {
+      "href" : "http://localhost/api/club/3"
+    },
+    "club-delete" : {
+      "href" : "http://localhost/api/club/3"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-club-getOne"
-    },
-    "club-create" : {
-      "href" : "http://localhost:8080/api/club"
-    },
-    "club-update" : {
-      "href" : "http://localhost:8080/api/club/3"
-    },
-    "club-delete" : {
-      "href" : "http://localhost:8080/api/club/3"
-    },
-    "club-invite" : {
-      "href" : "http://localhost:8080/api/club/3/invite"
     }
   }
 }</code></pre>
@@ -2086,7 +2086,7 @@ Content-Length: 609
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/club/6 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzN30.d_TywsSVo0jY-D4g-tjcmvm1hr7mjLl5EBCGub2mT7YLaofvkWNlcjFaZcsMFs2wmX5318hpFEm4ulqpYshP5g
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDE0NjE3NH0.POOWvBtiwN8F9N7oMXGQ1EcdeCJp2-uK79I-rAOzhou4HTBLvGyKvqrkmGJnmltKW0aKe470Nsqs9dcLMRYOyw
 Content-Length: 95
 Host: localhost:8080
 
@@ -2137,7 +2137,7 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 563
+Content-Length: 618
 
 {
   "clubId" : 6,
@@ -2146,19 +2146,22 @@ Content-Length: 563
   "leaderId" : 11,
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/club/6"
+      "href" : "http://localhost/api/club"
+    },
+    "club-create" : {
+      "href" : "http://localhost/api/club"
+    },
+    "club-getOne" : {
+      "href" : "http://localhost/api/club/6"
+    },
+    "club-invite" : {
+      "href" : "http://localhost/api/club/6/invite"
+    },
+    "club-delete" : {
+      "href" : "http://localhost/api/club/6"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-club-update"
-    },
-    "club-create" : {
-      "href" : "http://localhost:8080/api/club"
-    },
-    "club-invite" : {
-      "href" : "http://localhost:8080/api/club/6/invite"
-    },
-    "club-delete" : {
-      "href" : "http://localhost:8080/api/club/6"
     }
   }
 }</code></pre>
@@ -2238,6 +2241,11 @@ Content-Length: 563
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-delete</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-getOne.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-getOne</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.club-invite.href</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-invite</p></td>
@@ -2275,6 +2283,10 @@ Content-Length: 563
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-create</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">link to club-create</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-getOne</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to club-getOne</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>club-invite</code></p></td>
@@ -2317,7 +2329,7 @@ Content-Length: 563
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/club/4 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxMzk3NTEzN30.d_TywsSVo0jY-D4g-tjcmvm1hr7mjLl5EBCGub2mT7YLaofvkWNlcjFaZcsMFs2wmX5318hpFEm4ulqpYshP5g
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDE0NjE3NH0.POOWvBtiwN8F9N7oMXGQ1EcdeCJp2-uK79I-rAOzhou4HTBLvGyKvqrkmGJnmltKW0aKe470Nsqs9dcLMRYOyw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2358,20 +2370,20 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 334
+Content-Length: 322
 
 {
   "success" : true,
   "message" : "모임을 삭제하였습니다",
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/club/4"
+      "href" : "http://localhost/api/club"
+    },
+    "club-create" : {
+      "href" : "http://localhost/api/club"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-club-delete"
-    },
-    "club-create" : {
-      "href" : "http://localhost:8080/api/club"
     }
   }
 }</code></pre>

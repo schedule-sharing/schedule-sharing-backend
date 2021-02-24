@@ -2,6 +2,7 @@ package com.schedulsharing.service;
 
 import com.schedulsharing.controller.ClubController;
 import com.schedulsharing.dto.Club.*;
+import com.schedulsharing.dto.resource.ClubResource;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.member.Member;
@@ -44,13 +45,8 @@ public class ClubService {
         Club savedClub = clubRepository.save(club);
 
         ClubCreateResponse clubCreateResponse = modelMapper.map(savedClub, ClubCreateResponse.class);
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubCreateResponse.getClubId(), "/docs/index.html#resources-club-create");
-        EntityModel<ClubCreateResponse> entityModel = EntityModel.of(clubCreateResponse, links);
-        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).slash("invite").withRel("club-invite"));
-        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-update"));
-        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-getOne"));
-        entityModel.add(linkTo(ClubController.class).slash(clubCreateResponse.getClubId()).withRel("club-delete"));
-        return entityModel;
+
+        return ClubResource.createClubLink(clubCreateResponse);
     }
 
     @Transactional(readOnly = true)
@@ -59,16 +55,8 @@ public class ClubService {
         Club club = findById(clubId);
 
         ClubResponse clubResponse = modelMapper.map(club, ClubResponse.class);
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId, "/docs/index.html#resources-club-getOne");
-        EntityModel<ClubResponse> entityModel = EntityModel.of(clubResponse, links);
-        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
-        if (clubResponse.getLeaderId().equals(member.getId())) {
-            entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-update"));
-            entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
-            entityModel.add(linkTo(ClubController.class).slash(clubId).slash("invite").withRel("club-invite"));
-        }
 
-        return entityModel;
+        return ClubResource.getOneClubLink(clubResponse, member.getId());
     }
 
     public EntityModel<ClubInviteResponse> invite(ClubInviteRequest clubInviteRequest, Long clubId, String email) {
@@ -86,32 +74,11 @@ public class ClubService {
         List<MemberClub> memberClubs = MemberClub.inviteMemberClub(members);
         Club.inviteClub(club, memberClubs);
 
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId.toString() + "/invite", "/docs/index.html#resources-club-invite");
-
         ClubInviteResponse clubInviteResponse = new ClubInviteResponse(true, "초대를 완료하였습니다.");
-        EntityModel<ClubInviteResponse> entityModel = EntityModel.of(clubInviteResponse, links);
-        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
-        entityModel.add(linkTo(ClubController.class).withRel("club-getOne"));
-        entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-update"));
-        entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
-        return entityModel;
+
+        return ClubResource.inviteClubLink(clubInviteResponse, clubId);
     }
 
-    public EntityModel<ClubDeleteResponse> delete(Long clubId, String email) {
-        Member member = memberRepository.findByEmail(email).get();
-        Club club = findById(clubId);
-        if (!member.getId().equals(club.getLeaderId())) {
-            throw new InvalidGrantException("권한이 없습니다.");
-        }
-        clubRepository.deleteById(clubId);
-        ClubDeleteResponse clubDeleteResponse = new ClubDeleteResponse(true, "모임을 삭제하였습니다");
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId, "/docs/index.html#resources-club-delete");
-
-        EntityModel<ClubDeleteResponse> entityModel = EntityModel.of(clubDeleteResponse, links);
-        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
-
-        return entityModel;
-    }
 
     public EntityModel<ClubUpdateResponse> update(Long clubId, ClubUpdateRequest clubUpdateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
@@ -122,13 +89,21 @@ public class ClubService {
         club.update(clubUpdateRequest.getClubName(), clubUpdateRequest.getCategories());
 
         ClubUpdateResponse clubUpdateResponse = modelMapper.map(club, ClubUpdateResponse.class);
-        List<Link> links = LinkUtils.createSelfProfileLink(ClubController.class, clubId, "/docs/index.html#resources-club-update");
-        EntityModel<ClubUpdateResponse> entityModel = EntityModel.of(clubUpdateResponse, links);
-        entityModel.add(linkTo(ClubController.class).withRel("club-create"));
-        entityModel.add(linkTo(ClubController.class).slash(clubId).slash("invite").withRel("club-invite"));
-        entityModel.add(linkTo(ClubController.class).slash(clubId).withRel("club-delete"));
 
-        return entityModel;
+        return ClubResource.updateClubLink(clubUpdateResponse);
+    }
+
+    public EntityModel<ClubDeleteResponse> delete(Long clubId, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        Club club = findById(clubId);
+        if (!member.getId().equals(club.getLeaderId())) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
+        clubRepository.deleteById(clubId);
+        ClubDeleteResponse clubDeleteResponse = new ClubDeleteResponse(true, "모임을 삭제하였습니다");
+
+
+        return ClubResource.deleteClubLink(clubDeleteResponse, clubId);
     }
 
     private Club findById(Long clubId) {
