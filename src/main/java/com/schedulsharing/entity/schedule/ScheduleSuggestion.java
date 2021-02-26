@@ -1,5 +1,6 @@
 package com.schedulsharing.entity.schedule;
 
+import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,14 +31,17 @@ public class ScheduleSuggestion {
 
     private int minMember;
 
-    @Enumerated(EnumType.STRING)
-    private ScheduleStatus scheduleStatus;
+    private boolean isConfirm;
 
     private LocalDateTime meetingDate;
 
     private LocalDateTime startVoteDate;
 
     private LocalDateTime endVoteDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id")
+    private Club club;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

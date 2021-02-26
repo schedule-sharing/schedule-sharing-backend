@@ -54,4 +54,5 @@ public class MemberService {
 
         return EntityModel.of(emailCheckResponseDto, links);
     }
+
 }

@@ -1,5 +1,6 @@
 package com.schedulsharing.entity.schedule;
 
+import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,28 +12,28 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "schedule_slice")
+@Table(name = "club_schedule")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ScheduleSlice {
+public class ClubSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "schedule_slice_id")
+    @Column(name = "club_schedule_id")
     private Long id;
 
     private String name;
 
     private String contents;
 
-    private LocalDateTime sliceStartDate;
+    private LocalDateTime clubStartDate;
 
-    private LocalDateTime sliceEndDate;
+    private LocalDateTime clubEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "schedule_id")
-    private Schedule schedule;
+    @JoinColumn(name = "club_id")
+    private Club club;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

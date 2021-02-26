@@ -24,9 +24,9 @@ public class Club {
 
     private String clubName;
 
-    private Long leaderId;
-
     private String categories;
+
+    private Long leaderId;
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     @Builder.Default
@@ -53,7 +53,6 @@ public class Club {
     public static Club createClub(String clubName, Long leaderId, String categories, MemberClub memberClub) {
         Club club = Club.builder()
                 .clubName(clubName)
-                .leaderId(leaderId)
                 .categories(categories)
                 .build();
         club.addMemberClub(memberClub);

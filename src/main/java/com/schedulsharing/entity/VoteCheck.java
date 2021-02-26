@@ -23,6 +23,8 @@ public class VoteCheck {
 
     private boolean agree;
 
+    private boolean disagree;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;

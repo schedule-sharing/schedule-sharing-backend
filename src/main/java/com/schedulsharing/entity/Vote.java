@@ -25,7 +25,7 @@ public class Vote {
 
     private int disAgree;
 
-    private boolean confirm;
+    private boolean isConfirm;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_suggestion_id")
