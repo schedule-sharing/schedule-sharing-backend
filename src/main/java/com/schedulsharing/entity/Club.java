@@ -42,17 +42,17 @@ public class Club {
     public void addMemberClub(MemberClub memberClub) {
         memberClubs.add(memberClub);
         memberClub.setClub(this);
-
     }
 
-    public void update(String clubName,String categories){
-        this.clubName=clubName;
-        this.categories=categories;
+    public void update(String clubName, String categories) {
+        this.clubName = clubName;
+        this.categories = categories;
     }
 
     public static Club createClub(String clubName, Long leaderId, String categories, MemberClub memberClub) {
         Club club = Club.builder()
                 .clubName(clubName)
+                .leaderId(leaderId)
                 .categories(categories)
                 .build();
         club.addMemberClub(memberClub);

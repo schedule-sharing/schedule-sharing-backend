@@ -27,9 +27,9 @@ public class ClubSchedule {
 
     private String contents;
 
-    private LocalDateTime clubStartDate;
+    private LocalDateTime startMeetingDate;
 
-    private LocalDateTime clubEndDate;
+    private LocalDateTime endMeetingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")

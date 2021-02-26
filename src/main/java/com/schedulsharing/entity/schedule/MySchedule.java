@@ -25,7 +25,9 @@ public class MySchedule {
 
     private String contents;
 
-    private LocalDateTime meetingDate;
+    private LocalDateTime scheduleStartDate;
+
+    private LocalDateTime scheduleEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

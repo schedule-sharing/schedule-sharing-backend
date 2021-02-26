@@ -27,7 +27,6 @@ public class ClubController {
     public ResponseEntity createClub(@RequestBody ClubCreateRequest clubCreateRequest, Authentication authentication) {
         EntityModel<ClubCreateResponse> entityModel = clubService.createClub(clubCreateRequest, authentication.getName());
 
-
         return ResponseEntity.created(ClubResource.getCreatedUri(entityModel.getContent().getClubId())).body(entityModel);
     }
 
