@@ -2,6 +2,7 @@ package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.ClubScheduleController;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleResponse;
 import com.schedulsharing.entity.schedule.ClubSchedule;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -18,18 +19,25 @@ public class ClubScheduleResource extends EntityModel<ClubSchedule> {
 
     public static EntityModel<ClubScheduleCreateResponse> createClubScheduleLink(ClubScheduleCreateResponse createResponse) {
         List<Link> links = getSelfLink(createResponse.getId());
+        links.add(selfLinkBuilder.slash(createResponse.getId()).withRel("clubSchedule-getOne"));
         links.add(Link.of("/docs/index.html#resources-clubSchedule-create", "profile"));
         return EntityModel.of(createResponse, links);
     }
 
-    private static List<Link> getSelfLink(Long clubId) {
-        selfLinkBuilder.slash(clubId);
+    public static EntityModel<ClubScheduleResponse> getClubScheduleLink(ClubScheduleResponse clubScheduleResponse, String email) {
+        List<Link> links = getSelfLink(clubScheduleResponse.getId());
+        links.add(selfLinkBuilder.withRel("clubSchedule-create"));
+        links.add(Link.of("/docs/index.html#resources-clubSchedule-getOne", "profile"));
+        return EntityModel.of(clubScheduleResponse, links);
+    }
+
+    private static List<Link> getSelfLink(Long clubScheduleId) {
         List<Link> links = new ArrayList<>();
-        links.add(selfLinkBuilder.withSelfRel());
+        links.add(selfLinkBuilder.slash(clubScheduleId).withSelfRel());
         return links;
     }
 
-    public static URI getCreatedUri(Long clubId) {
-        return selfLinkBuilder.slash(clubId).toUri();
+    public static URI getCreatedUri(Long clubScheduleId) {
+        return selfLinkBuilder.slash(clubScheduleId).toUri();
     }
 }

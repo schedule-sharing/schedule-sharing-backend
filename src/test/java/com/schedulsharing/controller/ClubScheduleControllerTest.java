@@ -5,11 +5,13 @@ import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.ClubScheduleRepository;
 import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.service.ClubScheduleService;
 import com.schedulsharing.service.ClubService;
 import com.schedulsharing.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,12 +25,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
@@ -36,6 +38,8 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -60,6 +64,8 @@ class ClubScheduleControllerTest {
     private MemberService memberService;
     @Autowired
     private ClubScheduleRepository clubScheduleRepository;
+    @Autowired
+    private ClubScheduleService clubScheduleService;
 
     @BeforeEach
     public void setUp() {
@@ -112,6 +118,7 @@ class ClubScheduleControllerTest {
                 .andDo(document("clubSchedule-create",
                         links(
                                 linkWithRel("self").description("link to self"),
+                                linkWithRel("clubSchedule-getOne").description("link to getOne"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -135,6 +142,7 @@ class ClubScheduleControllerTest {
                                 fieldWithPath("startMeetingDate").description("생성된 클럽스케줄의 시작 날짜"),
                                 fieldWithPath("endMeetingDate").description("생성된 클럽스케줄의 끝나는 날짜"),
                                 fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.clubSchedule-getOne.href").description("link to getOne"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -162,6 +170,53 @@ class ClubScheduleControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
+    @DisplayName("클럽 스케줄 단건 조회 스케줄을 작성한 사람일 경우")
+    @Test
+    public void 클럽스케줄_단건조회_작성자() throws Exception {
+        ClubScheduleCreateResponse clubSchedule = createClubSchedule();
+
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/clubSchedule/{id}", clubSchedule.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("contents").exists())
+                .andExpect(jsonPath("startMeetingDate").exists())
+                .andExpect(jsonPath("endMeetingDate").exists())
+                .andExpect(jsonPath("memberEmail").exists())
+                .andExpect(jsonPath("memberName").exists())
+                .andDo(document("clubSchedule-getOne",
+                        pathParameters(
+                                parameterWithName("id").description("조회할 클럽스케줄의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("clubSchedule-create").description("link to create"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("조회한 클럽스케줄의 고유아이디"),
+                                fieldWithPath("name").description("조회한 클럽스케줄의 이름 또는 제목"),
+                                fieldWithPath("contents").description("조회한 클럽스케줄의 내용"),
+                                fieldWithPath("startMeetingDate").description("조회한 클럽스케줄의 시작 날짜"),
+                                fieldWithPath("endMeetingDate").description("조회한 클럽스케줄의 끝나는 날짜"),
+                                fieldWithPath("memberName").description("조회한 클럽스케줄을 작성한 사람의 이름"),
+                                fieldWithPath("memberEmail").description("조회한 클럽스케줄을 작성한 사람의 이메일"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.clubSchedule-create.href").description("link to create"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+
     private String getBearToken() throws Exception {
         return "Bearer  " + getToken();
     }
@@ -181,5 +236,25 @@ class ClubScheduleControllerTest {
         String responseBody = perform.andReturn().getResponse().getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
         return parser.parseMap(responseBody).get("access_token").toString();
+    }
+
+    private ClubScheduleCreateResponse createClubSchedule() {
+        String email = "test@example.com";
+        String clubName = "동네친구";
+        String categories = "밥";
+        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
+                .clubName(clubName)
+                .categories(categories)
+                .build();
+        ClubCreateResponse content = clubService.createClub(clubCreateRequest, email).getContent();
+
+        ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                .name("클럽 스케줄 생성 테스트")
+                .contents("스터디 모임")
+                .startMeetingDate(LocalDateTime.now())
+                .endMeetingDate(LocalDateTime.now())
+                .clubId(content.getClubId())
+                .build();
+        return clubScheduleService.create(createRequest, email).getContent();
     }
 }

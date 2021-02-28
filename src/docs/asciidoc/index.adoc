@@ -58,3 +58,7 @@ operation::club-delete[snippets='path-parameters,http-request,request-headers,ht
 [[resources-clubSchedule-create]]
 === 클럽스케줄 생성
 operation::clubSchedule-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-clubSchedule-getOne]]
+=== 클럽스케줄 조회(작성자)
+operation::clubSchedule-getOne[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']

@@ -9,10 +9,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -32,5 +29,11 @@ public class ClubScheduleController {
         EntityModel<ClubScheduleCreateResponse> entityModel = clubScheduleService.create(createRequest, authentication.getName());
 
         return ResponseEntity.created(ClubScheduleResource.getCreatedUri(entityModel.getContent().getId())).body(entityModel);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getClubSchedule(@PathVariable("id") Long id, Authentication authentication) {
+
+        return ResponseEntity.ok(clubScheduleService.getClubSchedule(id, authentication.getName()));
     }
 }

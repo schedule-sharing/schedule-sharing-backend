@@ -1,7 +1,9 @@
-package com.schedulsharing.excpetion;
+package com.schedulsharing.excpetion.club;
 
 import com.schedulsharing.controller.ClubController;
 import com.schedulsharing.dto.Club.ClubInviteResponse;
+import com.schedulsharing.excpetion.ApiError;
+import com.schedulsharing.excpetion.InvalidGrantException;
 import com.schedulsharing.utils.LinkUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
