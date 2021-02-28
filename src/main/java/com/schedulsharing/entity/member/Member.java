@@ -1,6 +1,7 @@
 package com.schedulsharing.entity.member;
 
 import com.schedulsharing.entity.MemberClub;
+import com.schedulsharing.entity.schedule.ClubSchedule;
 import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +35,9 @@ public class Member {
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberClub> memberClubs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ClubSchedule> clubSchedules = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)

@@ -49,7 +49,6 @@ class AuthControllerTest {
         memberRepository.deleteAll();
     }
 
-
     @DisplayName("로그인 성공")
     @Test
     public void 로그인_성공() throws Exception {

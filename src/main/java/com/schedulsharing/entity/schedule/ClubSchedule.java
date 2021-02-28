@@ -1,5 +1,9 @@
 package com.schedulsharing.entity.schedule;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
@@ -26,9 +30,11 @@ public class ClubSchedule {
     private String name;
 
     private String contents;
-
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime startMeetingDate;
-
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime endMeetingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -38,4 +44,27 @@ public class ClubSchedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    //양방향 연관관계가 생길 경우 상대편에도 값을 넣어주기 위해 편의메서드를 만들어 놓음
+    public void setClub(Club club) {
+        this.club = club;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getClubSchedules().add(this);
+    }
+
+    public static ClubSchedule createClubSchedule(ClubScheduleCreateRequest createRequest, Member member, Club club) {
+        ClubSchedule clubSchedule = ClubSchedule.builder()
+                .name(createRequest.getName())
+                .contents(createRequest.getContents())
+                .startMeetingDate(createRequest.getStartMeetingDate())
+                .endMeetingDate(createRequest.getEndMeetingDate())
+                .build();
+        clubSchedule.setClub(club);
+        clubSchedule.setMember(member);
+
+        return clubSchedule;
+    }
 }
