@@ -443,11 +443,7 @@ class ClubControllerTest {
         mvc.perform(delete("/api/club/{clubId}", clubId)
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
                 .andDo(print())
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("success").value(false))
-                .andExpect(jsonPath("message").exists())
-                .andExpect(jsonPath("_links.self.href").exists())
-                .andExpect(jsonPath("_links.profile.href").exists());
+                .andExpect(status().isForbidden());
     }
 
     private Long createClub(String email) {

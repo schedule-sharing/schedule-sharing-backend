@@ -6,7 +6,8 @@ import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
-import com.schedulsharing.excpetion.InvalidGrantException;
+import com.schedulsharing.excpetion.club.InvalidInviteGrantException;
+import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -59,7 +60,7 @@ public class ClubService {
 
         Club club = findById(clubId);
         if (!member.getId().equals(club.getLeaderId())) {
-            throw new InvalidGrantException("권한이 없습니다.");
+            throw new InvalidInviteGrantException("권한이 없습니다.");
         }
         List<Long> memberIds = clubInviteRequest.getMemberIds();
         List<Member> members = new ArrayList<>();
@@ -79,7 +80,7 @@ public class ClubService {
         Member member = memberRepository.findByEmail(email).get();
         Club club = findById(clubId);
         if (!member.getId().equals(club.getLeaderId())) {
-            throw new InvalidGrantException("권한이 없습니다.");
+            throw new InvalidInviteGrantException("권한이 없습니다.");
         }
         club.update(clubUpdateRequest.getClubName(), clubUpdateRequest.getCategories());
 

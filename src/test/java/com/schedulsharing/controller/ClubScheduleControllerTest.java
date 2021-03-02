@@ -6,6 +6,7 @@ import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.repository.ClubRepository;
@@ -83,6 +84,15 @@ class ClubScheduleControllerTest {
                 .build();
 
         memberService.signup(signUpRequestDto);
+
+        SignUpRequestDto signUpRequestDto2 = SignUpRequestDto.builder()
+                .email("test2@example.com")
+                .password("1234")
+                .name("테스터")
+                .imagePath("imagePath2")
+                .build();
+
+        memberService.signup(signUpRequestDto2);
     }
 
     @DisplayName("클럽스케줄 생성하기")
@@ -119,6 +129,7 @@ class ClubScheduleControllerTest {
                         links(
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("clubSchedule-getOne").description("link to getOne"),
+                                linkWithRel("clubSchedule-update").description("link to update"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -143,6 +154,7 @@ class ClubScheduleControllerTest {
                                 fieldWithPath("endMeetingDate").description("생성된 클럽스케줄의 끝나는 날짜"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.clubSchedule-getOne.href").description("link to getOne"),
+                                fieldWithPath("_links.clubSchedule-update.href").description("link to update"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -173,7 +185,7 @@ class ClubScheduleControllerTest {
     @DisplayName("클럽 스케줄 단건 조회 스케줄을 작성한 사람일 경우")
     @Test
     public void 클럽스케줄_단건조회_작성자() throws Exception {
-        ClubScheduleCreateResponse clubSchedule = createClubSchedule();
+        ClubScheduleCreateResponse clubSchedule = createClubScheduleByTest();
 
         mvc.perform(RestDocumentationRequestBuilders.get("/api/clubSchedule/{id}", clubSchedule.getId())
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
@@ -193,6 +205,7 @@ class ClubScheduleControllerTest {
                         links(
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("clubSchedule-create").description("link to create"),
+                                linkWithRel("clubSchedule-update").description("link to update 작성자에 경우에만 보입니다."),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -211,11 +224,90 @@ class ClubScheduleControllerTest {
                                 fieldWithPath("memberEmail").description("조회한 클럽스케줄을 작성한 사람의 이메일"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.clubSchedule-create.href").description("link to create"),
+                                fieldWithPath("_links.clubSchedule-update.href").description("link to update 작성자에 경우에만 보입니다."),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
     }
 
+    @DisplayName("클럽 스케줄 수정하기")
+    @Test
+    public void 클럽스케줄_수정() throws Exception {
+        ClubScheduleCreateResponse clubSchedule = createClubScheduleByTest();
+        ClubScheduleUpdateRequest clubScheduleUpdateRequest = ClubScheduleUpdateRequest.builder()
+                .name("수정된 클럽 스케줄 이름")
+                .contents("수정된 클럽 스케줄 내용")
+                .startMeetingDate(LocalDateTime.now().plusDays(1))
+                .endMeetingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        mvc.perform(RestDocumentationRequestBuilders.put("/api/clubSchedule/{id}", clubSchedule.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clubScheduleUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("contents").exists())
+                .andExpect(jsonPath("startMeetingDate").exists())
+                .andExpect(jsonPath("endMeetingDate").exists())
+                .andDo(document("clubSchedule-update",
+                        pathParameters(
+                                parameterWithName("id").description("수정할 클럽스케줄의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("clubSchedule-create").description("link to create"),
+                                linkWithRel("clubSchedule-getOne").description("link to getOne"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰"),
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+                        ),
+                        requestFields(
+                                fieldWithPath("name").description("수정할 클럽스케줄의 이름 또는 제목"),
+                                fieldWithPath("contents").description("수정할 클럽스케줄의 내용"),
+                                fieldWithPath("startMeetingDate").description("수정할 클럽스케줄의 시작 날짜"),
+                                fieldWithPath("endMeetingDate").description("수정할 클럽스케줄의 끝나는 날짜")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("수정한 클럽스케줄의 고유아이디"),
+                                fieldWithPath("name").description("수정한 클럽스케줄의 이름 또는 제목"),
+                                fieldWithPath("contents").description("수정한 클럽스케줄의 내용"),
+                                fieldWithPath("startMeetingDate").description("수정한 클럽스케줄의 시작 날짜"),
+                                fieldWithPath("endMeetingDate").description("수정한 클럽스케줄의 끝나는 날짜"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.clubSchedule-create.href").description("link to create"),
+                                fieldWithPath("_links.clubSchedule-getOne.href").description("link to getOne"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("다른사람의 클럽 스케줄 수정하기")
+    @Test
+    public void 클럽스케줄_수정_작성자가_아닌_경우_실패() throws Exception {
+        ClubScheduleCreateResponse clubSchedule = createClubScheduleByTest2(); //test2@example.com
+        ClubScheduleUpdateRequest clubScheduleUpdateRequest = ClubScheduleUpdateRequest.builder()
+                .name("수정된 클럽 스케줄 이름")
+                .contents("수정된 클럽 스케줄 내용")
+                .startMeetingDate(LocalDateTime.now().plusDays(1))
+                .endMeetingDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        mvc.perform(RestDocumentationRequestBuilders.put("/api/clubSchedule/{id}", clubSchedule.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(clubScheduleUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+
+    }
 
     private String getBearToken() throws Exception {
         return "Bearer  " + getToken();
@@ -238,7 +330,7 @@ class ClubScheduleControllerTest {
         return parser.parseMap(responseBody).get("access_token").toString();
     }
 
-    private ClubScheduleCreateResponse createClubSchedule() {
+    private ClubScheduleCreateResponse createClubScheduleByTest() {
         String email = "test@example.com";
         String clubName = "동네친구";
         String categories = "밥";
@@ -251,6 +343,26 @@ class ClubScheduleControllerTest {
         ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
                 .name("클럽 스케줄 생성 테스트")
                 .contents("스터디 모임")
+                .startMeetingDate(LocalDateTime.now())
+                .endMeetingDate(LocalDateTime.now())
+                .clubId(content.getClubId())
+                .build();
+        return clubScheduleService.create(createRequest, email).getContent();
+    }
+
+    private ClubScheduleCreateResponse createClubScheduleByTest2() {
+        String email = "test2@example.com";
+        String clubName = "동네친구";
+        String categories = "밥";
+        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
+                .clubName(clubName)
+                .categories(categories)
+                .build();
+        ClubCreateResponse content = clubService.createClub(clubCreateRequest, email).getContent();
+
+        ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                .name("클럽 스케줄 생성 테스트2")
+                .contents("스터디 모임2")
                 .startMeetingDate(LocalDateTime.now())
                 .endMeetingDate(LocalDateTime.now())
                 .clubId(content.getClubId())

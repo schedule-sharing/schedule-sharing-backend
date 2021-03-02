@@ -1,4 +1,4 @@
-package com.schedulsharing.excpetion;
+package com.schedulsharing.excpetion.common;
 
 public class InvalidGrantException extends RuntimeException{
     public InvalidGrantException() {

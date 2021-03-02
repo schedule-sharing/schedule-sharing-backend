@@ -2,6 +2,7 @@ package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
 import com.schedulsharing.dto.resource.ClubScheduleResource;
 import com.schedulsharing.service.ClubScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,13 @@ public class ClubScheduleController {
     public ResponseEntity getClubSchedule(@PathVariable("id") Long id, Authentication authentication) {
 
         return ResponseEntity.ok(clubScheduleService.getClubSchedule(id, authentication.getName()));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateClubSchedule(@PathVariable("id") Long id,
+                                             @Valid @RequestBody ClubScheduleUpdateRequest clubScheduleUpdateRequest,
+                                             Authentication authentication) {
+
+        return ResponseEntity.ok(clubScheduleService.update(id, clubScheduleUpdateRequest, authentication.getName()));
     }
 }

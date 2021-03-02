@@ -3,10 +3,7 @@ package com.schedulsharing.entity.member;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.schedule.ClubSchedule;
 import io.jsonwebtoken.Claims;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "member")
+@EqualsAndHashCode(of = "id")
 public class Member {
 
     @Id

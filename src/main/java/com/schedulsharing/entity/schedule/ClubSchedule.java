@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
@@ -30,11 +31,9 @@ public class ClubSchedule {
     private String name;
 
     private String contents;
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+
     private LocalDateTime startMeetingDate;
-    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
+
     private LocalDateTime endMeetingDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,6 +52,13 @@ public class ClubSchedule {
     public void setMember(Member member) {
         this.member = member;
         member.getClubSchedules().add(this);
+    }
+
+    public void update(ClubScheduleUpdateRequest updateRequest) {
+        this.name = updateRequest.getName();
+        this.contents = updateRequest.getContents();
+        this.startMeetingDate = updateRequest.getStartMeetingDate();
+        this.endMeetingDate = updateRequest.getEndMeetingDate();
     }
 
     public static ClubSchedule createClubSchedule(ClubScheduleCreateRequest createRequest, Member member, Club club) {
