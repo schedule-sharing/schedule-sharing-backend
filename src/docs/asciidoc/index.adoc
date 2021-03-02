@@ -59,4 +59,5 @@ operation::mySchedule-create[snippets='request-fields,http-request,request-heade
 
 [[resources-mySchedule-getOne]]
 === 내 스케줄 조회
-operation::mySchedule-getOne[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']
+
+operation::mySchedule-getOne[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']

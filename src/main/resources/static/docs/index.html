@@ -566,6 +566,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#resources-mySchedule-getOne">내 스케줄 조회</a>
 <ul class="sectlevel3">
+<li><a href="#resources-mySchedule-getOne_path_parameters">Path parameters</a></li>
 <li><a href="#resources-mySchedule-getOne_http_request">HTTP request</a></li>
 <li><a href="#resources-mySchedule-getOne_request_headers">Request headers</a></li>
 <li><a href="#resources-mySchedule-getOne_http_response">Example response</a></li>
@@ -1058,7 +1059,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4NH0.C2Xi_jmGAJBoU4hNj-diWlAuzhuxkPUOCSWkjtQHzaF2tphIYkXZbflVtfVobj8msNNdSuw6XOR08gZM-Q0Vjw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzY5N30.f6JuVGvPGrmSv93lAs95HQme2UOd7db8tbYtn5ErIvI6hJzEZdgYwNAaQBIW6Qubv1TabPg6C8UWeU8Y_f2I5A
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -1073,7 +1074,7 @@ Content-Length: 489
   "name" : "tester",
   "email" : "test@example.com",
   "imagePath" : "imagePath",
-  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4NH0.C2Xi_jmGAJBoU4hNj-diWlAuzhuxkPUOCSWkjtQHzaF2tphIYkXZbflVtfVobj8msNNdSuw6XOR08gZM-Q0Vjw",
+  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzY5N30.f6JuVGvPGrmSv93lAs95HQme2UOd7db8tbYtn5ErIvI6hJzEZdgYwNAaQBIW6Qubv1TabPg6C8UWeU8Y_f2I5A",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/authenticate"
@@ -1378,7 +1379,7 @@ Content-Length: 139
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4NX0.fN2BYtgH5TPwQ5hv_Ec8Jm4pY4nDugd3kQszHl7p2erkk-7H_eLXQbM68Y3wsQ0lYkI34OOF3ksXBQhRctyOFA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzY5OX0.4J0FIEBFpO4hv0ct_3MpKa1FfK1bJ6v9CWUQjgiIQhsZF8zHn1sAKWEoNEctrdH_b2iZEc3ZDwRlEMGo6-cDhQ
 Content-Length: 57
 Host: localhost:8080
 
@@ -1647,7 +1648,7 @@ Content-Length: 560
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club/7/invite HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4N30.VNPcWK7tXHdXDcgxzjdhhjQP7TOpzjW6JDxF5h9RrnAEl90y03hTnKECrTH8hEGRfoDdnVdu3Mml0p8bYeUIMQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzcwMH0.KIC6-iwo6EPyidCCdP3ZPzHRnQjZRD0nYk5YKPssHkWzQarsJszM_jZh2trsRGPS1ckQiwAmdDPWud43ZNvByw
 Content-Length: 30
 Host: localhost:8080
 
@@ -1877,7 +1878,7 @@ Content-Length: 531
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/club/3 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4Nn0.Iw9Ilbz2naiFBjhQv2HyNT6GW2eXqzDCfUnu9D38X2IsS4rQmeNZtKfXPvCtb_ntAhmrMttw3I31DFlfS_xMuw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzY5OX0.4J0FIEBFpO4hv0ct_3MpKa1FfK1bJ6v9CWUQjgiIQhsZF8zHn1sAKWEoNEctrdH_b2iZEc3ZDwRlEMGo6-cDhQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2111,7 +2112,7 @@ Content-Length: 560
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/club/6 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4Nn0.Iw9Ilbz2naiFBjhQv2HyNT6GW2eXqzDCfUnu9D38X2IsS4rQmeNZtKfXPvCtb_ntAhmrMttw3I31DFlfS_xMuw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzcwMH0.KIC6-iwo6EPyidCCdP3ZPzHRnQjZRD0nYk5YKPssHkWzQarsJszM_jZh2trsRGPS1ckQiwAmdDPWud43ZNvByw
 Content-Length: 92
 Host: localhost:8080
 
@@ -2354,7 +2355,7 @@ Content-Length: 593
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/club/4 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4Nn0.Iw9Ilbz2naiFBjhQv2HyNT6GW2eXqzDCfUnu9D38X2IsS4rQmeNZtKfXPvCtb_ntAhmrMttw3I31DFlfS_xMuw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzY5OX0.4J0FIEBFpO4hv0ct_3MpKa1FfK1bJ6v9CWUQjgiIQhsZF8zHn1sAKWEoNEctrdH_b2iZEc3ZDwRlEMGo6-cDhQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2562,15 +2563,15 @@ Content-Length: 308
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/myschedule HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4NX0.fN2BYtgH5TPwQ5hv_Ec8Jm4pY4nDugd3kQszHl7p2erkk-7H_eLXQbM68Y3wsQ0lYkI34OOF3ksXBQhRctyOFA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzY5OH0.7tU75mF140rlcmrRivSvTZFZykmhmDI2LNJnI2v2r7-rRdaKdbaPYT8y3NLq0sZNMjyIlckcGH81Vkyza1shTQ
 Content-Length: 174
 Host: localhost:8080
 
 {
   "name" : "나 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "scheduleStartDate" : "2021-03-02T22:43:05",
-  "scheduleEndDate" : "2021-03-02T22:43:05"
+  "scheduleStartDate" : "2021-03-02T23:08:18",
+  "scheduleEndDate" : "2021-03-02T23:08:18"
 }</code></pre>
 </div>
 </div>
@@ -2622,8 +2623,8 @@ Content-Length: 457
   "myScheduleId" : 2,
   "name" : "나 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "scheduleStartDate" : "2021-03-02T22:43:05",
-  "scheduleEndDate" : "2021-03-02T22:43:05",
+  "scheduleStartDate" : "2021-03-02T23:08:18",
+  "scheduleEndDate" : "2021-03-02T23:08:18",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule"
@@ -2752,12 +2753,34 @@ Content-Length: 457
 <div class="sect2">
 <h3 id="resources-mySchedule-getOne"><a class="link" href="#resources-mySchedule-getOne">내 스케줄 조회</a></h3>
 <div class="sect3">
+<h4 id="resources-mySchedule-getOne_path_parameters"><a class="link" href="#resources-mySchedule-getOne_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/myschedule/{id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">내 스케줄의 고유 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
 <h4 id="resources-mySchedule-getOne_http_request"><a class="link" href="#resources-mySchedule-getOne_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/myschedule/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NjE4NX0.fN2BYtgH5TPwQ5hv_Ec8Jm4pY4nDugd3kQszHl7p2erkk-7H_eLXQbM68Y3wsQ0lYkI34OOF3ksXBQhRctyOFA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDY5NzY5OH0.7tU75mF140rlcmrRivSvTZFZykmhmDI2LNJnI2v2r7-rRdaKdbaPYT8y3NLq0sZNMjyIlckcGH81Vkyza1shTQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2798,14 +2821,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 458
+Content-Length: 457
 
 {
   "myScheduleId" : 1,
   "name" : "나의 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startDate" : "2021-03-02T22:43:05.059869",
-  "endDate" : "2021-03-02T22:43:05.059888",
+  "startDate" : "2021-03-02T23:08:18.162389",
+  "endDate" : "2021-03-02T23:08:18.16242",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule"
@@ -2936,7 +2959,7 @@ Content-Length: 458
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-02 22:42:54 +0900
+Last updated 2021-03-02 23:06:41 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
