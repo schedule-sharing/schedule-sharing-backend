@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class MyScheduleService {
     private final MyScheduleRepository myScheduleRepository;
@@ -32,9 +33,10 @@ public class MyScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public MyScheduleResponse getMySchedule(Long myScheduleId) {
+    public EntityModel<MyScheduleResponse> getMySchedule(Long myScheduleId, String email) {
+        Member member = memberRepository.findByEmail(email).get();
         MySchedule mySchedule = myScheduleRepository.findById(myScheduleId).get();
         MyScheduleResponse myScheduleResponse = modelMapper.map(mySchedule, MyScheduleResponse.class);
-        return myScheduleResponse;
+        return MyScheduleResource.getMyScheduleLink(myScheduleResponse, member.getEmail());
     }
 }
