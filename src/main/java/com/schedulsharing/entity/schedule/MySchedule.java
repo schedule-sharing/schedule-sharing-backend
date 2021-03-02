@@ -1,5 +1,6 @@
 package com.schedulsharing.entity.schedule;
 
+import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,22 @@ public class MySchedule {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    private void setMember(Member member) {
+        this.member = member;
+        member.getMySchedules().add(this);
+    }
+
+    public static MySchedule createMySchedule(MyScheduleCreateRequest createRequest, Member member) {
+        MySchedule mySchedule = MySchedule.builder()
+                .name(createRequest.getName())
+                .contents(createRequest.getContents())
+                .scheduleStartDate(createRequest.getScheduleStartDate())
+                .scheduleEndDate(createRequest.getScheduleEndDate())
+                .build();
+        mySchedule.setMember(member);
+        return mySchedule;
+    }
+
+
 }
