@@ -6,6 +6,8 @@ import com.schedulsharing.dto.MySchedule.MyScheduleResponse;
 import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.MySchedule;
+import com.schedulsharing.excpetion.InvalidGrantException;
+import com.schedulsharing.excpetion.MyScheduleNotFoundException;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.MyScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,8 +39,16 @@ public class MyScheduleService {
     @Transactional(readOnly = true)
     public EntityModel<MyScheduleResponse> getMySchedule(Long myScheduleId, String email) {
         Member member = memberRepository.findByEmail(email).get();
-        MySchedule mySchedule = myScheduleRepository.findById(myScheduleId).get();
+        MySchedule mySchedule = mySchedulefindById(myScheduleId);
         MyScheduleResponse myScheduleResponse = modelMapper.map(mySchedule, MyScheduleResponse.class);
         return MyScheduleResource.getMyScheduleLink(myScheduleResponse, member.getEmail());
+    }
+
+    private MySchedule mySchedulefindById(Long myScheduleId) {
+        Optional<MySchedule> optionalMySchedule = myScheduleRepository.findById(myScheduleId);
+        if (optionalMySchedule.isEmpty()) {
+            throw new MyScheduleNotFoundException("내 스케줄이 존재하지 않습니다.");
+        }
+        return optionalMySchedule.get();
     }
 }

@@ -19,6 +19,7 @@ public class MyScheduleResource extends EntityModel<MySchedule> {
 
     public static EntityModel<MyScheduleCreateResponse> createMyScheduleLink(MyScheduleCreateResponse createResponse) {
         List<Link> links = getSelfLink(createResponse.getMyScheduleId());
+        links.add(selfLinkBuilder.withRel("mySchedule-getOne"));
         links.add(Link.of("/docs/index.html#resources-mySchedule-create", "profile"));
         return EntityModel.of(createResponse, links);
     }

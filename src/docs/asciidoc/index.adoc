@@ -50,3 +50,13 @@ operation::club-update[snippets='path-parameters,http-request,request-headers,ht
 [[resources-club-delete]]
 === 클럽 삭제(클럽장)
 operation::club-delete[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-myschedule]]
+== MySchedule
+[[resources-mySchedule-create]]
+=== 내 스케줄 생성
+operation::mySchedule-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-mySchedule-getOne]]
+=== 내 스케줄 조회
+operation::mySchedule-getOne[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']
