@@ -130,6 +130,7 @@ class ClubScheduleControllerTest {
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("clubSchedule-getOne").description("link to getOne"),
                                 linkWithRel("clubSchedule-update").description("link to update"),
+                                linkWithRel("clubSchedule-delete").description("link to delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -155,6 +156,7 @@ class ClubScheduleControllerTest {
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.clubSchedule-getOne.href").description("link to getOne"),
                                 fieldWithPath("_links.clubSchedule-update.href").description("link to update"),
+                                fieldWithPath("_links.clubSchedule-delete.href").description("link to delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -206,6 +208,7 @@ class ClubScheduleControllerTest {
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("clubSchedule-create").description("link to create"),
                                 linkWithRel("clubSchedule-update").description("link to update 작성자에 경우에만 보입니다."),
+                                linkWithRel("clubSchedule-delete").description("link to delete 작성자에 경우에만 보입니다."),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -225,6 +228,7 @@ class ClubScheduleControllerTest {
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.clubSchedule-create.href").description("link to create"),
                                 fieldWithPath("_links.clubSchedule-update.href").description("link to update 작성자에 경우에만 보입니다."),
+                                fieldWithPath("_links.clubSchedule-delete.href").description("link to delete 작성자에 경우에만 보입니다."),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -260,6 +264,7 @@ class ClubScheduleControllerTest {
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("clubSchedule-create").description("link to create"),
                                 linkWithRel("clubSchedule-getOne").description("link to getOne"),
+                                linkWithRel("clubSchedule-delete").description("link to delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -284,12 +289,13 @@ class ClubScheduleControllerTest {
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.clubSchedule-create.href").description("link to create"),
                                 fieldWithPath("_links.clubSchedule-getOne.href").description("link to getOne"),
+                                fieldWithPath("_links.clubSchedule-delete.href").description("link to delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
     }
 
-    @DisplayName("다른사람의 클럽 스케줄 수정하기")
+    @DisplayName("다른사람의 클럽 스케줄 수정할 경우 오류")
     @Test
     public void 클럽스케줄_수정_작성자가_아닌_경우_실패() throws Exception {
         ClubScheduleCreateResponse clubSchedule = createClubScheduleByTest2(); //test2@example.com
@@ -307,6 +313,50 @@ class ClubScheduleControllerTest {
                 .andDo(print())
                 .andExpect(status().isForbidden());
 
+    }
+
+    @DisplayName("자신의 클럽 스케줄 삭제하기")
+    @Test
+    public void 클럽스케줄_삭제_성공() throws Exception {
+        ClubScheduleCreateResponse clubSchedule = createClubScheduleByTest();
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/clubSchedule/{id}", clubSchedule.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("success").value(true))
+                .andExpect(jsonPath("message").exists())
+                .andDo(document("clubSchedule-delete",
+                        pathParameters(
+                                parameterWithName("id").description("삭제할 클럽스케줄의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("clubSchedule-create").description("link to create"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").description("삭제를 성공했는 지"),
+                                fieldWithPath("message").description("삭제 성공 message"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.clubSchedule-create.href").description("link to create"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+    @DisplayName("다른사람의 클럽 스케줄 삭제할 경우 오류")
+    @Test
+    public void 클럽스케줄_삭제_작성자가_아닌_경우_오류() throws Exception {
+        ClubScheduleCreateResponse clubSchedule = createClubScheduleByTest2();
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/clubSchedule/{id}", clubSchedule.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isForbidden());
     }
 
     private String getBearToken() throws Exception {

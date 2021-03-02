@@ -66,3 +66,7 @@ operation::clubSchedule-getOne[snippets='http-request,request-headers,http-respo
 [[resources-clubSchedule-update]]
 === 클럽스케줄 수정(작성자)
 operation::clubSchedule-update[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-clubSchedule-delete]]
+=== 클럽스케줄 삭제(작성자)
+operation::clubSchedule-delete[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']

@@ -12,5 +12,4 @@ public class ClubDeleteResponse {
         this.success = success;
         this.message = message;
     }
-
 }

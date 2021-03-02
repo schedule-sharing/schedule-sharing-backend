@@ -61,6 +61,21 @@ public class ClubScheduleService {
         return ClubScheduleResource.updateClubScheduleLink(response);
     }
 
+    public EntityModel<ClubScheduleDeleteResponse> delete(Long id, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        ClubSchedule clubSchedule = clubScheduleFindById(id);
+        if (!member.equals(clubSchedule.getMember())) {
+            throw new InvalidGrantException("삭제할 권한이 없습니다.");
+        }
+        clubScheduleRepository.deleteById(id);
+        ClubScheduleDeleteResponse clubScheduleDeleteResponse = ClubScheduleDeleteResponse.builder()
+                .message("클럽 스케줄을 삭제하였습니다.")
+                .success(true)
+                .build();
+
+        return ClubScheduleResource.deleteClubScheduleLink(id, clubScheduleDeleteResponse);
+    }
+
     private ClubSchedule clubScheduleFindById(Long id) {
         Optional<ClubSchedule> optionalClubSchedule = clubScheduleRepository.findById(id);
         if (optionalClubSchedule.isEmpty()) {
@@ -76,4 +91,5 @@ public class ClubScheduleService {
         }
         return optionalClub.get();
     }
+
 }

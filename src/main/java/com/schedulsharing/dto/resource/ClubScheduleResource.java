@@ -1,6 +1,7 @@
 package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.ClubScheduleController;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleDeleteResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleResponse;
@@ -22,6 +23,7 @@ public class ClubScheduleResource extends EntityModel<ClubSchedule> {
         List<Link> links = getSelfLink();
         links.add(selfLinkBuilder.slash(createResponse.getId()).withRel("clubSchedule-getOne"));
         links.add(selfLinkBuilder.slash(createResponse.getId()).withRel("clubSchedule-update"));
+        links.add(selfLinkBuilder.slash(createResponse.getId()).withRel("clubSchedule-delete"));
         links.add(Link.of("/docs/index.html#resources-clubSchedule-create", "profile"));
         return EntityModel.of(createResponse, links);
     }
@@ -31,6 +33,7 @@ public class ClubScheduleResource extends EntityModel<ClubSchedule> {
         links.add(selfLinkBuilder.withRel("clubSchedule-create"));
         if (clubScheduleResponse.getMemberEmail().equals(email)) {
             links.add(selfLinkBuilder.slash(clubScheduleResponse.getId()).withRel("clubSchedule-update"));
+            links.add(selfLinkBuilder.slash(clubScheduleResponse.getId()).withRel("clubSchedule-delete"));
         }
         links.add(Link.of("/docs/index.html#resources-clubSchedule-getOne", "profile"));
         return EntityModel.of(clubScheduleResponse, links);
@@ -41,8 +44,17 @@ public class ClubScheduleResource extends EntityModel<ClubSchedule> {
         List<Link> links = getSelfLink(response.getId());
         links.add(selfLinkBuilder.withRel("clubSchedule-create"));
         links.add(selfLinkBuilder.slash(response.getId()).withRel("clubSchedule-getOne"));
+        links.add(selfLinkBuilder.slash(response.getId()).withRel("clubSchedule-delete"));
         links.add(Link.of("/docs/index.html#resources-clubSchedule-update", "profile"));
         return EntityModel.of(response, links);
+    }
+
+    public static EntityModel<ClubScheduleDeleteResponse> deleteClubScheduleLink(Long id, ClubScheduleDeleteResponse clubScheduleDeleteResponse) {
+        List<Link> links = getSelfLink(id);
+        links.add(selfLinkBuilder.withRel("clubSchedule-create"));
+        links.add(Link.of("/docs/index.html#resources-clubSchedule-delete", "profile"));
+
+        return EntityModel.of(clubScheduleDeleteResponse, links);
     }
 
     private static List<Link> getSelfLink() {
@@ -60,4 +72,5 @@ public class ClubScheduleResource extends EntityModel<ClubSchedule> {
     public static URI getCreatedUri(Long clubScheduleId) {
         return selfLinkBuilder.slash(clubScheduleId).toUri();
     }
+
 }

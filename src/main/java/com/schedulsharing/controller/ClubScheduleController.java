@@ -45,4 +45,10 @@ public class ClubScheduleController {
 
         return ResponseEntity.ok(clubScheduleService.update(id, clubScheduleUpdateRequest, authentication.getName()));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteClubSchedule(@PathVariable("id") Long id, Authentication authentication) {
+
+        return ResponseEntity.ok(clubScheduleService.delete(id, authentication.getName()));
+    }
 }

@@ -121,6 +121,29 @@ class ClubScheduleServiceTest {
         assertEquals(updateResponse.getEndMeetingDate(), updateEndTime);
     }
 
+    @DisplayName("클럽스케줄 삭제 성공")
+    @Test
+    public void 클럽_스케줄_삭제(){
+        Member member = createMember();
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        String scheduleName = "클럽 스케줄 생성 테스트";
+        String scheduleContents = "스터디 모임";
+        LocalDateTime startMeetingDate = LocalDateTime.now();
+        LocalDateTime endMeetingDate = LocalDateTime.now();
+        ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                .name(scheduleName)
+                .contents(scheduleContents)
+                .startMeetingDate(startMeetingDate)
+                .endMeetingDate(endMeetingDate)
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        ClubScheduleCreateResponse clubSchedule = clubScheduleService.create(createRequest, member.getEmail()).getContent();
+
+        clubScheduleService.delete(clubSchedule.getId(),"test@example.com");
+
+        assertEquals(clubScheduleRepository.findById(clubSchedule.getId()).isEmpty(), true);
+    }
+
     private Member createMember() {
         Member member = Member.builder()
                 .email("test@example.com")
