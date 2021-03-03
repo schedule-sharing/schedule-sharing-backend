@@ -60,7 +60,7 @@ public class MyScheuldeServiceTest {
     public void 내_스케줄_단건_조회() throws Exception {
         //given
         Member member = createMember();
-        String name = "클럽 스케줄 생성 테스트";
+        String name = "나 스케줄 생성 테스트";
         String contents = "스터디 모임";
         LocalDateTime startDate = LocalDateTime.now();
         LocalDateTime endDate = LocalDateTime.now();
@@ -86,7 +86,7 @@ public class MyScheuldeServiceTest {
     @Test
     public void 내_스케줄_수정_성공() throws Exception {
         Member member = createMember();
-        String name = "클럽 스케줄 생성 테스트";
+        String name = "나 스케줄 생성 테스트";
         String contents = "스터디 모임";
         LocalDateTime starDate = LocalDateTime.now();
         LocalDateTime endDate = LocalDateTime.now();
@@ -116,6 +116,29 @@ public class MyScheuldeServiceTest {
         assertEquals(updateResponse.getContents(), updateContents);
         assertEquals(updateResponse.getScheduleStartDate(), updateStartDate);
         assertEquals(updateResponse.getScheduleEndDate(), updateEndDate);
+    }
+
+    @DisplayName("내 스케줄 삭제 성공")
+    @Test
+    public void 내_스케줄_삭제_성공() throws Exception {
+        Member member = createMember();
+        String name = "나의 스케줄 생성 테스트";
+        String contents = "스터디 모임";
+        LocalDateTime startDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now();
+
+        MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                .name(name)
+                .contents(contents)
+                .scheduleStartDate(startDate)
+                .scheduleEndDate(endDate)
+                .build();
+
+        MyScheduleCreateResponse createResponse = myScheduleService.create(createRequest, member.getEmail()).getContent();
+
+        myScheduleService.delete(createResponse.getMyScheduleId());
+
+        assertEquals(myScheduleRepository.findById(createResponse.getMyScheduleId()).isEmpty(), true);
     }
 
     private Member createMember() {

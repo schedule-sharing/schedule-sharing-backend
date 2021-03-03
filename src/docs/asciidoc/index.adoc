@@ -64,3 +64,7 @@ operation::mySchedule-getOne[snippets='path-parameters,http-request,request-head
 [[resources-mySchedule-update]]
 === 내 스케줄 수정
 operation::mySchedule-update[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-mySchedule-delete]]
+=== 내 스케줄 삭제
+operation::mySchedule-delete[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']

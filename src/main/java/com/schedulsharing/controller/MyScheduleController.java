@@ -42,4 +42,9 @@ public class MyScheduleController {
                                            @RequestBody @Valid MyScheduleUpdateRequest updateRequest, Authentication authentication) {
         return ResponseEntity.ok(myScheduleService.update(id, updateRequest));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteMySchedule(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(myScheduleService.delete(id));
+    }
 }

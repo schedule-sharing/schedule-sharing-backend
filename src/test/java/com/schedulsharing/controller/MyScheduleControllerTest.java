@@ -109,8 +109,8 @@ public class MyScheduleControllerTest {
                         links(
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("mySchedule-getOne").description("link to getOne"),
-//                               linkWithRel("mySchedule-update").description("link to update"),
-//                               linkWithRel("mySchedule-delete").description("link to delete"),
+                                linkWithRel("mySchedule-update").description("link to update"),
+                                linkWithRel("mySchedule-delete").description("link to delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -134,8 +134,8 @@ public class MyScheduleControllerTest {
                                 fieldWithPath("scheduleEndDate").description("생성된 나의 스케줄의 끝나는 날짜"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.mySchedule-getOne.href").description("link to getOne"),
-//                               fieldWithPath("_links.mySchedule-update.href").description("link to update"),
-//                               fieldWithPath("_links.mySchedule-delete.href").description("link to delete"),
+                                fieldWithPath("_links.mySchedule-update.href").description("link to update"),
+                                fieldWithPath("_links.mySchedule-delete.href").description("link to delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -164,6 +164,8 @@ public class MyScheduleControllerTest {
                         links(
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("mySchedule-create").description("link to create"),
+                                linkWithRel("mySchedule-update").description("link to update"),
+                                linkWithRel("mySchedule-delete").description("link to delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -180,6 +182,8 @@ public class MyScheduleControllerTest {
                                 fieldWithPath("endDate").description("조회한 나의 스케줄의 끝나는 날짜"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.mySchedule-create.href").description("link to create"),
+                                fieldWithPath("_links.mySchedule-update.href").description("link to update"),
+                                fieldWithPath("_links.mySchedule-delete.href").description("link to delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -215,7 +219,7 @@ public class MyScheduleControllerTest {
                                 linkWithRel("self").description("link to self"),
                                 linkWithRel("mySchedule-create").description("link to create"),
                                 linkWithRel("mySchedule-getOne").description("link to getOne"),
-//                                linkWithRel("clubSchedule-delete").description("link to delete"),
+                                linkWithRel("mySchedule-delete").description("link to delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -240,7 +244,43 @@ public class MyScheduleControllerTest {
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.mySchedule-create.href").description("link to create"),
                                 fieldWithPath("_links.mySchedule-getOne.href").description("link to getOne"),
-//                                fieldWithPath("_links.clubSchedule-delete.href").description("link to delete"),
+                                fieldWithPath("_links.mySchedule-delete.href").description("link to delete"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+
+    }
+
+    @DisplayName("나의 스케줄 삭제 성공")
+    @Test
+    public void 나의_스케줄_삭제_성공() throws Exception {
+        MyScheduleCreateResponse createResponse = createMyScheduleByTest();
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/myschedule/{id}", createResponse.getMyScheduleId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("success").value(true))
+                .andExpect(jsonPath("message").exists())
+                .andDo(document("mySchedule-delete",
+                        pathParameters(
+                                parameterWithName("id").description("삭제할 나의 스케줄의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("mySchedule-create").description("link to create"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").description("삭제를 성공했는 지"),
+                                fieldWithPath("message").description("삭제 성공 message"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.mySchedule-create.href").description("link to create"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));

@@ -49,6 +49,15 @@ public class MyScheduleService {
         return MyScheduleResource.updateMyScheduleLink(myScheduleUpdateResponse);
     }
 
+    public EntityModel<MyScheduleDeleteResponse> delete(Long myScheduleId) {
+        myScheduleRepository.deleteById(myScheduleId);
+        MyScheduleDeleteResponse myScheduleDeleteResponse = MyScheduleDeleteResponse.builder()
+                .message("나의 스케줄을 삭제하였습니다.")
+                .success(true)
+                .build();
+        return MyScheduleResource.deleteMyScheduleLink(myScheduleId, myScheduleDeleteResponse);
+    }
+
     private MySchedule mySchedulefindById(Long myScheduleId) {
         Optional<MySchedule> optionalMySchedule = myScheduleRepository.findById(myScheduleId);
         if (optionalMySchedule.isEmpty()) {
