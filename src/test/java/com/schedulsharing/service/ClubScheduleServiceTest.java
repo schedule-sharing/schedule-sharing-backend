@@ -58,7 +58,7 @@ class ClubScheduleServiceTest {
         assertEquals(result.getName(), scheduleName);
         assertEquals(result.getContents(), scheduleContents);
         assertEquals(result.getStartMeetingDate(), startMeetingDate);
-        assertEquals(result.getStartMeetingDate(), endMeetingDate);
+        assertEquals(result.getEndMeetingDate(), endMeetingDate);
     }
 
     @DisplayName("클럽스케줄 단건 조회 성공")

@@ -35,6 +35,7 @@ public class MySchedule {
     @JoinColumn(name = "member_id")
     private Member member;
 
+
     private void setMember(Member member) {
         this.member = member;
         member.getMySchedules().add(this);

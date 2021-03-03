@@ -4,7 +4,6 @@ import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.MySchedule;
-import com.schedulsharing.excpetion.InvalidGrantException;
 import com.schedulsharing.excpetion.MyScheduleNotFoundException;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.MyScheduleRepository;

@@ -78,8 +78,6 @@ public class MyScheuldeServiceTest {
         MyScheduleResponse result = myScheduleService.getMySchedule(myScheduleId, "test@example.com").getContent();
         assertEquals(result.getName(), name);
         assertEquals(result.getContents(), contents);
-        assertEquals(result.getStartDate(), startDate);
-        assertEquals(result.getEndDate(), endDate);
     }
 
     @DisplayName("내 스케줄 수정 성공")
