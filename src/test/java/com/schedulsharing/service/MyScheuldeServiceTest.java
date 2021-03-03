@@ -1,8 +1,6 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
-import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
-import com.schedulsharing.dto.MySchedule.MyScheduleResponse;
+import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.MyScheduleRepository;
@@ -82,6 +80,42 @@ public class MyScheuldeServiceTest {
         assertEquals(result.getContents(), contents);
         assertEquals(result.getStartDate(), startDate);
         assertEquals(result.getEndDate(), endDate);
+    }
+
+    @DisplayName("내 스케줄 수정 성공")
+    @Test
+    public void 내_스케줄_수정_성공() throws Exception {
+        Member member = createMember();
+        String name = "클럽 스케줄 생성 테스트";
+        String contents = "스터디 모임";
+        LocalDateTime starDate = LocalDateTime.now();
+        LocalDateTime endDate = LocalDateTime.now();
+        MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                .name(name)
+                .contents(contents)
+                .scheduleStartDate(starDate)
+                .scheduleEndDate(endDate)
+                .build();
+
+        MyScheduleCreateResponse createResponse = myScheduleService.create(createRequest, member.getEmail()).getContent();
+        String updateName = "수정된 나의 스케줄 이름";
+        String updateContents = "수정된 나의 스케줄 내용";
+        LocalDateTime updateStartDate = LocalDateTime.now().plusDays(1);
+        LocalDateTime updateEndDate = LocalDateTime.now().plusDays(1);
+
+        MyScheduleUpdateRequest updateRequest = MyScheduleUpdateRequest.builder()
+                .name(updateName)
+                .contents(updateContents)
+                .scheduleStartDate(updateStartDate)
+                .scheduleEndDate(updateEndDate)
+                .build();
+
+        MyScheduleUpdateResponse updateResponse = myScheduleService.update(createResponse.getMyScheduleId(), updateRequest).getContent();
+
+        assertEquals(updateResponse.getName(), updateName);
+        assertEquals(updateResponse.getContents(), updateContents);
+        assertEquals(updateResponse.getScheduleStartDate(), updateStartDate);
+        assertEquals(updateResponse.getScheduleEndDate(), updateEndDate);
     }
 
     private Member createMember() {

@@ -1,8 +1,6 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
-import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
-import com.schedulsharing.dto.MySchedule.MyScheduleResponse;
+import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.MySchedule;
@@ -41,7 +39,14 @@ public class MyScheduleService {
         Member member = memberRepository.findByEmail(email).get();
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         MyScheduleResponse myScheduleResponse = modelMapper.map(mySchedule, MyScheduleResponse.class);
-        return MyScheduleResource.getMyScheduleLink(myScheduleResponse, member.getEmail());
+        return MyScheduleResource.getMyScheduleLink(myScheduleResponse);
+    }
+
+    public EntityModel<MyScheduleUpdateResponse> update(Long myScheduleId, MyScheduleUpdateRequest updateRequest) {
+        MySchedule mySchedule = mySchedulefindById(myScheduleId);
+        mySchedule.update(updateRequest);
+        MyScheduleUpdateResponse myScheduleUpdateResponse = modelMapper.map(mySchedule, MyScheduleUpdateResponse.class);
+        return MyScheduleResource.updateMyScheduleLink(myScheduleUpdateResponse);
     }
 
     private MySchedule mySchedulefindById(Long myScheduleId) {

@@ -4,9 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
+import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.entity.schedule.MySchedule;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.MyScheduleRepository;
 import com.schedulsharing.service.MemberService;
@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -34,7 +33,7 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -96,50 +95,50 @@ public class MyScheduleControllerTest {
                 .scheduleEndDate(LocalDateTime.now())
                 .build();
 
-       mvc.perform(post("/api/myschedule")
-               .header(HttpHeaders.AUTHORIZATION, getBearToken())
-               .contentType(MediaType.APPLICATION_JSON)
-               .content(objectMapper.writeValueAsString(createRequest)))
-               .andDo(print())
-               .andExpect(status().isCreated())
-               .andExpect(jsonPath("name").value("나 스케줄 생성 테스트"))
-               .andExpect(jsonPath("contents").value("스터디 모임"))
-               .andExpect(jsonPath("scheduleStartDate").exists())
-               .andExpect(jsonPath("scheduleEndDate").exists())
-               .andDo(document("mySchedule-create",
-                       links(
-                               linkWithRel("self").description("link to self"),
-                               linkWithRel("mySchedule-getOne").description("link to getOne"),
+        mvc.perform(post("/api/myschedule")
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(createRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("name").value("나 스케줄 생성 테스트"))
+                .andExpect(jsonPath("contents").value("스터디 모임"))
+                .andExpect(jsonPath("scheduleStartDate").exists())
+                .andExpect(jsonPath("scheduleEndDate").exists())
+                .andDo(document("mySchedule-create",
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("mySchedule-getOne").description("link to getOne"),
 //                               linkWithRel("mySchedule-update").description("link to update"),
 //                               linkWithRel("mySchedule-delete").description("link to delete"),
-                               linkWithRel("profile").description("link to profile")
-                       ),
-                       requestHeaders(
-                               headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header"),
-                               headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
-                       ),
-                       requestFields(
-                               fieldWithPath("name").description("생성할 나의 스케줄의 이름 또는 제목"),
-                               fieldWithPath("contents").description("생성할 나의 스케줄의 내용"),
-                               fieldWithPath("scheduleStartDate").description("생성할 나의 스케줄의 시작 날짜"),
-                               fieldWithPath("scheduleEndDate").description("생성할 나의 스케줄의 끝나는 날짜")
-                       ),
-                       responseHeaders(
-                               headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
-                       ),
-                       responseFields(
-                               fieldWithPath("myScheduleId").description("생성된 나의 스케줄의 고유아이디"),
-                               fieldWithPath("name").description("생성된 나의 스케줄의 이름 또는 제목"),
-                               fieldWithPath("contents").description("생성된 나의 스케줄의 내용"),
-                               fieldWithPath("scheduleStartDate").description("생성된 나의 스케줄의 시작 날짜"),
-                               fieldWithPath("scheduleEndDate").description("생성된 나의 스케줄의 끝나는 날짜"),
-                               fieldWithPath("_links.self.href").description("link to self"),
-                               fieldWithPath("_links.mySchedule-getOne.href").description("link to getOne"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("name").description("생성할 나의 스케줄의 이름 또는 제목"),
+                                fieldWithPath("contents").description("생성할 나의 스케줄의 내용"),
+                                fieldWithPath("scheduleStartDate").description("생성할 나의 스케줄의 시작 날짜"),
+                                fieldWithPath("scheduleEndDate").description("생성할 나의 스케줄의 끝나는 날짜")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("myScheduleId").description("생성된 나의 스케줄의 고유아이디"),
+                                fieldWithPath("name").description("생성된 나의 스케줄의 이름 또는 제목"),
+                                fieldWithPath("contents").description("생성된 나의 스케줄의 내용"),
+                                fieldWithPath("scheduleStartDate").description("생성된 나의 스케줄의 시작 날짜"),
+                                fieldWithPath("scheduleEndDate").description("생성된 나의 스케줄의 끝나는 날짜"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.mySchedule-getOne.href").description("link to getOne"),
 //                               fieldWithPath("_links.mySchedule-update.href").description("link to update"),
 //                               fieldWithPath("_links.mySchedule-delete.href").description("link to delete"),
-                               fieldWithPath("_links.profile.href").description("link to profile")
-                       )
-               ));
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
 
 
     }
@@ -184,6 +183,68 @@ public class MyScheduleControllerTest {
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
+    }
+
+    @DisplayName("내 스케줄 수정 성공")
+    @Test
+    public void 내_스케줄_수정_성공() throws Exception {
+        MyScheduleCreateResponse mySchedule = createMyScheduleByTest();
+        MyScheduleUpdateRequest updateRequest = MyScheduleUpdateRequest.builder()
+                .name("수정된 나의 스케줄 이름")
+                .contents("수정된 나의 스케줄 내용")
+                .scheduleStartDate(LocalDateTime.now().plusDays(1))
+                .scheduleEndDate(LocalDateTime.now().plusDays(1))
+                .build();
+
+        mvc.perform(RestDocumentationRequestBuilders.put("/api/myschedule/{id}", mySchedule.getMyScheduleId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("myScheduleId").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("contents").exists())
+                .andExpect(jsonPath("scheduleStartDate").exists())
+                .andExpect(jsonPath("scheduleEndDate").exists())
+                .andDo(document("mySchedule-update",
+                        pathParameters(
+                                parameterWithName("id").description("수정할 나의 스케줄의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("mySchedule-create").description("link to create"),
+                                linkWithRel("mySchedule-getOne").description("link to getOne"),
+//                                linkWithRel("clubSchedule-delete").description("link to delete"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰"),
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+                        ),
+                        requestFields(
+                                fieldWithPath("name").description("수정할 나의 스케줄의 이름 또는 제목"),
+                                fieldWithPath("contents").description("수정할 나의 스케줄의 내용"),
+                                fieldWithPath("scheduleStartDate").description("수정할 나의 스케줄의 시작 날짜"),
+                                fieldWithPath("scheduleEndDate").description("수정할 나의 스케줄의 끝나는 날짜")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("myScheduleId").description("수정한 나의 스케줄의 고유아이디"),
+                                fieldWithPath("name").description("수정한 나의 스케줄의 이름 또는 제목"),
+                                fieldWithPath("contents").description("수정한 나의 스케줄의 내용"),
+                                fieldWithPath("scheduleStartDate").description("수정한 나의 스케줄의 시작 날짜"),
+                                fieldWithPath("scheduleEndDate").description("수정한 나의 스케줄의 끝나는 날짜"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.mySchedule-create.href").description("link to create"),
+                                fieldWithPath("_links.mySchedule-getOne.href").description("link to getOne"),
+//                                fieldWithPath("_links.clubSchedule-delete.href").description("link to delete"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+
     }
 
     private MyScheduleCreateResponse createMyScheduleByTest() {

@@ -1,6 +1,7 @@
 package com.schedulsharing.entity.schedule;
 
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
+import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +38,13 @@ public class MySchedule {
     private void setMember(Member member) {
         this.member = member;
         member.getMySchedules().add(this);
+    }
+
+    public void update(MyScheduleUpdateRequest updateRequest) {
+        this.name = updateRequest.getName();
+        this.contents = updateRequest.getContents();
+        this.scheduleStartDate = updateRequest.getScheduleStartDate();
+        this.scheduleEndDate = updateRequest.getScheduleEndDate();
     }
 
     public static MySchedule createMySchedule(MyScheduleCreateRequest createRequest, Member member) {
