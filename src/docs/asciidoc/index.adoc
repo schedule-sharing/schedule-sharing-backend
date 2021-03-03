@@ -31,6 +31,7 @@ operation::member-login-fail[snippets='request-fields,http-request,request-heade
 
 [[resources-club]]
 == Club
+
 [[resources-club-create]]
 === 클럽 생성
 operation::club-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
@@ -68,3 +69,21 @@ operation::mySchedule-update[snippets='path-parameters,http-request,request-head
 [[resources-mySchedule-delete]]
 === 내 스케줄 삭제
 operation::mySchedule-delete[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-clubSchedule]]
+== ClubSchedule
+[[resources-clubSchedule-create]]
+=== 클럽스케줄 생성
+operation::clubSchedule-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-clubSchedule-getOne]]
+=== 클럽스케줄 조회(작성자)
+operation::clubSchedule-getOne[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-clubSchedule-update]]
+=== 클럽스케줄 수정(작성자)
+operation::clubSchedule-update[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-clubSchedule-delete]]
+=== 클럽스케줄 삭제(작성자)
+operation::clubSchedule-delete[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']

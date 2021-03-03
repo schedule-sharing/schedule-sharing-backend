@@ -40,5 +40,4 @@ public class WebConfig implements WebMvcConfigurer {
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
     }
-
 }

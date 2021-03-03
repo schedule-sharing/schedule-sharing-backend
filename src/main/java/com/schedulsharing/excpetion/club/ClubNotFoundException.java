@@ -1,4 +1,4 @@
-package com.schedulsharing.excpetion;
+package com.schedulsharing.excpetion.club;
 
 public class ClubNotFoundException extends RuntimeException{
     public ClubNotFoundException() {

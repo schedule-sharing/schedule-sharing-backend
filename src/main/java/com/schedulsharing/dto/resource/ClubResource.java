@@ -16,11 +16,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 public class ClubResource extends EntityModel<Club> {
     private static WebMvcLinkBuilder selfLinkBuilder = linkTo(ClubController.class);
 
-    private ClubResource() {
-    }
-
     public static EntityModel<ClubCreateResponse> createClubLink(ClubCreateResponse createResponse) {
-        List<Link> links = getSelfLink(createResponse.getClubId());
+        List<Link> links = getSelfLink();
         links.add(selfLinkBuilder.slash(createResponse.getClubId()).slash("invite").withRel("club-invite"));
         links.add(selfLinkBuilder.slash(createResponse.getClubId()).withRel("club-update"));
         links.add(selfLinkBuilder.slash(createResponse.getClubId()).withRel("club-getOne"));
@@ -30,8 +27,8 @@ public class ClubResource extends EntityModel<Club> {
     }
 
     public static EntityModel<ClubResponse> getOneClubLink(ClubResponse clubResponse, Long memberId) {
-        List<Link> links = getSelfLink(clubResponse.getClubId());
-        links.add(selfLinkBuilder.slash(clubResponse.getClubId()).withRel("club-create"));
+        List<Link> links = getSelfLink();
+        links.add(selfLinkBuilder.withRel("club-create"));
         if (clubResponse.getLeaderId().equals(memberId)) {
             links.add(selfLinkBuilder.slash(clubResponse.getClubId()).slash("invite").withRel("club-invite"));
             links.add(selfLinkBuilder.slash(clubResponse.getClubId()).withRel("club-update"));
@@ -42,7 +39,7 @@ public class ClubResource extends EntityModel<Club> {
     }
 
     public static EntityModel<ClubInviteResponse> inviteClubLink(ClubInviteResponse clubInviteResponse, Long clubId) {
-        List<Link> links = getSelfLink(clubId);
+        List<Link> links = getSelfLink();
         links.add(selfLinkBuilder.withRel("club-create"));
         links.add(selfLinkBuilder.slash(clubId).withRel("club-getOne"));
         links.add(selfLinkBuilder.slash(clubId).withRel("club-update"));
@@ -53,7 +50,7 @@ public class ClubResource extends EntityModel<Club> {
     }
 
     public static EntityModel<ClubUpdateResponse> updateClubLink(ClubUpdateResponse clubUpdateResponse) {
-        List<Link> links = getSelfLink(clubUpdateResponse.getClubId());
+        List<Link> links = getSelfLink();
         links.add(selfLinkBuilder.withRel("club-create"));
         links.add(selfLinkBuilder.slash(clubUpdateResponse.getClubId()).withRel("club-getOne"));
         links.add(selfLinkBuilder.slash(clubUpdateResponse.getClubId()).slash("invite").withRel("club-invite"));
@@ -64,15 +61,14 @@ public class ClubResource extends EntityModel<Club> {
     }
 
     public static EntityModel<ClubDeleteResponse> deleteClubLink(ClubDeleteResponse clubDeleteResponse,Long clubId) {
-        List<Link> links = getSelfLink(clubId);
+        List<Link> links = getSelfLink();
         links.add(selfLinkBuilder.withRel("club-create"));
         links.add(Link.of("/docs/index.html#resources-club-delete", "profile"));
 
         return EntityModel.of(clubDeleteResponse, links);
     }
 
-    private static List<Link> getSelfLink(Long clubId) {
-        selfLinkBuilder.slash(clubId);
+    private static List<Link> getSelfLink() {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.withSelfRel());
         return links;
