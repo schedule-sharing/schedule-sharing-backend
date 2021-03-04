@@ -38,6 +38,10 @@ operation::member-findByEmail[snippets='request-fields,http-request,request-head
 === 존재하지 않는 이메일로 멤버 검색
 operation::member-findByEmail-fail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
 
+[[resources-member-findById]]
+=== id값으로 멤버 조회
+operation::member-findById[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
 [[resources-member-getClubs]]
 === 로그인한 멤버의 클럽조회
 operation::member-getClubs[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']

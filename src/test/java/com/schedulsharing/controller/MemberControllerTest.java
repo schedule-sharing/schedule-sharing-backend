@@ -407,7 +407,6 @@ class MemberControllerTest {
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("email").exists())
                 .andExpect(jsonPath("name").exists())
-                .andExpect(jsonPath("password").exists())
                 .andExpect(jsonPath("imagePath").exists())
                 .andDo(document("member-update",
                         pathParameters(
@@ -432,7 +431,6 @@ class MemberControllerTest {
                         responseFields(
                                 fieldWithPath("id").description("수정한 멤버의 고유아이디"),
                                 fieldWithPath("name").description("수정한 멤버의 이름"),
-                                fieldWithPath("password").description("수정한 멤버의 비밀번호"),
                                 fieldWithPath("email").description("멤버의 이메일"),
                                 fieldWithPath("imagePath").description("수정한 멤버의 프로필 사진 경로"),
                                 fieldWithPath("_links.self.href").description("link to self"),

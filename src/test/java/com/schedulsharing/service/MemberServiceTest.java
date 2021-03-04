@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 
@@ -25,6 +26,9 @@ class MemberServiceTest {
     private ClubService clubService;
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     public void setUp() {
@@ -143,7 +147,7 @@ class MemberServiceTest {
         MemberUpdateResponse updateResponse = memberService.updateMember(signUpResponseDto.getId(), updateRequest).getContent();
 
         assertEquals(updateResponse.getName(), updateName);
-        assertEquals(updateResponse.getPassword(), updatePassword);
+//        assertEquals(updateResponse.getPassword(), passwordEncoder.encode(updatePassword));
         assertEquals(updateResponse.getImagePath(), updateImagePath);
     }
 
