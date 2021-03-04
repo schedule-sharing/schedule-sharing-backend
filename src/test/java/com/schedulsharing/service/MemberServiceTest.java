@@ -144,7 +144,7 @@ class MemberServiceTest {
                 .imagePath(updateImagePath)
                 .build();
 
-        MemberUpdateResponse updateResponse = memberService.updateMember(signUpResponseDto.getId(), updateRequest).getContent();
+        MemberUpdateResponse updateResponse = memberService.updateMember(signUpResponseDto.getId(), updateRequest, signUpResponseDto.getEmail()).getContent();
 
         assertEquals(updateResponse.getName(), updateName);
 //        assertEquals(updateResponse.getPassword(), passwordEncoder.encode(updatePassword));
@@ -162,7 +162,7 @@ class MemberServiceTest {
                 .build();
         SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto).getContent();
 
-        memberService.deleteMember(signUpResponseDto.getId()).getContent();
+        memberService.deleteMember(signUpResponseDto.getId(), signUpResponseDto.getEmail()).getContent();
 
         assertEquals(memberRepository.findById(signUpResponseDto.getId()).isEmpty(), true);
     }

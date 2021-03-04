@@ -52,12 +52,11 @@ public class MyScheduleResource extends EntityModel<MySchedule> {
         links.add(Link.of("/docs/index.html#resources-mySchedule-delete", "profile"));
         return EntityModel.of(deleteResponse, links);
     }
-    
+
 
     private static List<Link> getSelfLink(Long myScheduleId) {
-        selfLinkBuilder.slash(myScheduleId);
         List<Link> links = new ArrayList<>();
-        links.add(selfLinkBuilder.withSelfRel());
+        links.add(selfLinkBuilder.slash(myScheduleId).withSelfRel());
         return links;
     }
 

@@ -55,12 +55,12 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest memberUpdateRequest) {
-        return ResponseEntity.ok(memberService.updateMember(id, memberUpdateRequest));
+    public ResponseEntity updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest memberUpdateRequest, Authentication authentication) {
+        return ResponseEntity.ok(memberService.updateMember(id, memberUpdateRequest, authentication.getName()));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteMember(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(memberService.deleteMember(id));
+    public ResponseEntity deleteMember(@PathVariable("id") Long id, Authentication authentication) {
+        return ResponseEntity.ok(memberService.deleteMember(id, authentication.getName()));
     }
 }

@@ -6,6 +6,7 @@ import com.schedulsharing.dto.member.*;
 import com.schedulsharing.dto.resource.MemberResource;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
+import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.member.EmailExistedException;
 import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.repository.MemberRepository;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -85,14 +87,21 @@ public class MemberService {
         return MemberResource.getMemberById(memberResponse);
     }
 
-    public EntityModel<MemberUpdateResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest) {
-        Member member = memberRepository.findById(id).get();
+    public EntityModel<MemberUpdateResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        if (!member.getId().equals(id)) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
         member.update(memberUpdateRequest, passwordEncoder);
         MemberUpdateResponse memberUpdateResponse = modelMapper.map(member, MemberUpdateResponse.class);
         return MemberResource.updateMemberLink(memberUpdateResponse);
     }
 
-    public EntityModel<MemberDeleteResponse> deleteMember(Long id) {
+    public EntityModel<MemberDeleteResponse> deleteMember(Long id, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        if (!member.getId().equals(id)) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
         memberRepository.deleteById(id);
         MemberDeleteResponse memberDeleteResponse = MemberDeleteResponse.builder()
                 .success(true)
