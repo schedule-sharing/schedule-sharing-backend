@@ -1,6 +1,7 @@
 package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.member.EmailCheckRequestDto;
+import com.schedulsharing.dto.member.MemberSearchRequest;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.dto.member.SignUpResponseDto;
 import com.schedulsharing.service.MemberService;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,5 +38,17 @@ public class MemberController {
     public ResponseEntity existedEmailCheck(@RequestBody EmailCheckRequestDto emailCheckRequestDto) {
 
         return ResponseEntity.ok(memberService.emailCheck(emailCheckRequestDto.getEmail()));
+    }
+
+    @GetMapping("/getClubs")
+    public ResponseEntity getClubs(Authentication authentication) {
+
+        return ResponseEntity.ok(memberService.getClubs(authentication.getName()));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity getMemberByEmail(@RequestBody MemberSearchRequest memberSearchRequest) {
+
+        return ResponseEntity.ok(memberService.getMemberByEmail(memberSearchRequest));
     }
 }

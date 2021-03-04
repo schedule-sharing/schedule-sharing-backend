@@ -9,25 +9,38 @@
 :operation-curl-request-title: Example request
 :operation-http-response-title: Example response
 
-[[resources]]
-= 리소스
-
 [[resources-index]]
 == 인덱스
 [[resources-member]]
 == Member
+
 [[resources-member-signup]]
 === 회원가입
 operation::member-signup[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
 [[resources-member-checkEmail]]
 === 이메일 중복 체크
 operation::member-checkEmail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
-=== 로그인 성공
+
 [[resources-member-login]]
+=== 로그인 성공
 operation::member-login[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
-=== 로그인 실패
+
 [[resources-member-login-fail]]
+=== 로그인 실패
 operation::member-login-fail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields']
+
+[[resources-member-findByEmail]]
+=== 이메일로 멤버 검색
+operation::member-findByEmail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-member-findByEmail-fail]]
+=== 존재하지 않는 이메일로 멤버 검색
+operation::member-findByEmail-fail[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-member-getClubs]]
+=== 로그인한 멤버의 클럽조회
+operation::member-getClubs[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']
 
 [[resources-club]]
 == Club
@@ -54,6 +67,7 @@ operation::club-delete[snippets='path-parameters,http-request,request-headers,ht
 
 [[resources-myschedule]]
 == MySchedule
+
 [[resources-mySchedule-create]]
 === 내 스케줄 생성
 operation::mySchedule-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
@@ -72,6 +86,7 @@ operation::mySchedule-delete[snippets='path-parameters,http-request,request-head
 
 [[resources-clubSchedule]]
 == ClubSchedule
+
 [[resources-clubSchedule-create]]
 === 클럽스케줄 생성
 operation::clubSchedule-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
