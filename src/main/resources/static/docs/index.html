@@ -489,6 +489,16 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_로그인_실패_response_fields">Response fields</a></li>
 </ul>
 </li>
+<li><a href="#_로그인한_멤버의_클럽조회">로그인한 멤버의 클럽조회</a>
+<ul class="sectlevel3">
+<li><a href="#_로그인한_멤버의_클럽조회_http_request">HTTP request</a></li>
+<li><a href="#_로그인한_멤버의_클럽조회_request_headers">Request headers</a></li>
+<li><a href="#_로그인한_멤버의_클럽조회_http_response">Example response</a></li>
+<li><a href="#_로그인한_멤버의_클럽조회_response_headers">Response headers</a></li>
+<li><a href="#_로그인한_멤버의_클럽조회_response_fields">Response fields</a></li>
+<li><a href="#_로그인한_멤버의_클럽조회_links">Links</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li><a href="#resources-club">Club</a>
@@ -759,7 +769,7 @@ X-Frame-Options: SAMEORIGIN
 Content-Length: 291
 
 {
-  "id" : 34,
+  "id" : 35,
   "email" : "test@example.com",
   "name" : "tester",
   "imagePath" : "imagePath",
@@ -1127,7 +1137,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU3N30.CvKLq0BJWb5DKJl9pQRXGv9oKB6BxNqVZiocNkRgWDvMnmm6ZzlolntyDHtABMy7fZRQbFI3qRqxdIIMQsmRNQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4NH0.sa1I9CQGjA-M6JBGX_x_kXmgnsGA-sExGjSnnnw8hOSk1cLGtafLhoVCZfAn8Me1YGe-az1tycV0bWxrHffsIw
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -1142,7 +1152,7 @@ Content-Length: 503
   "name" : "tester",
   "email" : "test@example.com",
   "imagePath" : "imagePath",
-  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU3N30.CvKLq0BJWb5DKJl9pQRXGv9oKB6BxNqVZiocNkRgWDvMnmm6ZzlolntyDHtABMy7fZRQbFI3qRqxdIIMQsmRNQ",
+  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4NH0.sa1I9CQGjA-M6JBGX_x_kXmgnsGA-sExGjSnnnw8hOSk1cLGtafLhoVCZfAn8Me1YGe-az1tycV0bWxrHffsIw",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/authenticate"
@@ -1405,6 +1415,183 @@ Content-Length: 143
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_로그인한_멤버의_클럽조회"><a class="link" href="#_로그인한_멤버의_클럽조회">로그인한 멤버의 클럽조회</a></h3>
+<div class="sect3">
+<h4 id="_로그인한_멤버의_클럽조회_http_request"><a class="link" href="#_로그인한_멤버의_클럽조회_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/getClubs HTTP/1.1
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA5MH0.NjDAzCYWA6RAP1SVB6Jut-bCK7rpO18mridkOt0vhc0b3Y9rboN9-1N6GVq7Ngh9X5bOUaXHZf9Lafx5v2Lh5Q
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_로그인한_멤버의_클럽조회_request_headers"><a class="link" href="#_로그인한_멤버의_클럽조회_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인한 유저의 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_로그인한_멤버의_클럽조회_http_response"><a class="link" href="#_로그인한_멤버의_클럽조회_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/hal+json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: SAMEORIGIN
+Content-Length: 616
+
+{
+  "_embedded" : {
+    "clubList" : [ {
+      "clubId" : 16,
+      "clubName" : "동네친구",
+      "categories" : "밥",
+      "leaderId" : 34
+    }, {
+      "clubId" : 17,
+      "clubName" : "스터디 모임",
+      "categories" : "스터디",
+      "leaderId" : 34
+    }, {
+      "clubId" : 18,
+      "clubName" : "회사 모임",
+      "categories" : "회식",
+      "leaderId" : 34
+    } ]
+  },
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/api/member/getClubs"
+    },
+    "profile" : {
+      "href" : "/docs/index.html#resources-member-getClubs"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_로그인한_멤버의_클럽조회_response_headers"><a class="link" href="#_로그인한_멤버의_클럽조회_response_headers">Response headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Content type</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_로그인한_멤버의_클럽조회_response_fields"><a class="link" href="#_로그인한_멤버의_클럽조회_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_embedded.clubList[0].clubId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">클럽의 고유 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_embedded.clubList[0].clubName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">클럽의 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_embedded.clubList[0].categories</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">클럽의 카테고리</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_embedded.clubList[0].leaderId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">클럽을 생성한 멤버의 고유아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.self.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to self</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.profile.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to profile</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_로그인한_멤버의_클럽조회_links"><a class="link" href="#_로그인한_멤버의_클럽조회_links">Links</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Relation</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>self</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to self</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profile</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to profile</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1447,7 +1634,7 @@ Content-Length: 143
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU3OX0.v6cnklM79jEcaU4paH0NxafHUbpMe66GY3XWfJxQ2gTCTCCr5b74Ldbpub6U1FFcrTZrrzIytl6DU86OKNpuWg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4NX0.q_50ySkYb_t-qiE1AYrPXTBvpvvEEAO4PVj16dzfmvhQBuAmrgdSfO4LF8kXIOogqBAzk4LyiilW5MRNXVTxBw
 Content-Length: 60
 Host: localhost:8080
 
@@ -1716,7 +1903,7 @@ Content-Length: 584
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club/7/invite HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4MX0.czgLuUIkKlQC2VqE-j1bBq3oqQvn1paBGLimub8woxDcuDIj8ABIahuY7buAnAMsGVAzns1a3aRwhiKlnmAdfQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4N30.otb3pOaOXVEtIsZ7ApUM3C_uKKy9Mkfix1F6ABNklJBzdp3cKLjZjl2lTYcx-EBzH_FGwG-j6h1fsY8HaTd0ag
 Content-Length: 32
 Host: localhost:8080
 
@@ -1946,7 +2133,7 @@ Content-Length: 554
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/club/3 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU3OX0.v6cnklM79jEcaU4paH0NxafHUbpMe66GY3XWfJxQ2gTCTCCr5b74Ldbpub6U1FFcrTZrrzIytl6DU86OKNpuWg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4NX0.q_50ySkYb_t-qiE1AYrPXTBvpvvEEAO4PVj16dzfmvhQBuAmrgdSfO4LF8kXIOogqBAzk4LyiilW5MRNXVTxBw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2180,7 +2367,7 @@ Content-Length: 582
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/club/6 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4MH0.u0aUIwhwFd1-80LnuKcZ21UFgMvV-LpFYZqne-jxFst2X2I_BleWMZz005jugmjFuCLgVA8CS5uC498I19AJBQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4Nn0.1JPwEt8jtbxIaVnNszYJbIFK6F1EZjCBhlqTQ3pPwpjsyx59PJDOwuf3xhgOBTLTpgT7dvzyEd0U6zBGt132_A
 Content-Length: 95
 Host: localhost:8080
 
@@ -2423,7 +2610,7 @@ Content-Length: 618
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/club/4 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4MH0.u0aUIwhwFd1-80LnuKcZ21UFgMvV-LpFYZqne-jxFst2X2I_BleWMZz005jugmjFuCLgVA8CS5uC498I19AJBQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4Nn0.1JPwEt8jtbxIaVnNszYJbIFK6F1EZjCBhlqTQ3pPwpjsyx59PJDOwuf3xhgOBTLTpgT7dvzyEd0U6zBGt132_A
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2631,15 +2818,15 @@ Content-Length: 322
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/myschedule HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4N30.C2utsMrzZI0BusJ042xdruxmT2WflWoajlanOjBaqeoGWIWYE4AV8I3jI0l5wOkqOiIk3It-7TDyWx9iX0ECPQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA5MX0.FgmEQy21xf9tBjZD0C-jAmDq36QoSfDixSiEm87FVnJWTpRXMFuKAOIBImtlyiY_goQ5DksPmQn1LmGZ8--h4w
 Content-Length: 179
 Host: localhost:8080
 
 {
   "name" : "나 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "scheduleStartDate" : "2021-03-03T16:19:47",
-  "scheduleEndDate" : "2021-03-03T16:19:47"
+  "scheduleStartDate" : "2021-03-04T11:04:50",
+  "scheduleEndDate" : "2021-03-04T11:04:50"
 }</code></pre>
 </div>
 </div>
@@ -2691,8 +2878,8 @@ Content-Length: 654
   "myScheduleId" : 3,
   "name" : "나 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "scheduleStartDate" : "2021-03-03T16:19:47",
-  "scheduleEndDate" : "2021-03-03T16:19:47",
+  "scheduleStartDate" : "2021-03-04T11:04:50",
+  "scheduleEndDate" : "2021-03-04T11:04:50",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule"
@@ -2872,7 +3059,7 @@ Content-Length: 654
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/myschedule/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4N30.C2utsMrzZI0BusJ042xdruxmT2WflWoajlanOjBaqeoGWIWYE4AV8I3jI0l5wOkqOiIk3It-7TDyWx9iX0ECPQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA5MH0.NjDAzCYWA6RAP1SVB6Jut-bCK7rpO18mridkOt0vhc0b3Y9rboN9-1N6GVq7Ngh9X5bOUaXHZf9Lafx5v2Lh5Q
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2913,14 +3100,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 639
+Content-Length: 653
 
 {
   "myScheduleId" : 2,
   "name" : "나의 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startDate" : "2021-03-03T16:19:47",
-  "endDate" : "2021-03-03T16:19:47",
+  "startDate" : "2021-03-04T11:04:50.711819",
+  "endDate" : "2021-03-04T11:04:50.711819",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule"
@@ -3100,15 +3287,15 @@ Content-Length: 639
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/myschedule/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4Nn0.6uOli1_7yZrM7IVfFLC9GFU1GlFHM31tXqwOIi1qBClNFDOP859BFSM-xA53AoXWonXF61Zg4a4HPnDJYf2kkQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA5MH0.NjDAzCYWA6RAP1SVB6Jut-bCK7rpO18mridkOt0vhc0b3Y9rboN9-1N6GVq7Ngh9X5bOUaXHZf9Lafx5v2Lh5Q
 Content-Length: 199
 Host: localhost:8080
 
 {
   "name" : "수정된 나의 스케줄 이름",
   "contents" : "수정된 나의 스케줄 내용",
-  "scheduleStartDate" : "2021-03-04T16:19:46",
-  "scheduleEndDate" : "2021-03-04T16:19:46"
+  "scheduleStartDate" : "2021-03-05T11:04:50",
+  "scheduleEndDate" : "2021-03-05T11:04:50"
 }</code></pre>
 </div>
 </div>
@@ -3159,8 +3346,8 @@ Content-Length: 672
   "myScheduleId" : 1,
   "name" : "수정된 나의 스케줄 이름",
   "contents" : "수정된 나의 스케줄 내용",
-  "scheduleStartDate" : "2021-03-04T16:19:46",
-  "scheduleEndDate" : "2021-03-04T16:19:46",
+  "scheduleStartDate" : "2021-03-05T11:04:50",
+  "scheduleEndDate" : "2021-03-05T11:04:50",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule"
@@ -3339,7 +3526,7 @@ Content-Length: 672
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/myschedule/4 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4OH0.IY9VlxM0yw8IEQLylFqB9P3NGiaUtTOTU2aKInaj0KVmCk2mHRBmB63Pbaj8ecsl5yqmko0WgL2tIFBOTXiUzg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA5MX0.FgmEQy21xf9tBjZD0C-jAmDq36QoSfDixSiEm87FVnJWTpRXMFuKAOIBImtlyiY_goQ5DksPmQn1LmGZ8--h4w
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3552,15 +3739,15 @@ Content-Length: 357
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/clubSchedule HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4Mn0.nVRhCmcV4-QScIw8CR1G5-w8md7EFvZLvoPqq_SMDQ1NRf6ZZ3kknECwigpSZ2K6anBPf1xTtx3Vu0tuUtK33g
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4OH0.bepbVmu4zhK9ZCyZS0XxDED-98brmGzjrjvqLD2voTSqp3RtCR4SRD8kP8GifGL7SC4U1XUamIL2KAmlR078yg
 Content-Length: 198
 Host: localhost:8080
 
 {
   "name" : "클럽 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startMeetingDate" : "2021-03-03T16:19:42",
-  "endMeetingDate" : "2021-03-03T16:19:42",
+  "startMeetingDate" : "2021-03-04T11:04:48",
+  "endMeetingDate" : "2021-03-04T11:04:48",
   "clubId" : 10
 }</code></pre>
 </div>
@@ -3613,8 +3800,8 @@ Content-Length: 681
   "id" : 1,
   "name" : "클럽 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startMeetingDate" : "2021-03-03T16:19:42",
-  "endMeetingDate" : "2021-03-03T16:19:42",
+  "startMeetingDate" : "2021-03-04T11:04:48",
+  "endMeetingDate" : "2021-03-04T11:04:48",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/clubSchedule"
@@ -3771,7 +3958,7 @@ Content-Length: 681
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/clubSchedule/4 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4NH0.EVICZrK-TpHEo17O9XeLVemRrhkEyW-PxBP9fXcbx4WgNLfs5dGxaEhLKDyRFNI8G-5QOVCPyjmZspBQSB6AYQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4OH0.bepbVmu4zhK9ZCyZS0XxDED-98brmGzjrjvqLD2voTSqp3RtCR4SRD8kP8GifGL7SC4U1XUamIL2KAmlR078yg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3812,14 +3999,14 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 751
+Content-Length: 765
 
 {
   "id" : 4,
   "name" : "클럽 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startMeetingDate" : "2021-03-03T16:19:44",
-  "endMeetingDate" : "2021-03-03T16:19:44",
+  "startMeetingDate" : "2021-03-04T11:04:48.852881",
+  "endMeetingDate" : "2021-03-04T11:04:48.852881",
   "memberName" : "테스터",
   "memberEmail" : "test@example.com",
   "_links" : {
@@ -4028,15 +4215,15 @@ Content-Length: 751
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/clubSchedule/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4M30.G5XcF7EGCVq3VW4LFb29FRXmlf76pl7dsz94TyirhjiYa8Wz4FAuLzRCmYbC3-6PTaEwlHcpCu0ocWF1tLDkBA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4OH0.bepbVmu4zhK9ZCyZS0XxDED-98brmGzjrjvqLD2voTSqp3RtCR4SRD8kP8GifGL7SC4U1XUamIL2KAmlR078yg
 Content-Length: 197
 Host: localhost:8080
 
 {
   "name" : "수정된 클럽 스케줄 이름",
   "contents" : "수정된 클럽 스케줄 내용",
-  "startMeetingDate" : "2021-03-04T16:19:43",
-  "endMeetingDate" : "2021-03-04T16:19:43"
+  "startMeetingDate" : "2021-03-05T11:04:48",
+  "endMeetingDate" : "2021-03-05T11:04:48"
 }</code></pre>
 </div>
 </div>
@@ -4087,8 +4274,8 @@ Content-Length: 698
   "id" : 2,
   "name" : "수정된 클럽 스케줄 이름",
   "contents" : "수정된 클럽 스케줄 내용",
-  "startMeetingDate" : "2021-03-04T16:19:43",
-  "endMeetingDate" : "2021-03-04T16:19:43",
+  "startMeetingDate" : "2021-03-05T11:04:48",
+  "endMeetingDate" : "2021-03-05T11:04:48",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/clubSchedule/2"
@@ -4245,7 +4432,7 @@ Content-Length: 698
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/clubSchedule/5 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDc1OTU4NX0.rGyoq9re9EGmUFY_mQ7V5MumkXH5FtF07HPogyzFwn5K_-COkZaG5sYbMGZnkJn_CeJo4Vs3GEoarfDypw899Q
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNDgyNzA4OX0.sRt6W69n1s3MHjM37djwIYjnT0V59ip1P5QSrsnoWWE4KMziG2_W37ryTk7c4XdOeLx14usjDxD810QmHaMB3g
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -4406,7 +4593,7 @@ Content-Length: 377
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-03 15:58:34 +0900
+Last updated 2021-03-04 11:04:27 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">

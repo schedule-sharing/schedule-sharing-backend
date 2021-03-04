@@ -2,14 +2,18 @@ package com.schedulsharing.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schedulsharing.config.RestDocsConfiguration;
+import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.member.EmailCheckRequestDto;
+import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.service.ClubService;
 import com.schedulsharing.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,12 +21,14 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -45,6 +51,9 @@ class MemberControllerTest {
 
     @Autowired
     private MemberRepository memberRepository;
+
+    @Autowired
+    private ClubService clubService;
 
     @BeforeEach
     public void setUp() {
@@ -129,7 +138,7 @@ class MemberControllerTest {
 
     @DisplayName("중복된 이메일 체크")
     @Test
-    public void 중복된이메일체크() throws Exception{
+    public void 중복된이메일체크() throws Exception {
         String email = "test@example.com";
         SignUpRequestDto signUpRequestDto1 = SignUpRequestDto.builder()
                 .email(email)
@@ -138,7 +147,7 @@ class MemberControllerTest {
                 .imagePath("imagePath")
                 .build();
         memberService.signup(signUpRequestDto1);
-        EmailCheckRequestDto emailCheckRequestDto=new EmailCheckRequestDto(email);
+        EmailCheckRequestDto emailCheckRequestDto = new EmailCheckRequestDto(email);
 
         mvc.perform(post("/api/member/checkEmail")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -168,5 +177,80 @@ class MemberControllerTest {
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
+    }
+
+    @DisplayName("로그인한 유저의 클럽가져오기")
+    @Test
+    public void 로그인유저의_클럽조회() throws Exception {
+        String email = "test@example.com";
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email(email)
+                .password("1234")
+                .name("테스터")
+                .imagePath("imagePath")
+                .build();
+        memberService.signup(signUpRequestDto);
+
+        createClub(email, "동네친구", "밥");
+        createClub(email, "스터디 모임", "스터디");
+        createClub(email, "회사 모임", "회식");
+
+        mvc.perform(get("/api/member/getClubs")
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("_embedded.clubList[0].clubId").exists())
+                .andExpect(jsonPath("_embedded.clubList[0].clubName").exists())
+                .andExpect(jsonPath("_embedded.clubList[0].categories").exists())
+                .andExpect(jsonPath("_embedded.clubList[0].leaderId").exists())
+                .andDo(document("member-getClubs",
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("_embedded.clubList[0].clubId").description("클럽의 고유 아이디"),
+                                fieldWithPath("_embedded.clubList[0].clubName").description("클럽의 이름"),
+                                fieldWithPath("_embedded.clubList[0].categories").description("클럽의 카테고리"),
+                                fieldWithPath("_embedded.clubList[0].leaderId").description("클럽을 생성한 멤버의 고유아이디"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    private void createClub(String email, String name, String categories) {
+        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
+                .clubName(name)
+                .categories(categories)
+                .build();
+        clubService.createClub(clubCreateRequest, email);
+    }
+
+    private String getBearToken() throws Exception {
+        return "Bearer  " + getToken();
+    }
+
+    private String getToken() throws Exception {
+        String email = "test@example.com";
+        String password = "1234";
+
+        LoginRequestDto loginDto = LoginRequestDto.builder()
+                .email(email)
+                .password(password)
+                .build();
+
+        ResultActions perform = mvc.perform(post("/api/authenticate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginDto)));
+        String responseBody = perform.andReturn().getResponse().getContentAsString();
+        JacksonJsonParser parser = new JacksonJsonParser();
+        return parser.parseMap(responseBody).get("access_token").toString();
     }
 }

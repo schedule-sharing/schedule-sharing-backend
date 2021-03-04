@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,5 +37,11 @@ public class MemberController {
     public ResponseEntity existedEmailCheck(@RequestBody EmailCheckRequestDto emailCheckRequestDto) {
 
         return ResponseEntity.ok(memberService.emailCheck(emailCheckRequestDto.getEmail()));
+    }
+
+    @GetMapping("/getClubs")
+    public ResponseEntity getClubs(Authentication authentication){
+
+        return ResponseEntity.ok(memberService.getClubs(authentication.getName()));
     }
 }
