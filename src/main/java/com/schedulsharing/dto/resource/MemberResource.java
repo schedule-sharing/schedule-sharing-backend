@@ -2,6 +2,7 @@ package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.MemberController;
 import com.schedulsharing.dto.member.GetClubsResponse;
+import com.schedulsharing.dto.member.MemberResponse;
 import com.schedulsharing.entity.member.Member;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -25,6 +26,13 @@ public class MemberResource extends EntityModel<Member> {
         return CollectionModel.of(getClubsResponse, links);
     }
 
+    public static EntityModel<MemberResponse> getMemberByEmailLink(MemberResponse memberResponse) {
+        List<Link> links = getSelfLink("search");
+
+        links.add(Link.of("/docs/index.html#resources-member-findByEmail", "profile"));
+        return EntityModel.of(memberResponse, links);
+    }
+
     private static List<Link> getSelfLink() {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.withSelfRel());
@@ -40,4 +48,5 @@ public class MemberResource extends EntityModel<Member> {
     public static URI getCreatedUri(Long clubScheduleId) {
         return selfLinkBuilder.slash(clubScheduleId).toUri();
     }
+
 }

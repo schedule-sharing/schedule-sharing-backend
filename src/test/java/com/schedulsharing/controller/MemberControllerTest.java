@@ -5,6 +5,7 @@ import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.member.EmailCheckRequestDto;
 import com.schedulsharing.dto.member.LoginRequestDto;
+import com.schedulsharing.dto.member.MemberSearchRequest;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.service.ClubService;
@@ -219,6 +220,117 @@ class MemberControllerTest {
                                 fieldWithPath("_embedded.clubList[0].clubName").description("클럽의 이름"),
                                 fieldWithPath("_embedded.clubList[0].categories").description("클럽의 카테고리"),
                                 fieldWithPath("_embedded.clubList[0].leaderId").description("클럽을 생성한 멤버의 고유아이디"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("이메일로 검색해서 유저찾기")
+    @Test
+    public void 이메일검색() throws Exception {
+        String email = "test@example.com";
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email(email)
+                .password("1234")
+                .name("테스터")
+                .imagePath("imagePath")
+                .build();
+        memberService.signup(signUpRequestDto);
+        String email2 = "test2@example.com";
+        SignUpRequestDto signUpRequestDto2 = SignUpRequestDto.builder()
+                .email(email2)
+                .password("1234")
+                .name("테스터")
+                .imagePath("imagePath")
+                .build();
+        memberService.signup(signUpRequestDto2);
+
+        MemberSearchRequest memberSearchRequest = MemberSearchRequest.builder()
+                .email("test2@example.com")
+                .build();
+
+        mvc.perform(get("/api/member/search")
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSearchRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("email").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("imagePath").exists())
+                .andDo(document("member-findByEmail",
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("email").description("검색할 멤버의 이메일")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("이메일검색 결과 나온 멤버의 고유 아이디"),
+                                fieldWithPath("email").description("이메일검색 결과 나온 멤버의 이메일"),
+                                fieldWithPath("name").description("이메일검색 결과 나온 멤버의 이름"),
+                                fieldWithPath("imagePath").description("이메일검색 결과 나온 멤버의 이미지 경로"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("이메일로 검색시 해당 유저가 없는 경우")
+    @Test
+    public void 없는멤버_이메일검색() throws Exception {
+        String email = "test@example.com";
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email(email)
+                .password("1234")
+                .name("테스터")
+                .imagePath("imagePath")
+                .build();
+        memberService.signup(signUpRequestDto);
+
+
+        MemberSearchRequest memberSearchRequest = MemberSearchRequest.builder()
+                .email("test3@example.com")
+                .build();
+
+        mvc.perform(get("/api/member/search")
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberSearchRequest)))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("httpStatus").exists())
+                .andExpect(jsonPath("error").exists())
+                .andExpect(jsonPath("message").exists())
+                .andDo(document("member-findByEmail-fail",
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("email").description("검색할 멤버의 이메일")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").description("httpStatus"),
+                                fieldWithPath("error").description("error 종류"),
+                                fieldWithPath("message").description("해당 이메일을 가진 멤버가 없다는 메시지"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )

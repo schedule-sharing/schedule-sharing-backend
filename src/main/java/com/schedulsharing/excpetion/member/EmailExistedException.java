@@ -1,4 +1,4 @@
-package com.schedulsharing.excpetion;
+package com.schedulsharing.excpetion.member;
 
 public class EmailExistedException extends RuntimeException{
     public EmailExistedException() {

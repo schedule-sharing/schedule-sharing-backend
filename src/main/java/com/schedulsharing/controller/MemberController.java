@@ -1,6 +1,7 @@
 package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.member.EmailCheckRequestDto;
+import com.schedulsharing.dto.member.MemberSearchRequest;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.dto.member.SignUpResponseDto;
 import com.schedulsharing.service.MemberService;
@@ -40,8 +41,14 @@ public class MemberController {
     }
 
     @GetMapping("/getClubs")
-    public ResponseEntity getClubs(Authentication authentication){
+    public ResponseEntity getClubs(Authentication authentication) {
 
         return ResponseEntity.ok(memberService.getClubs(authentication.getName()));
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity getMemberByEmail(@RequestBody MemberSearchRequest memberSearchRequest) {
+
+        return ResponseEntity.ok(memberService.getMemberByEmail(memberSearchRequest));
     }
 }

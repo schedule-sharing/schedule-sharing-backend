@@ -2,14 +2,12 @@ package com.schedulsharing.service;
 
 
 import com.schedulsharing.controller.MemberController;
-import com.schedulsharing.dto.member.EmailCheckResponseDto;
-import com.schedulsharing.dto.member.GetClubsResponse;
-import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.dto.member.SignUpResponseDto;
+import com.schedulsharing.dto.member.*;
 import com.schedulsharing.dto.resource.MemberResource;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.excpetion.EmailExistedException;
+import com.schedulsharing.excpetion.member.EmailExistedException;
+import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -70,4 +69,14 @@ public class MemberService {
         return EntityModel.of(emailCheckResponseDto, links);
     }
 
+    @Transactional(readOnly = true)
+    public EntityModel<MemberResponse> getMemberByEmail(MemberSearchRequest memberSearchRequest) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(memberSearchRequest.getEmail());
+        if(optionalMember.isEmpty()){
+            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+        }
+        Member member = optionalMember.get();
+        MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
+        return MemberResource.getMemberByEmailLink(memberResponse);
+    }
 }
