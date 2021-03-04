@@ -108,7 +108,7 @@ public class MyScheuldeServiceTest {
                 .scheduleEndDate(updateEndDate)
                 .build();
 
-        MyScheduleUpdateResponse updateResponse = myScheduleService.update(createResponse.getMyScheduleId(), updateRequest).getContent();
+        MyScheduleUpdateResponse updateResponse = myScheduleService.update(createResponse.getMyScheduleId(), updateRequest, member.getEmail()).getContent();
 
         assertEquals(updateResponse.getName(), updateName);
         assertEquals(updateResponse.getContents(), updateContents);
@@ -134,7 +134,7 @@ public class MyScheuldeServiceTest {
 
         MyScheduleCreateResponse createResponse = myScheduleService.create(createRequest, member.getEmail()).getContent();
 
-        myScheduleService.delete(createResponse.getMyScheduleId());
+        myScheduleService.delete(createResponse.getMyScheduleId(), member.getEmail());
 
         assertEquals(myScheduleRepository.findById(createResponse.getMyScheduleId()).isEmpty(), true);
     }
