@@ -6,6 +6,7 @@ import com.schedulsharing.entity.schedule.ClubSchedule;
 import com.schedulsharing.entity.schedule.MySchedule;
 import io.jsonwebtoken.Claims;
 import lombok.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ public class Member {
 
     private String imagePath;
 
-    public void update(MemberUpdateRequest memberUpdateRequest) {
+    public void update(MemberUpdateRequest memberUpdateRequest, PasswordEncoder passwordEncoder) {
         this.name = memberUpdateRequest.getName();
-        this.password = memberUpdateRequest.getPassword();
+        this.password = passwordEncoder.encode(memberUpdateRequest.getPassword());
         this.imagePath = memberUpdateRequest.getImagePath();
     }
 

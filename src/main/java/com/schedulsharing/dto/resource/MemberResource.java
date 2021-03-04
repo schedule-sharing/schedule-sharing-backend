@@ -39,13 +39,13 @@ public class MemberResource extends EntityModel<Member> {
     }
 
     public static EntityModel<MemberResponse> getMemberById(MemberResponse memberResponse) {
-        List<Link> links = getSelfLink("member-findById");
+        List<Link> links = getSelfLink(memberResponse.getId());
         links.add(Link.of("/docs/index.html#resources-member-findById", "profile"));
         return EntityModel.of(memberResponse, links);
     }
 
     public static EntityModel<MemberUpdateResponse> updateMemberLink(MemberUpdateResponse memberUpdateResponse) {
-        List<Link> links = getSelfLink("member-update");
+        List<Link> links = getSelfLink(memberUpdateResponse.getId());
         links.add(Link.of("/docs/index.html#resources-member-update", "profile"));
         return EntityModel.of(memberUpdateResponse, links);
     }

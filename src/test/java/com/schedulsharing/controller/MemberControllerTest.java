@@ -337,6 +337,50 @@ class MemberControllerTest {
                 ));
     }
 
+    @DisplayName("멤버 id로 단건 조회")
+    @Test
+    public void 멤버_id로_단건_조회() throws Exception {
+        String email = "test@example.com";
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email(email)
+                .password("1234")
+                .name("테스터")
+                .imagePath("imagePath")
+                .build();
+        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto).getContent();
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/member/{id}", signUpResponseDto.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("email").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("imagePath").exists())
+                .andDo(document("member-findById",
+                        pathParameters(
+                                parameterWithName("id").description("멤버의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("멤버의 고유아이디"),
+                                fieldWithPath("email").description("멤버의 이메일 주소"),
+                                fieldWithPath("name").description("멤버의 이름"),
+                                fieldWithPath("imagePath").description("멤버의 프로필 사진 경로"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
 
     @DisplayName("멤버 수정 성공 테스트")
     @Test

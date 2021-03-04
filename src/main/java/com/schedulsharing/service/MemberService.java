@@ -87,7 +87,7 @@ public class MemberService {
 
     public EntityModel<MemberUpdateResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest) {
         Member member = memberRepository.findById(id).get();
-        member.update(memberUpdateRequest);
+        member.update(memberUpdateRequest, passwordEncoder);
         MemberUpdateResponse memberUpdateResponse = modelMapper.map(member, MemberUpdateResponse.class);
         return MemberResource.updateMemberLink(memberUpdateResponse);
     }
