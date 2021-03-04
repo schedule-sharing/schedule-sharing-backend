@@ -1,11 +1,9 @@
 package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.ClubScheduleController;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleDeleteResponse;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateResponse;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleResponse;
+import com.schedulsharing.dto.ClubSchedule.*;
 import com.schedulsharing.entity.schedule.ClubSchedule;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -13,6 +11,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -55,6 +54,33 @@ public class ClubScheduleResource extends EntityModel<ClubSchedule> {
         links.add(Link.of("/docs/index.html#resources-clubSchedule-delete", "profile"));
 
         return EntityModel.of(clubScheduleDeleteResponse, links);
+    }
+
+    public static CollectionModel<EntityModel<ClubScheduleResponse>> getClubScheduleListLink(List<ClubScheduleResponse> responseList, Long clubId, String email) {
+        List<Link> links = getSelfLink("list", clubId);
+
+        List<EntityModel<ClubScheduleResponse>> entityModelList = responseList.stream()
+                .map(response -> {
+                    if (response.getMemberEmail().equals(email)) {
+                        return EntityModel.of(response,
+                                selfLinkBuilder.withRel("clubSchedule-create"),
+                                selfLinkBuilder.slash(response.getId()).withRel("clubSchedule-getOne"),
+                                selfLinkBuilder.slash(response.getId()).withRel("clubSchedule-update"),
+                                selfLinkBuilder.slash(response.getId()).withRel("clubSchedule-delete"));
+                    }
+                    return EntityModel.of(response,
+                            selfLinkBuilder.withRel("clubSchedule-create"),
+                            selfLinkBuilder.slash(response.getId()).withRel("clubSchedule-getOne"));
+                }).collect(Collectors.toList());
+        links.add(Link.of("/docs/index.html#resources-clubSchedule-list", "profile"));
+
+        return CollectionModel.of(entityModelList, links);
+    }
+
+    private static List<Link> getSelfLink(String slashNext, Long clubId) {
+        List<Link> links = new ArrayList<>();
+        links.add(selfLinkBuilder.slash(slashNext).slash(clubId).withSelfRel());
+        return links;
     }
 
     private static List<Link> getSelfLink() {

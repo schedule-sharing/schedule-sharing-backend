@@ -7,10 +7,12 @@ import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
+import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.ClubScheduleRepository;
+import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.service.ClubScheduleService;
 import com.schedulsharing.service.ClubService;
@@ -31,6 +33,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -234,6 +237,96 @@ class ClubScheduleControllerTest {
                 ));
     }
 
+    @DisplayName("년,월에 해당하는 클럽스케줄 리스트 조회하기")
+    @Test
+    public void 클럽스케줄_리스트조회() throws Exception {
+        Member member = memberRepository.findByEmail("test@example.com").get();
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        for (int i = 0; i < 3; i++) {
+            ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                    .name("2021-2 클럽 이름 테스트" + i)
+                    .contents("2021-2 클럽 내용 테스트" + i)
+                    .startMeetingDate(LocalDateTime.of(2021, 2, 15, 0, 0).plusDays(i))
+                    .endMeetingDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .clubId(clubCreateResponse.getClubId())
+                    .build();
+            clubScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+        for (int i = 0; i < 5; i++) {
+            ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                    .name("2021-3 클럽 이름 테스트" + i)
+                    .contents("2021-3 클럽 내용 테스트" + i)
+                    .startMeetingDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .endMeetingDate(LocalDateTime.of(2021, 3, 2, 0, 0).plusDays(i))
+                    .clubId(clubCreateResponse.getClubId())
+                    .build();
+            clubScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        for (int i = 0; i < 3; i++) {
+            ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                    .name("2021-4 클럽 이름 테스트" + i)
+                    .contents("2021-4 클럽 내용 테스트" + i)
+                    .startMeetingDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .endMeetingDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .clubId(clubCreateResponse.getClubId())
+                    .build();
+            clubScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        YearMonthRequest yearMonthRequest = YearMonthRequest.builder()
+                .yearMonth(YearMonth.of(2021, 3))
+                .build();
+
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/clubSchedule/list/{clubId}", clubCreateResponse.getClubId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(yearMonthRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("_embedded.clubScheduleList[0].id").exists())
+                .andExpect(jsonPath("_embedded.clubScheduleList[0].name").exists())
+                .andExpect(jsonPath("_embedded.clubScheduleList[0].contents").exists())
+                .andExpect(jsonPath("_embedded.clubScheduleList[0].startMeetingDate").exists())
+                .andExpect(jsonPath("_embedded.clubScheduleList[0].endMeetingDate").exists())
+                .andExpect(jsonPath("_embedded.clubScheduleList[0].memberName").exists())
+                .andExpect(jsonPath("_embedded.clubScheduleList[0].memberEmail").exists())
+                .andDo(document("clubSchedule-list",
+                        pathParameters(
+                                parameterWithName("clubId").description("클럽스케줄을 가져올 클럽 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("yearMonth").description("클럽스케줄리스트를 조회할 year,month")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("_embedded.clubScheduleList[0].id").description("조회한 클럽스케줄리스트중 첫번째 클럽스케줄의 고유아이디"),
+                                fieldWithPath("_embedded.clubScheduleList[0].name").description("조회한 클럽스케줄리스트중 첫번째 클럽스케줄의 이름"),
+                                fieldWithPath("_embedded.clubScheduleList[0].contents").description("조회한 클럽스케줄리스트중 첫번째 클럽스케줄의 내용"),
+                                fieldWithPath("_embedded.clubScheduleList[0].startMeetingDate").description("조회한 클럽스케줄리스트중 첫번째 클럽스케줄의 시작날짜"),
+                                fieldWithPath("_embedded.clubScheduleList[0].endMeetingDate").description("조회한 클럽스케줄리스트중 첫번째 클럽스케줄의 시작날짜"),
+                                fieldWithPath("_embedded.clubScheduleList[0].memberName").description("조회한 클럽스케줄리스트중 첫번째 클럽스케줄을 작성한 멤버의 이름"),
+                                fieldWithPath("_embedded.clubScheduleList[0].memberEmail").description("조회한 클럽스케줄리스트중 첫번째 클럽스케줄을 작성한 멤버의 이메일"),
+                                fieldWithPath("_embedded.clubScheduleList[0]._links.clubSchedule-create.href").description("link to create"),
+                                fieldWithPath("_embedded.clubScheduleList[0]._links.clubSchedule-getOne.href").description("link to getOne"),
+                                fieldWithPath("_embedded.clubScheduleList[0]._links.clubSchedule-update.href").description("link to update 작성자에 경우에만 보입니다."),
+                                fieldWithPath("_embedded.clubScheduleList[0]._links.clubSchedule-delete.href").description("link to delete 작성자에 경우에만 보입니다."),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
     @DisplayName("클럽 스케줄 수정하기")
     @Test
     public void 클럽스케줄_수정() throws Exception {
@@ -349,6 +442,7 @@ class ClubScheduleControllerTest {
                         )
                 ));
     }
+
     @DisplayName("다른사람의 클럽 스케줄 삭제할 경우 오류")
     @Test
     public void 클럽스케줄_삭제_작성자가_아닌_경우_오류() throws Exception {
@@ -378,6 +472,24 @@ class ClubScheduleControllerTest {
         String responseBody = perform.andReturn().getResponse().getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
         return parser.parseMap(responseBody).get("access_token").toString();
+    }
+
+    private Member createMember() {
+        Member member = Member.builder()
+                .email("test@example.com")
+                .name("tester")
+                .password("1234")
+                .imagePath("imagePath")
+                .build();
+        return memberRepository.save(member);
+    }
+
+    private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {
+        ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
+                .clubName(clubName)
+                .categories(categories)
+                .build();
+        return clubService.createClub(clubCreateRequest, savedMember.getEmail()).getContent();
     }
 
     private ClubScheduleCreateResponse createClubScheduleByTest() {

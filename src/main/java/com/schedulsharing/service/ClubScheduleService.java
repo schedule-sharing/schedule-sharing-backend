@@ -9,16 +9,19 @@ import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.clubSchedule.ClubScheduleNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.ClubScheduleRepository;
+import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,6 +51,16 @@ public class ClubScheduleService {
         ClubSchedule clubSchedule = clubScheduleFindById(id);
         ClubScheduleResponse response = modelMapper.map(clubSchedule, ClubScheduleResponse.class);
         return ClubScheduleResource.getClubScheduleLink(response, member.getEmail());
+    }
+
+    @Transactional(readOnly = true)
+    public CollectionModel<EntityModel<ClubScheduleResponse>> getClubScheduleList(Long clubId, YearMonthRequest yearMonthRequest, String email) {
+        List<ClubSchedule> clubSchedules = clubScheduleRepository.findAllByClubId(clubId, yearMonthRequest);
+        List<ClubScheduleResponse> responseList = clubSchedules.stream()
+                .map(clubSchedule -> modelMapper.map(clubSchedule, ClubScheduleResponse.class))
+                .collect(Collectors.toList());
+
+        return ClubScheduleResource.getClubScheduleListLink(responseList, clubId, email);
     }
 
     public EntityModel<ClubScheduleUpdateResponse> update(Long id, ClubScheduleUpdateRequest clubScheduleUpdateRequest, String email) {
@@ -91,5 +104,4 @@ public class ClubScheduleService {
         }
         return optionalClub.get();
     }
-
 }

@@ -1,10 +1,12 @@
 package com.schedulsharing.dto.ClubSchedule;
 
 import lombok.Data;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDateTime;
 
 @Data
+@Relation(collectionRelation = "clubScheduleList")
 public class ClubScheduleResponse {
     private Long id;
     private String name;

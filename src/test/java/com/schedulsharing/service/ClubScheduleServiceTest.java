@@ -4,18 +4,23 @@ import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.*;
 import com.schedulsharing.entity.member.Member;
+import com.schedulsharing.entity.schedule.ClubSchedule;
 import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.ClubScheduleRepository;
+import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.repository.MemberRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.Collection;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -123,7 +128,7 @@ class ClubScheduleServiceTest {
 
     @DisplayName("클럽스케줄 삭제 성공")
     @Test
-    public void 클럽_스케줄_삭제(){
+    public void 클럽_스케줄_삭제() {
         Member member = createMember();
         ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
         String scheduleName = "클럽 스케줄 생성 테스트";
@@ -139,9 +144,55 @@ class ClubScheduleServiceTest {
                 .build();
         ClubScheduleCreateResponse clubSchedule = clubScheduleService.create(createRequest, member.getEmail()).getContent();
 
-        clubScheduleService.delete(clubSchedule.getId(),"test@example.com");
+        clubScheduleService.delete(clubSchedule.getId(), "test@example.com");
 
         assertEquals(clubScheduleRepository.findById(clubSchedule.getId()).isEmpty(), true);
+    }
+
+    @DisplayName("특정 연,월에 해당하는 클럽 스케줄 리스트 가져오기")
+    @Test
+    public void 연_월_클럽스케줄리스트조회() {
+        Member member = createMember();
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        for (int i = 0; i < 10; i++) {
+            ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                    .name("2021-2 클럽 이름 테스트" + i)
+                    .contents("2021-2 클럽 내용 테스트" + i)
+                    .startMeetingDate(LocalDateTime.of(2021, 2, 15, 0, 0).plusDays(i))
+                    .endMeetingDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .clubId(clubCreateResponse.getClubId())
+                    .build();
+            clubScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+        for (int i = 0; i < 20; i++) {
+            ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                    .name("2021-3 클럽 이름 테스트" + i)
+                    .contents("2021-3 클럽 내용 테스트" + i)
+                    .startMeetingDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .endMeetingDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .clubId(clubCreateResponse.getClubId())
+                    .build();
+            clubScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        for (int i = 0; i < 10; i++) {
+            ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
+                    .name("2021-4 클럽 이름 테스트" + i)
+                    .contents("2021-4 클럽 내용 테스트" + i)
+                    .startMeetingDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .endMeetingDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .clubId(clubCreateResponse.getClubId())
+                    .build();
+            clubScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        YearMonthRequest yearMonthRequest = YearMonthRequest.builder()
+                .yearMonth(YearMonth.of(2021, 3))
+                .build();
+
+        Collection<EntityModel<ClubScheduleResponse>> clubScheduleList = clubScheduleService.getClubScheduleList(clubCreateResponse.getClubId(), yearMonthRequest, member.getEmail()).getContent();
+        //3월시작 3월끝 = 30개
+        assertEquals(clubScheduleList.size(), 30);
     }
 
     private Member createMember() {
