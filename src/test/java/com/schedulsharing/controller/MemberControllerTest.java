@@ -337,6 +337,7 @@ class MemberControllerTest {
                 ));
     }
 
+
     @DisplayName("멤버 수정 성공 테스트")
     @Test
     public void 멤버_수정_성공_테스트() throws Exception {
@@ -394,6 +395,49 @@ class MemberControllerTest {
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
+
+    }
+
+
+    @DisplayName("멤버 탈퇴 및 삭제 성공 테스트")
+    @Test
+    public void 멤버_삭제_성공() throws Exception {
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email("test@example.com")
+                .name("테스터")
+                .password("1234")
+                .imagePath("imagePath")
+                .build();
+        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto).getContent();
+
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/member/{id}", signUpResponseDto.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("success").value(true))
+                .andExpect(jsonPath("message").exists())
+                .andDo(document("member-delete",
+                        pathParameters(
+                                parameterWithName("id").description("삭제할 멤버의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").description("삭제를 성공했는 지"),
+                                fieldWithPath("message").description("삭제 성공 message"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+
 
     }
 

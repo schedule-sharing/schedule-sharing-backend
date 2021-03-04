@@ -40,11 +40,9 @@ public class MemberService {
         Member memberEntity = signUpRequestDto.toEntity(passwordEncoder);
         Member savedMember = memberRepository.save(memberEntity);
 
-        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "signup", "/docs/index.html#resources-member-signup");
+        SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
 
-        final SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
-
-        return EntityModel.of(signUpResponseDto,links);
+        return MemberResource.signUpLinks(signUpResponseDto);
     }
 
     @Transactional(readOnly = true)
@@ -80,10 +78,26 @@ public class MemberService {
         return MemberResource.getMemberByEmailLink(memberResponse);
     }
 
+    @Transactional(readOnly = true)
+    public EntityModel<MemberResponse> getMemberById(Long id) {
+        Member member = memberRepository.findById(id).get();
+        MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
+        return MemberResource.getMemberById(memberResponse);
+    }
+
     public EntityModel<MemberUpdateResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest) {
         Member member = memberRepository.findById(id).get();
         member.update(memberUpdateRequest);
         MemberUpdateResponse memberUpdateResponse = modelMapper.map(member, MemberUpdateResponse.class);
         return MemberResource.updateMemberLink(memberUpdateResponse);
+    }
+
+    public EntityModel<MemberDeleteResponse> deleteMember(Long id) {
+        memberRepository.deleteById(id);
+        MemberDeleteResponse memberDeleteResponse = MemberDeleteResponse.builder()
+                .success(true)
+                .message("성공적으로 탈퇴하셨습니다.")
+                .build();
+        return MemberResource.deleteMemberLink(id, memberDeleteResponse);
     }
 }

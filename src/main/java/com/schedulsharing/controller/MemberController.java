@@ -49,8 +49,18 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMemberByEmail(memberSearchRequest));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity getMemberById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(memberService.getMemberById(id));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest memberUpdateRequest) {
         return ResponseEntity.ok(memberService.updateMember(id, memberUpdateRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteMember(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(memberService.deleteMember(id));
     }
 }

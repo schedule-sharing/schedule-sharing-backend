@@ -95,6 +95,28 @@ class MemberServiceTest {
         assertEquals(result.size(), 2);
     }
 
+    @DisplayName("멤버 id로 단건 조회")
+    @Test
+    public void 멤버_id로_단건_조회() {
+        String email = "test@example.com";
+        String password = "1234";
+        String imagePath = "imagePath";
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email(email)
+                .name("테스터")
+                .password(password)
+                .imagePath(imagePath)
+                .build();
+        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto).getContent();
+
+        MemberResponse memberResponse = memberService.getMemberById(signUpResponseDto.getId()).getContent();
+
+        assertEquals(memberResponse.getId(), signUpResponseDto.getId());
+        assertEquals(memberResponse.getEmail(), signUpResponseDto.getEmail());
+        assertEquals(memberResponse.getName(), signUpResponseDto.getName());
+        assertEquals(memberResponse.getImagePath(), signUpResponseDto.getImagePath());
+    }
+
     @DisplayName("멤버 수정 성공 테스트")
     @Test
     public void 멤버_수정_성공_테스트() {
@@ -123,6 +145,22 @@ class MemberServiceTest {
         assertEquals(updateResponse.getName(), updateName);
         assertEquals(updateResponse.getPassword(), updatePassword);
         assertEquals(updateResponse.getImagePath(), updateImagePath);
+    }
+
+    @DisplayName("멤버 탈퇴 및 삭제 성공")
+    @Test
+    public void 멤버_삭제_성공() throws Exception {
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email("test@example.com")
+                .name("test")
+                .password("1234")
+                .imagePath("imagePath")
+                .build();
+        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto).getContent();
+
+        memberService.deleteMember(signUpResponseDto.getId()).getContent();
+
+        assertEquals(memberRepository.findById(signUpResponseDto.getId()).isEmpty(), true);
     }
 
     private void createClub(String email, String name, String categories) {

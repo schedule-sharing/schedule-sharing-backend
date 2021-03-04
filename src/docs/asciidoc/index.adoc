@@ -46,6 +46,10 @@ operation::member-getClubs[snippets='http-request,request-headers,http-response,
 === 멤버 수정
 operation::member-update[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
 
+[[resources-member-delete]]
+=== 멤버 삭제 및 탈퇴
+operation::member-delete[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
 [[resources-club]]
 == Club
 
