@@ -1,10 +1,7 @@
 package com.schedulsharing.service;
 
 import com.schedulsharing.dto.Club.ClubCreateRequest;
-import com.schedulsharing.dto.member.GetClubsResponse;
-import com.schedulsharing.dto.member.MemberResponse;
-import com.schedulsharing.dto.member.MemberSearchRequest;
-import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.dto.member.*;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -96,6 +93,36 @@ class MemberServiceTest {
 
         Collection<GetClubsResponse> result = memberService.getClubs(email).getContent();
         assertEquals(result.size(), 2);
+    }
+
+    @DisplayName("멤버 수정 성공 테스트")
+    @Test
+    public void 멤버_수정_성공_테스트() {
+        String email = "test@example.com";
+        String password = "1234";
+        String imagePath = "imagePath";
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email(email)
+                .name("테스터")
+                .password(password)
+                .imagePath(imagePath)
+                .build();
+        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto).getContent();
+
+        String updateName = "수정된 멤버 이름";
+        String updatePassword = "2345";
+        String updateImagePath = "수정된 사진 경로";
+        MemberUpdateRequest updateRequest = MemberUpdateRequest.builder()
+                .name(updateName)
+                .password(updatePassword)
+                .imagePath(updateImagePath)
+                .build();
+
+        MemberUpdateResponse updateResponse = memberService.updateMember(signUpResponseDto.getId(), updateRequest).getContent();
+
+        assertEquals(updateResponse.getName(), updateName);
+        assertEquals(updateResponse.getPassword(), updatePassword);
+        assertEquals(updateResponse.getImagePath(), updateImagePath);
     }
 
     private void createClub(String email, String name, String categories) {

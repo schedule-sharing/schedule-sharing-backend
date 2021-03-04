@@ -42,6 +42,10 @@ operation::member-findByEmail-fail[snippets='request-fields,http-request,request
 === 로그인한 멤버의 클럽조회
 operation::member-getClubs[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']
 
+[[resources-member-update]]
+=== 멤버 수정
+operation::member-update[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+
 [[resources-club]]
 == Club
 

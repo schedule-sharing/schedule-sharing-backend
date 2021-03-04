@@ -1,5 +1,6 @@
 package com.schedulsharing.entity.member;
 
+import com.schedulsharing.dto.member.MemberUpdateRequest;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.schedule.ClubSchedule;
 import com.schedulsharing.entity.schedule.MySchedule;
@@ -31,6 +32,12 @@ public class Member {
     private String name;
 
     private String imagePath;
+
+    public void update(MemberUpdateRequest memberUpdateRequest) {
+        this.name = memberUpdateRequest.getName();
+        this.password = memberUpdateRequest.getPassword();
+        this.imagePath = memberUpdateRequest.getImagePath();
+    }
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberClub> memberClubs = new ArrayList<>();

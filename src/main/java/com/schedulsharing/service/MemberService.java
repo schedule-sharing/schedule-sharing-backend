@@ -79,4 +79,11 @@ public class MemberService {
         MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
         return MemberResource.getMemberByEmailLink(memberResponse);
     }
+
+    public EntityModel<MemberUpdateResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest) {
+        Member member = memberRepository.findById(id).get();
+        member.update(memberUpdateRequest);
+        MemberUpdateResponse memberUpdateResponse = modelMapper.map(member, MemberUpdateResponse.class);
+        return MemberResource.updateMemberLink(memberUpdateResponse);
+    }
 }

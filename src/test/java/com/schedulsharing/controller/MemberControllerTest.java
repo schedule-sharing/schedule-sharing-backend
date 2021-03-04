@@ -3,10 +3,7 @@ package com.schedulsharing.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.Club.ClubCreateRequest;
-import com.schedulsharing.dto.member.EmailCheckRequestDto;
-import com.schedulsharing.dto.member.LoginRequestDto;
-import com.schedulsharing.dto.member.MemberSearchRequest;
-import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.dto.member.*;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.service.ClubService;
 import com.schedulsharing.service.MemberService;
@@ -21,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -29,6 +27,8 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -335,6 +335,66 @@ class MemberControllerTest {
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
+    }
+
+    @DisplayName("멤버 수정 성공 테스트")
+    @Test
+    public void 멤버_수정_성공_테스트() throws Exception {
+        SignUpRequestDto signUpRequestDto = SignUpRequestDto.builder()
+                .email("test@example.com")
+                .name("테스터")
+                .password("1234")
+                .imagePath("imagePath")
+                .build();
+        SignUpResponseDto signUpResponseDto = memberService.signup(signUpRequestDto).getContent();
+        MemberUpdateRequest memberUpdateRequest = MemberUpdateRequest.builder()
+                .name("수정할 이름")
+                .password("수정할 비밀번호")
+                .imagePath("수정할 이미지 경로")
+                .build();
+
+        mvc.perform(RestDocumentationRequestBuilders.put("/api/member/{id}", signUpResponseDto.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(memberUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("email").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("password").exists())
+                .andExpect(jsonPath("imagePath").exists())
+                .andDo(document("member-update",
+                        pathParameters(
+                                parameterWithName("id").description("수정할 멤버의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰"),
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+                        ),
+                        requestFields(
+                                fieldWithPath("name").description("수정할 멤버의 이름"),
+                                fieldWithPath("password").description("수정할 멤버의 비밀번호"),
+                                fieldWithPath("imagePath").description("수정할 멤버의 프로필 사진 경로")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("수정한 멤버의 고유아이디"),
+                                fieldWithPath("name").description("수정한 멤버의 이름"),
+                                fieldWithPath("password").description("수정한 멤버의 비밀번호"),
+                                fieldWithPath("email").description("멤버의 이메일"),
+                                fieldWithPath("imagePath").description("수정한 멤버의 프로필 사진 경로"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+
     }
 
     private void createClub(String email, String name, String categories) {
