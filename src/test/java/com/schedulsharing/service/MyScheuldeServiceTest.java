@@ -1,16 +1,22 @@
 package com.schedulsharing.service;
 
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleResponse;
+import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
 import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.MyScheduleRepository;
+import com.schedulsharing.repository.myschedule.MyScheduleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.EntityModel;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.util.Collection;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,6 +84,49 @@ public class MyScheuldeServiceTest {
         MyScheduleResponse result = myScheduleService.getMySchedule(myScheduleId, "test@example.com").getContent();
         assertEquals(result.getName(), name);
         assertEquals(result.getContents(), contents);
+    }
+
+    @DisplayName("내 스케줄 리스트 조회")
+    @Test
+    public void 내_스케줄_리스트_조회() throws Exception {
+        Member member = createMember();
+        for (int i = 0; i < 10; i++) {
+            MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                    .name("2021-2 내 스케줄 이름 테스트" + i)
+                    .contents("2021-2 내 스케줄 내용 테스트" + i)
+                    .scheduleStartDate(LocalDateTime.of(2021, 2, 15, 0, 0).plusDays(i))
+                    .scheduleEndDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .build();
+            myScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        for (int i = 0; i < 20; i++) {
+            MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                    .name("2021-3 내 스케줄 이름 테스트" + i)
+                    .contents("2021-3 내 스케줄 내용 테스트" + i)
+                    .scheduleStartDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .scheduleEndDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .build();
+            myScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        for (int i = 0; i < 10; i++) {
+            MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                    .name("2021-4 클럽 이름 테스트" + i)
+                    .contents("2021-4 클럽 내용 테스트" + i)
+                    .scheduleStartDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .scheduleEndDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .build();
+            myScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        MyYearMonthRequest yearMonthRequest = MyYearMonthRequest.builder()
+                .myYearMonth(YearMonth.of(2021, 3))
+                .build();
+
+        Collection<EntityModel<MyScheduleResponse>> myScheduleList = myScheduleService.getMyScheduleList(yearMonthRequest, member.getEmail()).getContent();
+        //3월시작 3월끝 = 30개
+        assertEquals(myScheduleList.size(), 30);
     }
 
     @DisplayName("내 스케줄 수정 성공")

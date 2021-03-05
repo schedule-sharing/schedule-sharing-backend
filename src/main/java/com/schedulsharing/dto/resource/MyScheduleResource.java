@@ -1,11 +1,13 @@
 package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.MyScheduleController;
+import com.schedulsharing.dto.ClubSchedule.ClubScheduleResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleDeleteResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleUpdateResponse;
 import com.schedulsharing.entity.schedule.MySchedule;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -13,6 +15,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -37,6 +40,21 @@ public class MyScheduleResource extends EntityModel<MySchedule> {
         return EntityModel.of(myScheduleResponse, links);
     }
 
+    public static CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleListLink(List<MyScheduleResponse> myScheduleList, String email) {
+        List<Link> links = getSelfLink("list", email);
+        List<EntityModel<MyScheduleResponse>> entityModelList = myScheduleList.stream()
+                .map(response -> {
+                    return EntityModel.of(response,
+                                selfLinkBuilder.withRel("mySchedule-create"),
+                                selfLinkBuilder.slash(response.getMyScheduleId()).withRel("mySchedule-getOne"),
+                                selfLinkBuilder.slash(response.getMyScheduleId()).withRel("mySchedule-update"),
+                                selfLinkBuilder.slash(response.getMyScheduleId()).withRel("mySchedule-delete"));
+                }).collect(Collectors.toList());
+        links.add(Link.of("/docs/index.html#resources-mySchedule-list", "profile"));
+
+        return CollectionModel.of(entityModelList, links);
+    }
+
     public static EntityModel<MyScheduleUpdateResponse> updateMyScheduleLink(MyScheduleUpdateResponse updateResponse) {
         List<Link> links = getSelfLink(updateResponse.getMyScheduleId());
         links.add(selfLinkBuilder.withRel("mySchedule-create"));
@@ -54,6 +72,12 @@ public class MyScheduleResource extends EntityModel<MySchedule> {
     }
 
 
+    private static List<Link> getSelfLink(String slashNext, String email) {
+        List<Link> links = new ArrayList<>();
+        links.add(selfLinkBuilder.slash(slashNext).slash(email).withSelfRel());
+        return links;
+    }
+
     private static List<Link> getSelfLink(Long myScheduleId) {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.slash(myScheduleId).withSelfRel());
@@ -69,6 +93,7 @@ public class MyScheduleResource extends EntityModel<MySchedule> {
     public static URI getCreatedUri(Long myScheduleId) {
         return selfLinkBuilder.slash(myScheduleId).toUri();
     }
+
 
 
 }

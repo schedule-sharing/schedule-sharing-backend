@@ -3,6 +3,7 @@ package com.schedulsharing.controller;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
+import com.schedulsharing.dto.MySchedule.MyYearMonthRequest;
 import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.service.MyScheduleService;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,11 @@ public class MyScheduleController {
     @GetMapping("/{id}")
     public ResponseEntity getMySchedule(@PathVariable("id") Long id, Authentication authentication) {
         return ResponseEntity.ok(myScheduleService.getMySchedule(id, authentication.getName()));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity getMyScheduleList(@RequestBody MyYearMonthRequest myYearMonthRequest, Authentication authentication) {
+        return ResponseEntity.ok(myScheduleService.getMyScheduleList(myYearMonthRequest, authentication.getName()));
     }
 
     @PutMapping("/{id}")

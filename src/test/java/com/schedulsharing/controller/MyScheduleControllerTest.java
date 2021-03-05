@@ -5,10 +5,12 @@ import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
+import com.schedulsharing.dto.MySchedule.MyYearMonthRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.MyScheduleRepository;
+import com.schedulsharing.repository.myschedule.MyScheduleRepository;
 import com.schedulsharing.service.MemberService;
 import com.schedulsharing.service.MyScheduleService;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
@@ -184,6 +187,86 @@ public class MyScheduleControllerTest {
                                 fieldWithPath("_links.mySchedule-create.href").description("link to create"),
                                 fieldWithPath("_links.mySchedule-update.href").description("link to update"),
                                 fieldWithPath("_links.mySchedule-delete.href").description("link to delete"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("년,월에 해당하는 나의 스케줄 리스트 조회하기")
+    @Test
+    public void 나의_스케줄_리스트조회() throws Exception {
+        Member member = memberRepository.findByEmail("test@example.com").get();
+        for (int i = 0; i < 3; i++) {
+            MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                    .name("2021-2 내 스케줄 이름 테스트" + i)
+                    .contents("2021-2 내 스케줄 내용 테스트" + i)
+                    .scheduleStartDate(LocalDateTime.of(2021, 2, 15, 0, 0).plusDays(i))
+                    .scheduleEndDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .build();
+            myScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        for (int i = 0; i < 5; i++) {
+            MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                    .name("2021-3 내 스케줄 이름 테스트" + i)
+                    .contents("2021-3 내 스케줄 내용 테스트" + i)
+                    .scheduleStartDate(LocalDateTime.of(2021, 3, 1, 0, 0).plusDays(i))
+                    .scheduleEndDate(LocalDateTime.of(2021, 3, 2, 0, 0).plusDays(i))
+                    .build();
+            myScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        for (int i = 0; i < 3; i++) {
+            MyScheduleCreateRequest createRequest = MyScheduleCreateRequest.builder()
+                    .name("2021-4 내 스케줄 이름 테스트" + i)
+                    .contents("2021-4 내 스케줄 내용 테스트" + i)
+                    .scheduleStartDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .scheduleEndDate(LocalDateTime.of(2021, 4, 1, 0, 0).plusDays(i))
+                    .build();
+            myScheduleService.create(createRequest, member.getEmail()).getContent();
+        }
+
+        MyYearMonthRequest myYearMonthRequest = MyYearMonthRequest.builder()
+                .myYearMonth(YearMonth.of(2021, 3))
+                .build();
+
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/myschedule/list")
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(myYearMonthRequest)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("_embedded.myScheduleResponseList[0].myScheduleId").exists())
+                .andExpect(jsonPath("_embedded.myScheduleResponseList[0].name").exists())
+                .andExpect(jsonPath("_embedded.myScheduleResponseList[0].contents").exists())
+                .andExpect(jsonPath("_embedded.myScheduleResponseList[0].startDate").exists())
+                .andExpect(jsonPath("_embedded.myScheduleResponseList[0].endDate").exists())
+                .andDo(document("mySchedule-list",
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("myYearMonth").description("나의 스케줄리스트를 조회할 year,month")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("_embedded.myScheduleResponseList[0].myScheduleId").description("조회한 나의 스케줄리스트중 첫번째 스케줄의 고유아이디"),
+                                fieldWithPath("_embedded.myScheduleResponseList[0].name").description("조회한 나의 스케줄리스트중 첫번째 스케줄의 이름"),
+                                fieldWithPath("_embedded.myScheduleResponseList[0].contents").description("조회한 나의 스케줄리스트중 첫번째 스케줄의 내용"),
+                                fieldWithPath("_embedded.myScheduleResponseList[0].startDate").description("조회한 나의 스케줄리스트중 첫번째 스케줄의 시작날짜"),
+                                fieldWithPath("_embedded.myScheduleResponseList[0].endDate").description("조회한 나의 스케줄리스트중 첫번째 스케줄의 종날짜"),
+                                fieldWithPath("_embedded.myScheduleResponseList[0]._links.mySchedule-create.href").description("link to create"),
+                                fieldWithPath("_embedded.myScheduleResponseList[0]._links.mySchedule-getOne.href").description("link to getOne"),
+                                fieldWithPath("_embedded.myScheduleResponseList[0]._links.mySchedule-update.href").description("link to update 작성자에 경우에만 보입니다."),
+                                fieldWithPath("_embedded.myScheduleResponseList[0]._links.mySchedule-delete.href").description("link to delete 작성자에 경우에만 보입니다."),
+                                fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));

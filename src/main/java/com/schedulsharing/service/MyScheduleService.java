@@ -7,15 +7,17 @@ import com.schedulsharing.entity.schedule.MySchedule;
 import com.schedulsharing.excpetion.MyScheduleNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.MyScheduleRepository;
+import com.schedulsharing.repository.myschedule.MyScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -41,6 +43,21 @@ public class MyScheduleService {
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         MyScheduleResponse myScheduleResponse = modelMapper.map(mySchedule, MyScheduleResponse.class);
         return MyScheduleResource.getMyScheduleLink(myScheduleResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleList(MyYearMonthRequest myYearMonthRequest, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        List<MySchedule> myScheduleList = myScheduleRepository.findAllByEmail(member.getEmail(), myYearMonthRequest);
+        for (MySchedule mySchedule : myScheduleList) {
+            if (!member.getEmail().equals(mySchedule.getMember().getEmail())) {
+                throw new InvalidGrantException("조회 권한이 없습니다.");
+            }
+        }
+        List<MyScheduleResponse> myScheduleResponseList = myScheduleList.stream()
+                .map(mySchedule -> modelMapper.map(mySchedule, MyScheduleResponse.class))
+                .collect(Collectors.toList());
+        return MyScheduleResource.getMyScheduleListLink(myScheduleResponseList, member.getEmail());
     }
 
     public EntityModel<MyScheduleUpdateResponse> update(Long myScheduleId, MyScheduleUpdateRequest updateRequest, String email) {
