@@ -120,3 +120,10 @@ operation::clubSchedule-update[snippets='request-fields,http-request,request-hea
 [[resources-clubSchedule-delete]]
 === 클럽스케줄 삭제(작성자)
 operation::clubSchedule-delete[snippets='http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-suggestion]]
+== ClubScheduleSuggestion
+
+[[resources-suggestion-create]]
+=== 클럽스케줄 제안 생성
+operation::suggestion-create[snippets='request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']

@@ -1,5 +1,6 @@
 package com.schedulsharing.entity.schedule;
 
+import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
@@ -33,11 +34,13 @@ public class ScheduleSuggestion {
 
     private boolean isConfirm;
 
-    private LocalDateTime meetingDate;
+    private LocalDateTime scheduleStartDate;
 
-    private LocalDateTime startVoteDate;
+    private LocalDateTime scheduleEndDate;
 
-    private LocalDateTime endVoteDate;
+    private LocalDateTime voteStartDate;
+
+    private LocalDateTime voteEndDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
@@ -46,4 +49,33 @@ public class ScheduleSuggestion {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+
+    public void setClub(Club club) {
+        this.club = club;
+        club.getSuggestions().add(this);
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+        member.getSuggestions().add(this);
+    }
+
+    public static ScheduleSuggestion createSuggestion(SuggestionCreateRequest suggestionCreateRequest, Member member, Club club) {
+        ScheduleSuggestion scheduleSuggestion = ScheduleSuggestion.builder()
+                .title(suggestionCreateRequest.getTitle())
+                .contents(suggestionCreateRequest.getContents())
+                .location(suggestionCreateRequest.getLocation())
+                .minMember(suggestionCreateRequest.getMinMember())
+                .scheduleStartDate(suggestionCreateRequest.getScheduleStartDate())
+                .scheduleEndDate(suggestionCreateRequest.getScheduleEndDate())
+                .voteStartDate(suggestionCreateRequest.getVoteStartDate())
+                .voteEndDate(suggestionCreateRequest.getVoteEndDate())
+                .isConfirm(false)
+                .build();
+        scheduleSuggestion.setClub(club);
+        scheduleSuggestion.setMember(member);
+
+        return scheduleSuggestion;
+    }
 }

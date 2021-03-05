@@ -474,16 +474,6 @@ class ClubScheduleControllerTest {
         return parser.parseMap(responseBody).get("access_token").toString();
     }
 
-    private Member createMember() {
-        Member member = Member.builder()
-                .email("test@example.com")
-                .name("tester")
-                .password("1234")
-                .imagePath("imagePath")
-                .build();
-        return memberRepository.save(member);
-    }
-
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {
         ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
                 .clubName(clubName)
