@@ -2,6 +2,7 @@ package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.ScheduleSuggestionController;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
+import com.schedulsharing.dto.suggestion.SuggestionDeleteResponse;
 import com.schedulsharing.dto.suggestion.SuggestionResponse;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -18,23 +19,38 @@ public class SuggestionResource {
 
     public static EntityModel<SuggestionCreateResponse> createSuggestionLink(SuggestionCreateResponse createResponse) {
         List<Link> links = getSelfLink();
-
+        links.add(selfLinkBuilder.slash(createResponse.getId()).withRel("suggestion-getOne"));
+        links.add(selfLinkBuilder.slash(createResponse.getId()).withRel("suggestion-update"));
+        links.add(selfLinkBuilder.slash(createResponse.getId()).withRel("suggestion-delete"));
         links.add(Link.of("/docs/index.html#resources-suggestion-create", "profile"));
         return EntityModel.of(createResponse, links);
     }
 
     public static EntityModel<SuggestionResponse> getSuggestionLink(SuggestionResponse suggestionResponse, String email) {
         List<Link> links = getSelfLink(suggestionResponse.getId());
-
+        if(suggestionResponse.getMemberEmail().equals(email)){
+            links.add(selfLinkBuilder.slash(suggestionResponse.getId()).withRel("suggestion-update"));
+            links.add(selfLinkBuilder.slash(suggestionResponse.getId()).withRel("suggestion-delete"));
+        }
+        links.add(selfLinkBuilder.withRel("suggestion-create"));
         links.add(Link.of("/docs/index.html#resources-suggestion-getOne", "profile"));
         return EntityModel.of(suggestionResponse, links);
     }
 
     public static EntityModel<SuggestionResponse> updateSuggestionLink(SuggestionResponse suggestionResponse) {
         List<Link> links = getSelfLink(suggestionResponse.getId());
-
+        links.add(selfLinkBuilder.withRel("suggestion-create"));
+        links.add(selfLinkBuilder.slash(suggestionResponse.getId()).withRel("suggestion-getOne"));
+        links.add(selfLinkBuilder.slash(suggestionResponse.getId()).withRel("suggestion-delete"));
         links.add(Link.of("/docs/index.html#resources-suggestion-update", "profile"));
         return EntityModel.of(suggestionResponse, links);
+    }
+
+    public static EntityModel<SuggestionDeleteResponse> deleteSuggestionLink(SuggestionDeleteResponse suggestionDeleteResponse, Long id) {
+        List<Link> links = getSelfLink(id);
+        links.add(selfLinkBuilder.withRel("suggestion-create"));
+        links.add(Link.of("/docs/index.html#resources-suggestion-delete", "profile"));
+        return EntityModel.of(suggestionDeleteResponse, links);
     }
 
     private static List<Link> getSelfLink() {

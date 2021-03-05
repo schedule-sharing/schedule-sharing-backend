@@ -3,10 +3,7 @@ package com.schedulsharing.service;
 import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
-import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
-import com.schedulsharing.dto.suggestion.SuggestionResponse;
-import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
+import com.schedulsharing.dto.suggestion.*;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -116,7 +113,7 @@ class ScheduleSuggestionServiceTest {
 
     @DisplayName("스케줄제안 수정 성공")
     @Test
-    public void 스케줄제안_수정(){
+    public void 스케줄제안_수정() {
         Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
         ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
         SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
@@ -154,6 +151,30 @@ class ScheduleSuggestionServiceTest {
         assertEquals(result.getMinMember(), updateMinMember);
         assertEquals(result.getMemberName(), member.getName());
         assertEquals(result.getMemberEmail(), member.getEmail());
+    }
+
+    @DisplayName("스케줄제안 삭제 성공")
+    @Test
+    public void 스케줄제안_삭제() {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+
+        SuggestionDeleteResponse result = scheduleSuggestionService.delete(createResponse.getId(), member.getEmail()).getContent();
+        assertEquals(result.isSuccess(), true);
+        assertEquals(scheduleSuggestionRepository.findById(createResponse.getId()).isEmpty(), true);
+
     }
 
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {

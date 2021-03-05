@@ -1,10 +1,7 @@
 package com.schedulsharing.service;
 
 import com.schedulsharing.dto.resource.SuggestionResource;
-import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
-import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
-import com.schedulsharing.dto.suggestion.SuggestionResponse;
-import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
+import com.schedulsharing.dto.suggestion.*;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
@@ -65,6 +62,20 @@ public class ScheduleSuggestionService {
         return SuggestionResource.updateSuggestionLink(suggestionResponse);
     }
 
+    public EntityModel<SuggestionDeleteResponse> delete(Long id, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        ScheduleSuggestion suggestion = findSuggestionById(id);
+        if (!suggestion.getMember().equals(member)) {
+            throw new InvalidGrantException("삭제 권한이 없습니다.");
+        }
+        scheduleSuggestionRepository.deleteById(id);
+        SuggestionDeleteResponse suggestionDeleteResponse = SuggestionDeleteResponse.builder()
+                .success(true)
+                .message("클럽스케줄제안을 삭제하였습니다.")
+                .build();
+
+        return SuggestionResource.deleteSuggestionLink(suggestionDeleteResponse, id);
+    }
 
     private Club findClubById(Long clubId) {
         Optional<Club> optionalClub = clubRepository.findById(clubId);

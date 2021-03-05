@@ -37,4 +37,10 @@ public class ScheduleSuggestionController {
 
         return ResponseEntity.ok(scheduleSuggestionService.update(id, suggestionUpdateRequest, authentication.getName()));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteSuggestion(@PathVariable("id") Long id, Authentication authentication) {
+
+        return ResponseEntity.ok(scheduleSuggestionService.delete(id, authentication.getName()));
+    }
 }

@@ -135,3 +135,7 @@ operation::suggestion-getOne[snippets='path-parameters,http-request,request-head
 [[resources-suggestion-update]]
 === 클럽스케줄 제안 수정
 operation::suggestion-update[snippets='path-parameters,request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-suggestion-delete]]
+=== 클럽스케줄 제안 삭제
+operation::suggestion-delete[snippets='path-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']

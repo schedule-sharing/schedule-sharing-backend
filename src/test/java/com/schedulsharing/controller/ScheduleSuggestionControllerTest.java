@@ -128,6 +128,9 @@ class ScheduleSuggestionControllerTest {
                 .andDo(document("suggestion-create",
                         links(
                                 linkWithRel("self").description("link to self"),
+                                linkWithRel("suggestion-getOne").description("link to suggestion-getOne"),
+                                linkWithRel("suggestion-update").description("link to suggestion-update"),
+                                linkWithRel("suggestion-delete").description("link to suggestion-delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -158,15 +161,18 @@ class ScheduleSuggestionControllerTest {
                                 fieldWithPath("scheduleEndDate").description("생성된 클럽스케줄제안의 스케줄 끝나는 날짜"),
                                 fieldWithPath("voteStartDate").description("생성된 클럽스케줄제안의 투표 시작 날짜"),
                                 fieldWithPath("voteEndDate").description("생성된 클럽스케줄제안의 투표 끝나는 날짜"),
+                                fieldWithPath("_links.suggestion-getOne.href").description("link to suggestion-getOne"),
+                                fieldWithPath("_links.suggestion-update.href").description("link to suggestion-update"),
+                                fieldWithPath("_links.suggestion-delete.href").description("link to suggestion-delete"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
     }
 
-    @DisplayName("클럽스케줄제안 단건조회")
+    @DisplayName("작성자인 경우 클럽스케줄제안 단건조회")
     @Test
-    public void 클럽스케줄제안_단건조회() throws Exception {
+    public void 클럽스케줄제안_단건조회_작성자() throws Exception {
         Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
         ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
         SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
@@ -202,6 +208,9 @@ class ScheduleSuggestionControllerTest {
                         ),
                         links(
                                 linkWithRel("self").description("link to self"),
+                                linkWithRel("suggestion-create").description("link to suggestion-create"),
+                                linkWithRel("suggestion-update").description("link to suggestion-update 작성자의 경우에만 보입니다."),
+                                linkWithRel("suggestion-delete").description("link to suggestion-delete 작성자의 경우에만 보입니다."),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -223,6 +232,9 @@ class ScheduleSuggestionControllerTest {
                                 fieldWithPath("memberName").description("조회한 클럽스케줄제안을 작성한 멤버 이름"),
                                 fieldWithPath("memberEmail").description("조회한 클럽스케줄제안을 작성한 멤버 이메일"),
                                 fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.suggestion-create.href").description("link to suggestion-create"),
+                                fieldWithPath("_links.suggestion-update.href").description("link to suggestion-update"),
+                                fieldWithPath("_links.suggestion-delete.href").description("link to suggestion-delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -282,6 +294,9 @@ class ScheduleSuggestionControllerTest {
                         ),
                         links(
                                 linkWithRel("self").description("link to self"),
+                                linkWithRel("suggestion-create").description("link to suggestion-create"),
+                                linkWithRel("suggestion-getOne").description("link to suggestion-getOne"),
+                                linkWithRel("suggestion-delete").description("link to suggestion-delete"),
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
@@ -314,6 +329,9 @@ class ScheduleSuggestionControllerTest {
                                 fieldWithPath("memberName").description("수정된 클럽스케줄제안을 작성한 멤버 이름"),
                                 fieldWithPath("memberEmail").description("수정된 클럽스케줄제안을 작성한 멤버 이메일"),
                                 fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.suggestion-create.href").description("link to suggestion-create"),
+                                fieldWithPath("_links.suggestion-getOne.href").description("link to suggestion-getOne"),
+                                fieldWithPath("_links.suggestion-delete.href").description("link to suggestion-delete"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )
                 ));
@@ -356,6 +374,79 @@ class ScheduleSuggestionControllerTest {
                 .header(HttpHeaders.AUTHORIZATION, getBearToken())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(suggestionUpdateRequest)))
+                .andDo(print())
+                .andExpect(status().isForbidden());
+    }
+
+    @DisplayName("클럽스케줄제안 삭제성공")
+    @Test
+    public void 클럽스케줄제안_삭제성공() throws Exception {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/suggestion/{id}", createResponse.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("success").exists())
+                .andExpect(jsonPath("message").exists())
+                .andDo(document("suggestion-delete",
+                        pathParameters(
+                                parameterWithName("id").description("삭제할 클럽스케줄제안의 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("suggestion-create").description("link to suggestion-create"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("success").description("클럽스케줄제안 삭제 성공 여부"),
+                                fieldWithPath("message").description("클럽스케줄제안 삭제 성공 메시지"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.suggestion-create.href").description("link to suggestion-create"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("작성자가 아닌 다른사람인 경우 클럽스케줄제안 삭제실패")
+    @Test
+    public void 클럽스케줄제안_삭제실패_권한없음() throws Exception {
+        Member member = memberRepository.findByEmail("test2@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+
+        mvc.perform(RestDocumentationRequestBuilders.delete("/api/suggestion/{id}", createResponse.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
     }
