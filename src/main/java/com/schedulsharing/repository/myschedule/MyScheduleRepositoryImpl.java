@@ -20,13 +20,12 @@ public class MyScheduleRepositoryImpl implements MyScheduleCustomRespository {
 
     @Override
     public List<MySchedule> findAllByEmail(String email, MyYearMonthRequest myYearMonthRequest) {
-        System.out.println("email = " + email);
-        System.out.println("myYearMonthRequest = " + myYearMonthRequest.getMyYearMonth());
         return queryFactory.selectFrom(mySchedule)
                 .where(mySchedule.scheduleStartDate.year().eq(myYearMonthRequest.getMyYearMonth().getYear())
                         .and(mySchedule.scheduleEndDate.year().eq(myYearMonthRequest.getMyYearMonth().getMonthValue()))
                         .or(mySchedule.scheduleEndDate.year().eq(myYearMonthRequest.getMyYearMonth().getYear()))
-                        .and(mySchedule.scheduleEndDate.month().eq(myYearMonthRequest.getMyYearMonth().getMonthValue())))
+                        .and(mySchedule.scheduleEndDate.month().eq(myYearMonthRequest.getMyYearMonth().getMonthValue()))
+                        .and(mySchedule.member.email.eq(email)))
                 .fetch();
     }
 }
