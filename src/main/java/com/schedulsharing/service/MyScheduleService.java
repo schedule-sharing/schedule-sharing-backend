@@ -5,6 +5,7 @@ import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.MySchedule;
 import com.schedulsharing.excpetion.MyScheduleNotFoundException;
+import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.MyScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -41,14 +43,23 @@ public class MyScheduleService {
         return MyScheduleResource.getMyScheduleLink(myScheduleResponse);
     }
 
-    public EntityModel<MyScheduleUpdateResponse> update(Long myScheduleId, MyScheduleUpdateRequest updateRequest) {
+    public EntityModel<MyScheduleUpdateResponse> update(Long myScheduleId, MyScheduleUpdateRequest updateRequest, String email) {
+        Member member = memberRepository.findByEmail(email).get();
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
+        if (!member.equals(mySchedule.getMember())) {
+            throw new InvalidGrantException("수정 권한이 없습니다.");
+        }
         mySchedule.update(updateRequest);
         MyScheduleUpdateResponse myScheduleUpdateResponse = modelMapper.map(mySchedule, MyScheduleUpdateResponse.class);
         return MyScheduleResource.updateMyScheduleLink(myScheduleUpdateResponse);
     }
 
-    public EntityModel<MyScheduleDeleteResponse> delete(Long myScheduleId) {
+    public EntityModel<MyScheduleDeleteResponse> delete(Long myScheduleId, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        MySchedule mySchedule = mySchedulefindById(myScheduleId);
+        if (!member.equals(mySchedule.getMember())) {
+            throw new InvalidGrantException("삭제 권한이 없습니다.");
+        }
         myScheduleRepository.deleteById(myScheduleId);
         MyScheduleDeleteResponse myScheduleDeleteResponse = MyScheduleDeleteResponse.builder()
                 .message("나의 스케줄을 삭제하였습니다.")

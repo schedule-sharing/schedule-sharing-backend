@@ -4,22 +4,19 @@ import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.*;
 import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.entity.schedule.ClubSchedule;
 import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Collection;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -50,8 +47,8 @@ class ClubScheduleServiceTest {
         ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
         String scheduleName = "클럽 스케줄 생성 테스트";
         String scheduleContents = "스터디 모임";
-        LocalDateTime startMeetingDate = LocalDateTime.now();
-        LocalDateTime endMeetingDate = LocalDateTime.now();
+        LocalDateTime startMeetingDate = LocalDateTime.of(2020, 03, 03, 17, 00);
+        LocalDateTime endMeetingDate = LocalDateTime.of(2020, 03, 04, 17, 00);
         ClubScheduleCreateRequest createRequest = ClubScheduleCreateRequest.builder()
                 .name(scheduleName)
                 .contents(scheduleContents)

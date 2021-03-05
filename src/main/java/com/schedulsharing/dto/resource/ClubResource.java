@@ -60,7 +60,7 @@ public class ClubResource extends EntityModel<Club> {
         return EntityModel.of(clubUpdateResponse, links);
     }
 
-    public static EntityModel<ClubDeleteResponse> deleteClubLink(ClubDeleteResponse clubDeleteResponse,Long clubId) {
+    public static EntityModel<ClubDeleteResponse> deleteClubLink(ClubDeleteResponse clubDeleteResponse, Long clubId) {
         List<Link> links = getSelfLink();
         links.add(selfLinkBuilder.withRel("club-create"));
         links.add(Link.of("/docs/index.html#resources-club-delete", "profile"));

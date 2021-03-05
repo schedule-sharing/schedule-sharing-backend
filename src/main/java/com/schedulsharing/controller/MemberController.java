@@ -1,9 +1,6 @@
 package com.schedulsharing.controller;
 
-import com.schedulsharing.dto.member.EmailCheckRequestDto;
-import com.schedulsharing.dto.member.MemberSearchRequest;
-import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.dto.member.SignUpResponseDto;
+import com.schedulsharing.dto.member.*;
 import com.schedulsharing.service.MemberService;
 import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
@@ -50,5 +47,20 @@ public class MemberController {
     public ResponseEntity getMemberByEmail(@RequestBody MemberSearchRequest memberSearchRequest) {
 
         return ResponseEntity.ok(memberService.getMemberByEmail(memberSearchRequest));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity getMemberById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(memberService.getMemberById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest memberUpdateRequest, Authentication authentication) {
+        return ResponseEntity.ok(memberService.updateMember(id, memberUpdateRequest, authentication.getName()));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteMember(@PathVariable("id") Long id, Authentication authentication) {
+        return ResponseEntity.ok(memberService.deleteMember(id, authentication.getName()));
     }
 }

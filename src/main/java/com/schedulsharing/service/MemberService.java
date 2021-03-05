@@ -6,6 +6,7 @@ import com.schedulsharing.dto.member.*;
 import com.schedulsharing.dto.resource.MemberResource;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
+import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.member.EmailExistedException;
 import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.repository.MemberRepository;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,11 +42,9 @@ public class MemberService {
         Member memberEntity = signUpRequestDto.toEntity(passwordEncoder);
         Member savedMember = memberRepository.save(memberEntity);
 
-        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "signup", "/docs/index.html#resources-member-signup");
+        SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
 
-        final SignUpResponseDto signUpResponseDto = modelMapper.map(savedMember, SignUpResponseDto.class);
-
-        return EntityModel.of(signUpResponseDto,links);
+        return MemberResource.signUpLinks(signUpResponseDto);
     }
 
     @Transactional(readOnly = true)
@@ -78,5 +78,35 @@ public class MemberService {
         Member member = optionalMember.get();
         MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
         return MemberResource.getMemberByEmailLink(memberResponse);
+    }
+
+    @Transactional(readOnly = true)
+    public EntityModel<MemberResponse> getMemberById(Long id) {
+        Member member = memberRepository.findById(id).get();
+        MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
+        return MemberResource.getMemberById(memberResponse);
+    }
+
+    public EntityModel<MemberUpdateResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        if (!member.getId().equals(id)) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
+        member.update(memberUpdateRequest, passwordEncoder);
+        MemberUpdateResponse memberUpdateResponse = modelMapper.map(member, MemberUpdateResponse.class);
+        return MemberResource.updateMemberLink(memberUpdateResponse);
+    }
+
+    public EntityModel<MemberDeleteResponse> deleteMember(Long id, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        if (!member.getId().equals(id)) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
+        memberRepository.deleteById(id);
+        MemberDeleteResponse memberDeleteResponse = MemberDeleteResponse.builder()
+                .success(true)
+                .message("성공적으로 탈퇴하셨습니다.")
+                .build();
+        return MemberResource.deleteMemberLink(id, memberDeleteResponse);
     }
 }

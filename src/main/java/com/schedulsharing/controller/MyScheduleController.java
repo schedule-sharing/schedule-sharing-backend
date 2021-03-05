@@ -40,11 +40,11 @@ public class MyScheduleController {
     @PutMapping("/{id}")
     public ResponseEntity updateMySchedule(@PathVariable("id") Long id,
                                            @RequestBody @Valid MyScheduleUpdateRequest updateRequest, Authentication authentication) {
-        return ResponseEntity.ok(myScheduleService.update(id, updateRequest));
+        return ResponseEntity.ok(myScheduleService.update(id, updateRequest, authentication.getName()));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteMySchedule(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(myScheduleService.delete(id));
+    public ResponseEntity deleteMySchedule(@PathVariable("id") Long id, Authentication authentication) {
+        return ResponseEntity.ok(myScheduleService.delete(id, authentication.getName()));
     }
 }
