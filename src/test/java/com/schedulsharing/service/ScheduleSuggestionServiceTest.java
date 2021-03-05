@@ -6,6 +6,7 @@ import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
 import com.schedulsharing.dto.suggestion.SuggestionResponse;
+import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -109,6 +110,48 @@ class ScheduleSuggestionServiceTest {
         assertEquals(result.getContents(), contents);
         assertEquals(result.getLocation(), location);
         assertEquals(result.getMinMember(), minMember);
+        assertEquals(result.getMemberName(), member.getName());
+        assertEquals(result.getMemberEmail(), member.getEmail());
+    }
+
+    @DisplayName("스케줄제안 수정 성공")
+    @Test
+    public void 스케줄제안_수정(){
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        String updateTitle = "수정된 테스트 제안 제목";
+        String updateContents = "수정된 테스트 제안 내용";
+        String updateLocation = "수정된 제안 위치";
+        int updateMinMember = 5;
+
+        SuggestionUpdateRequest suggestionUpdateRequest = SuggestionUpdateRequest.builder()
+                .title(updateTitle)
+                .contents(updateContents)
+                .location(updateLocation)
+                .minMember(updateMinMember)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .build();
+
+        SuggestionResponse result = scheduleSuggestionService.update(createResponse.getId(), suggestionUpdateRequest, member.getEmail()).getContent();
+        assertEquals(result.getTitle(), updateTitle);
+        assertEquals(result.getContents(), updateContents);
+        assertEquals(result.getLocation(), updateLocation);
+        assertEquals(result.getMinMember(), updateMinMember);
         assertEquals(result.getMemberName(), member.getName());
         assertEquals(result.getMemberEmail(), member.getEmail());
     }

@@ -30,6 +30,13 @@ public class SuggestionResource {
         return EntityModel.of(suggestionResponse, links);
     }
 
+    public static EntityModel<SuggestionResponse> updateSuggestionLink(SuggestionResponse suggestionResponse) {
+        List<Link> links = getSelfLink(suggestionResponse.getId());
+
+        links.add(Link.of("/docs/index.html#resources-suggestion-update", "profile"));
+        return EntityModel.of(suggestionResponse, links);
+    }
+
     private static List<Link> getSelfLink() {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.withSelfRel());

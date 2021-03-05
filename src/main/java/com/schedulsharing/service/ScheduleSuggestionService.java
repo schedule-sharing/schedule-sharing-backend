@@ -4,10 +4,12 @@ import com.schedulsharing.dto.resource.SuggestionResource;
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
 import com.schedulsharing.dto.suggestion.SuggestionResponse;
+import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
+import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.scheduleSuggestion.SuggestionNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -51,6 +53,18 @@ public class ScheduleSuggestionService {
         return SuggestionResource.getSuggestionLink(suggestionResponse, email);
     }
 
+    public EntityModel<SuggestionResponse> update(Long id, SuggestionUpdateRequest suggestionUpdateRequest, String email) {
+        Member member = memberRepository.findByEmail(email).get();
+        ScheduleSuggestion suggestion = findSuggestionById(id);
+        if (!suggestion.getMember().equals(member)) {
+            throw new InvalidGrantException("수정할 권한이 없습니다.");
+        }
+        suggestion.update(suggestionUpdateRequest);
+        SuggestionResponse suggestionResponse = modelMapper.map(suggestion, SuggestionResponse.class);
+
+        return SuggestionResource.updateSuggestionLink(suggestionResponse);
+    }
+
 
     private Club findClubById(Long clubId) {
         Optional<Club> optionalClub = clubRepository.findById(clubId);
@@ -60,4 +74,11 @@ public class ScheduleSuggestionService {
         return optionalClub.get();
     }
 
+    private ScheduleSuggestion findSuggestionById(Long suggestionId) {
+        Optional<ScheduleSuggestion> optionalScheduleSuggestion = scheduleSuggestionRepository.findById(suggestionId);
+        if (optionalScheduleSuggestion.isEmpty()) {
+            throw new SuggestionNotFoundException("클럽스케줄제안이 없습니다.");
+        }
+        return optionalScheduleSuggestion.get();
+    }
 }

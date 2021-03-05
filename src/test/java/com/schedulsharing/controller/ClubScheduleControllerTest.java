@@ -91,7 +91,7 @@ class ClubScheduleControllerTest {
         SignUpRequestDto signUpRequestDto2 = SignUpRequestDto.builder()
                 .email("test2@example.com")
                 .password("1234")
-                .name("테스터")
+                .name("테스터2")
                 .imagePath("imagePath2")
                 .build();
 

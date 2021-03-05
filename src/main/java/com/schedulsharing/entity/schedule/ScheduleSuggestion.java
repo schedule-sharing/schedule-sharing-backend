@@ -1,6 +1,7 @@
 package com.schedulsharing.entity.schedule;
 
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
+import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
@@ -59,6 +60,17 @@ public class ScheduleSuggestion {
     public void setMember(Member member) {
         this.member = member;
         member.getSuggestions().add(this);
+    }
+
+    public void update(SuggestionUpdateRequest suggestionUpdateRequest) {
+        this.title = suggestionUpdateRequest.getTitle();
+        this.contents = suggestionUpdateRequest.getContents();
+        this.minMember = suggestionUpdateRequest.getMinMember();
+        this.location = suggestionUpdateRequest.getLocation();
+        this.scheduleStartDate = suggestionUpdateRequest.getScheduleStartDate();
+        this.scheduleEndDate = suggestionUpdateRequest.getScheduleEndDate();
+        this.voteStartDate = suggestionUpdateRequest.getVoteStartDate();
+        this.voteEndDate = suggestionUpdateRequest.getVoteEndDate();
     }
 
     public static ScheduleSuggestion createSuggestion(SuggestionCreateRequest suggestionCreateRequest, Member member, Club club) {
