@@ -6,8 +6,8 @@ import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.dto.member.SignUpResponseDto;
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
+import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -26,20 +26,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,6 +61,8 @@ class ScheduleSuggestionControllerTest {
     private ClubService clubService;
     @Autowired
     private ScheduleSuggestionRepository scheduleSuggestionRepository;
+    @Autowired
+    private ScheduleSuggestionService scheduleSuggestionService;
 
     @BeforeEach
     public void setUp() {
@@ -148,6 +147,67 @@ class ScheduleSuggestionControllerTest {
                                 fieldWithPath("scheduleEndDate").description("생성된 클럽스케줄제안의 스케줄 끝나는 날짜"),
                                 fieldWithPath("voteStartDate").description("생성된 클럽스케줄제안의 투표 시작 날짜"),
                                 fieldWithPath("voteEndDate").description("생성된 클럽스케줄제안의 투표 끝나는 날짜"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("클럽스케줄제안 단건조회")
+    @Test
+    public void 클럽스케줄제안_단건조회() throws Exception {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        mvc.perform(RestDocumentationRequestBuilders.get("/api/suggestion/{id}", createResponse.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("title").exists())
+                .andExpect(jsonPath("contents").exists())
+                .andExpect(jsonPath("location").exists())
+                .andExpect(jsonPath("minMember").exists())
+                .andExpect(jsonPath("scheduleStartDate").exists())
+                .andExpect(jsonPath("scheduleEndDate").exists())
+                .andExpect(jsonPath("voteStartDate").exists())
+                .andExpect(jsonPath("voteStartDate").exists())
+                .andExpect(jsonPath("memberName").exists())
+                .andExpect(jsonPath("memberEmail").exists())
+                .andDo(document("suggestion-getOne",
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("조회한 클럽스케줄제안의 고유아이디"),
+                                fieldWithPath("title").description("조회한 클럽스케줄제안의 제목"),
+                                fieldWithPath("contents").description("조회한 클럽스케줄제안의 내용"),
+                                fieldWithPath("location").description("조회한 클럽스케줄제안의 위치"),
+                                fieldWithPath("minMember").description("조회한 클럽스케줄제안의 최소인원"),
+                                fieldWithPath("scheduleStartDate").description("조회한 클럽스케줄제안의 스케줄 시작 날짜"),
+                                fieldWithPath("scheduleEndDate").description("조회한 클럽스케줄제안의 스케줄 끝나는 날짜"),
+                                fieldWithPath("voteStartDate").description("조회한 클럽스케줄제안의 투표 시작 날짜"),
+                                fieldWithPath("voteEndDate").description("조회한 클럽스케줄제안의 투표 끝나는 날짜"),
+                                fieldWithPath("memberName").description("조회한 클럽스케줄제안을 작성한 멤버 이름"),
+                                fieldWithPath("memberEmail").description("조회한 클럽스케줄제안을 작성한 멤버 이메일"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
                         )

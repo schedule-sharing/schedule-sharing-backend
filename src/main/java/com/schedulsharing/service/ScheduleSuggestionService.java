@@ -3,10 +3,12 @@ package com.schedulsharing.service;
 import com.schedulsharing.dto.resource.SuggestionResource;
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
+import com.schedulsharing.dto.suggestion.SuggestionResponse;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
+import com.schedulsharing.excpetion.scheduleSuggestion.SuggestionNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.ScheduleSuggestionRepository;
@@ -37,6 +39,18 @@ public class ScheduleSuggestionService {
         return SuggestionResource.createSuggestionLink(createResponse);
     }
 
+    @Transactional(readOnly = true)
+    public EntityModel<SuggestionResponse> getSuggestion(Long id, String email) {
+        Optional<ScheduleSuggestion> optionalScheduleSuggestion = scheduleSuggestionRepository.findById(id);
+        if (optionalScheduleSuggestion.isEmpty()) {
+            throw new SuggestionNotFoundException("클럽스케줄제안이 없습니다.");
+        }
+        ScheduleSuggestion scheduleSuggestion = optionalScheduleSuggestion.get();
+        SuggestionResponse suggestionResponse = modelMapper.map(scheduleSuggestion, SuggestionResponse.class);
+
+        return SuggestionResource.getSuggestionLink(suggestionResponse, email);
+    }
+
 
     private Club findClubById(Long clubId) {
         Optional<Club> optionalClub = clubRepository.findById(clubId);
@@ -45,4 +59,5 @@ public class ScheduleSuggestionService {
         }
         return optionalClub.get();
     }
+
 }
