@@ -4,6 +4,7 @@ import com.schedulsharing.dto.member.MemberUpdateRequest;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.schedule.ClubSchedule;
 import com.schedulsharing.entity.schedule.MySchedule;
+import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import io.jsonwebtoken.Claims;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,14 +41,21 @@ public class Member {
         this.imagePath = memberUpdateRequest.getImagePath();
     }
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MemberClub> memberClubs = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ClubSchedule> clubSchedules = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<MySchedule> mySchedules = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<ScheduleSuggestion> suggestions = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)

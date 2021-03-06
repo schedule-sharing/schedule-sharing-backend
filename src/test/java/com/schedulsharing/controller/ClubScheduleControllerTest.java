@@ -91,7 +91,7 @@ class ClubScheduleControllerTest {
         SignUpRequestDto signUpRequestDto2 = SignUpRequestDto.builder()
                 .email("test2@example.com")
                 .password("1234")
-                .name("테스터")
+                .name("테스터2")
                 .imagePath("imagePath2")
                 .build();
 
@@ -472,16 +472,6 @@ class ClubScheduleControllerTest {
         String responseBody = perform.andReturn().getResponse().getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
         return parser.parseMap(responseBody).get("access_token").toString();
-    }
-
-    private Member createMember() {
-        Member member = Member.builder()
-                .email("test@example.com")
-                .name("tester")
-                .password("1234")
-                .imagePath("imagePath")
-                .build();
-        return memberRepository.save(member);
     }
 
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {

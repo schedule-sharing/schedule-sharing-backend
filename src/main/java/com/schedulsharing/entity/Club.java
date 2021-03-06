@@ -1,5 +1,6 @@
 package com.schedulsharing.entity;
 
+import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,6 +32,10 @@ public class Club {
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL)
     @Builder.Default
     private List<MemberClub> memberClubs = new ArrayList<>();
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.REMOVE)
+    @Builder.Default
+    private List<ScheduleSuggestion> suggestions = new ArrayList<>();
 
     public void addMemberClubs(List<MemberClub> memberClub) {
         for (MemberClub mClub : memberClub) {
