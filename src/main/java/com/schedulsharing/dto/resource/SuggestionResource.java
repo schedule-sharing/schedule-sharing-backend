@@ -71,7 +71,7 @@ public class SuggestionResource {
                             selfLinkBuilder.withRel("suggestion-create"),
                             selfLinkBuilder.slash(response.getId()).withRel("suggestion-getOne"));
                 }).collect(Collectors.toList());
-        links.add(Link.of("/docs/index.html#resources-suggestion-list", "profile"));
+        links.add(Link.of("/docs/index.html#resources-suggestion-confirmList", "profile"));
 
         return CollectionModel.of(entityModelList, links);
     }

@@ -324,7 +324,7 @@ class ScheduleSuggestionControllerTest {
                 .andExpect(jsonPath("_embedded.suggestionList[0].voteEndDate").exists())
                 .andExpect(jsonPath("_embedded.suggestionList[0].memberName").exists())
                 .andExpect(jsonPath("_embedded.suggestionList[0].memberEmail").exists())
-                .andDo(document("suggestion-list",
+                .andDo(document("suggestion-confirmList",
                         pathParameters(
                                 parameterWithName("clubId").description("클럽스케줄제안을 가져올 클럽 고유 아이디")
                         ),
