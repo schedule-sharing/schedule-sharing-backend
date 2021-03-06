@@ -3,7 +3,7 @@ package com.schedulsharing.controller;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
-import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.resource.ClubScheduleResource;
 import com.schedulsharing.service.ClubScheduleService;
 import lombok.RequiredArgsConstructor;

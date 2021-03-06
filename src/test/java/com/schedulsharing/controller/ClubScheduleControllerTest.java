@@ -7,7 +7,7 @@ import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
-import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.entity.member.Member;

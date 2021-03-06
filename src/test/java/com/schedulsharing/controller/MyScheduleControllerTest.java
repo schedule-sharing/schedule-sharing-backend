@@ -5,9 +5,9 @@ import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
-import com.schedulsharing.dto.MySchedule.MyYearMonthRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.myschedule.MyScheduleRepository;
@@ -226,8 +226,8 @@ public class MyScheduleControllerTest {
             myScheduleService.create(createRequest, member.getEmail()).getContent();
         }
 
-        MyYearMonthRequest myYearMonthRequest = MyYearMonthRequest.builder()
-                .myYearMonth(YearMonth.of(2021, 3))
+        YearMonthRequest myYearMonthRequest = YearMonthRequest.builder()
+                .yearMonth(YearMonth.of(2021, 3))
                 .build();
 
         mvc.perform(RestDocumentationRequestBuilders.get("/api/myschedule/list")
@@ -251,7 +251,7 @@ public class MyScheduleControllerTest {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
                         ),
                         requestFields(
-                                fieldWithPath("myYearMonth").description("나의 스케줄리스트를 조회할 year,month")
+                                fieldWithPath("yearMonth").description("나의 스케줄리스트를 조회할 year,month")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")

@@ -1,6 +1,7 @@
 package com.schedulsharing.service;
 
 import com.schedulsharing.dto.ClubSchedule.*;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.resource.ClubScheduleResource;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;

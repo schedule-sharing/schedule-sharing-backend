@@ -1,9 +1,8 @@
 package com.schedulsharing.repository.clubSchedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.schedule.ClubSchedule;
-import com.schedulsharing.entity.schedule.QClubSchedule;
 
 import javax.persistence.EntityManager;
 import java.util.List;

@@ -1,5 +1,6 @@
 package com.schedulsharing.service;
 
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.entity.member.Member;
@@ -46,9 +47,9 @@ public class MyScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleList(MyYearMonthRequest myYearMonthRequest, String email) {
+    public CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleList(YearMonthRequest yearMonthRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
-        List<MySchedule> myScheduleList = myScheduleRepository.findAllByEmail(member.getEmail(), myYearMonthRequest);
+        List<MySchedule> myScheduleList = myScheduleRepository.findAllByEmail(member.getEmail(), yearMonthRequest);
         for (MySchedule mySchedule : myScheduleList) {
             if (!member.getEmail().equals(mySchedule.getMember().getEmail())) {
                 throw new InvalidGrantException("조회 권한이 없습니다.");

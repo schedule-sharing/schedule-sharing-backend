@@ -1,6 +1,6 @@
 package com.schedulsharing.repository.clubSchedule;
 
-import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.schedule.ClubSchedule;
 
 import java.util.List;

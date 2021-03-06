@@ -1,4 +1,4 @@
-package com.schedulsharing.dto.MySchedule;
+package com.schedulsharing.dto.yearMonth;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -13,8 +13,8 @@ import java.time.YearMonth;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MyYearMonthRequest {
+public class YearMonthRequest {
     @DateTimeFormat(pattern = "yyyy-MM")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM", timezone = "Asia/Seoul")
-    private YearMonth myYearMonth;
+    private YearMonth yearMonth;
 }

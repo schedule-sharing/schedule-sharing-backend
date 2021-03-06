@@ -1,8 +1,6 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleResponse;
-import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.MemberRepository;
@@ -120,8 +118,8 @@ public class MyScheuldeServiceTest {
             myScheduleService.create(createRequest, member.getEmail()).getContent();
         }
 
-        MyYearMonthRequest yearMonthRequest = MyYearMonthRequest.builder()
-                .myYearMonth(YearMonth.of(2021, 3))
+        YearMonthRequest yearMonthRequest = YearMonthRequest.builder()
+                .yearMonth(YearMonth.of(2021, 3))
                 .build();
 
         Collection<EntityModel<MyScheduleResponse>> myScheduleList = myScheduleService.getMyScheduleList(yearMonthRequest, member.getEmail()).getContent();
