@@ -1,5 +1,6 @@
 package com.schedulsharing.service;
 
+import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
 import com.schedulsharing.dto.resource.SuggestionResource;
 import com.schedulsharing.dto.suggestion.*;
 import com.schedulsharing.entity.Club;
@@ -10,14 +11,17 @@ import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.scheduleSuggestion.SuggestionNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.ScheduleSuggestionRepository;
+import com.schedulsharing.repository.suggestion.ScheduleSuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -77,6 +81,16 @@ public class ScheduleSuggestionService {
         return SuggestionResource.deleteSuggestionLink(suggestionDeleteResponse, id);
     }
 
+    @Transactional(readOnly = true)
+    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionList(Long clubId, YearMonthRequest yearMonthRequest, String email) {
+        List<ScheduleSuggestion> suggestions = scheduleSuggestionRepository.findAllByClubIdConfirm(clubId, yearMonthRequest);
+        List<SuggestionResponse> responseList = suggestions.stream()
+                .map(clubSchedule -> modelMapper.map(clubSchedule, SuggestionResponse.class))
+                .collect(Collectors.toList());
+
+        return SuggestionResource.getSuggestionListLink(responseList, clubId, email);
+    }
+
     private Club findClubById(Long clubId) {
         Optional<Club> optionalClub = clubRepository.findById(clubId);
         if (optionalClub.isEmpty()) {
@@ -92,4 +106,5 @@ public class ScheduleSuggestionService {
         }
         return optionalScheduleSuggestion.get();
     }
+
 }

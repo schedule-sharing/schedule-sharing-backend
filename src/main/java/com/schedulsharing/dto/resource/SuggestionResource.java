@@ -4,6 +4,7 @@ import com.schedulsharing.controller.ScheduleSuggestionController;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
 import com.schedulsharing.dto.suggestion.SuggestionDeleteResponse;
 import com.schedulsharing.dto.suggestion.SuggestionResponse;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -11,6 +12,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -53,6 +55,27 @@ public class SuggestionResource {
         return EntityModel.of(suggestionDeleteResponse, links);
     }
 
+    public static CollectionModel<EntityModel<SuggestionResponse>> getSuggestionListLink(List<SuggestionResponse> responseList, Long clubId, String email) {
+        List<Link> links = getSelfLink("list", clubId);
+
+        List<EntityModel<SuggestionResponse>> entityModelList = responseList.stream()
+                .map(response -> {
+                    if (response.getMemberEmail().equals(email)) {
+                        return EntityModel.of(response,
+                                selfLinkBuilder.withRel("suggestion-create"),
+                                selfLinkBuilder.slash(response.getId()).withRel("suggestion-getOne"),
+                                selfLinkBuilder.slash(response.getId()).withRel("suggestion-update"),
+                                selfLinkBuilder.slash(response.getId()).withRel("suggestion-delete"));
+                    }
+                    return EntityModel.of(response,
+                            selfLinkBuilder.withRel("suggestion-create"),
+                            selfLinkBuilder.slash(response.getId()).withRel("suggestion-getOne"));
+                }).collect(Collectors.toList());
+        links.add(Link.of("/docs/index.html#resources-suggestion-list", "profile"));
+
+        return CollectionModel.of(entityModelList, links);
+    }
+
     private static List<Link> getSelfLink() {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.withSelfRel());
@@ -62,6 +85,12 @@ public class SuggestionResource {
     private static List<Link> getSelfLink(Long suggestionId) {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.slash(suggestionId).withSelfRel());
+        return links;
+    }
+
+    private static List<Link> getSelfLink(String slashNext, Long clubId) {
+        List<Link> links = new ArrayList<>();
+        links.add(selfLinkBuilder.slash(slashNext).slash(clubId).withSelfRel());
         return links;
     }
 

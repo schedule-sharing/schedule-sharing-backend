@@ -1,10 +1,12 @@
 package com.schedulsharing.dto.suggestion;
 
 import lombok.Data;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.time.LocalDateTime;
 
 @Data
+@Relation(collectionRelation = "suggestionList")
 public class SuggestionResponse {
     private Long id;
 
@@ -15,6 +17,8 @@ public class SuggestionResponse {
     private String location;
 
     private int minMember;
+
+    private boolean confirm;
 
     private LocalDateTime scheduleStartDate;
 

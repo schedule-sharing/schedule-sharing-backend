@@ -1,5 +1,6 @@
 package com.schedulsharing.controller;
 
+import com.schedulsharing.dto.ClubSchedule.YearMonthRequest;
 import com.schedulsharing.dto.resource.SuggestionResource;
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
@@ -28,6 +29,13 @@ public class ScheduleSuggestionController {
     public ResponseEntity getSuggestion(@PathVariable("id") Long id, Authentication authentication) {
 
         return ResponseEntity.ok(scheduleSuggestionService.getSuggestion(id, authentication.getName()));
+    }
+
+    @GetMapping("/list/{clubId}")
+    public ResponseEntity getClubScheduleList(@PathVariable("clubId") Long clubId,
+                                              @RequestBody YearMonthRequest yearMonthRequest,
+                                              Authentication authentication) {
+        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, yearMonthRequest, authentication.getName()));
     }
 
     @PutMapping("/{id}")
