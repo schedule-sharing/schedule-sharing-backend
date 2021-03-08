@@ -30,4 +30,6 @@ public class Vote {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_suggestion_id")
     private ScheduleSuggestion scheduleSuggestion;
+
+
 }

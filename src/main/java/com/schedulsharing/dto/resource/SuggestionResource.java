@@ -55,10 +55,26 @@ public class SuggestionResource {
         return EntityModel.of(suggestionDeleteResponse, links);
     }
 
+    public static CollectionModel<EntityModel<SuggestionResponse>> getSuggestionListConfirmLink(List<SuggestionResponse> responseList, Long clubId, String email) {
+        List<Link> links = getSelfLink("confirmList", clubId);
+
+        List<EntityModel<SuggestionResponse>> entityModelList = getListLink(responseList, email);
+        links.add(Link.of("/docs/index.html#resources-suggestion-confirmList", "profile"));
+
+        return CollectionModel.of(entityModelList, links);
+    }
+
     public static CollectionModel<EntityModel<SuggestionResponse>> getSuggestionListLink(List<SuggestionResponse> responseList, Long clubId, String email) {
         List<Link> links = getSelfLink("list", clubId);
 
-        List<EntityModel<SuggestionResponse>> entityModelList = responseList.stream()
+        List<EntityModel<SuggestionResponse>> entityModelList = getListLink(responseList, email);
+        links.add(Link.of("/docs/index.html#resources-suggestion-list", "profile"));
+
+        return CollectionModel.of(entityModelList, links);
+    }
+
+    private static List<EntityModel<SuggestionResponse>> getListLink(List<SuggestionResponse> responseList, String email) {
+        return responseList.stream()
                 .map(response -> {
                     if (response.getMemberEmail().equals(email)) {
                         return EntityModel.of(response,
@@ -71,9 +87,6 @@ public class SuggestionResource {
                             selfLinkBuilder.withRel("suggestion-create"),
                             selfLinkBuilder.slash(response.getId()).withRel("suggestion-getOne"));
                 }).collect(Collectors.toList());
-        links.add(Link.of("/docs/index.html#resources-suggestion-confirmList", "profile"));
-
-        return CollectionModel.of(entityModelList, links);
     }
 
     private static List<Link> getSelfLink() {
