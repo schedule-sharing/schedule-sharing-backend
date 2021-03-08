@@ -82,8 +82,18 @@ public class ScheduleSuggestionService {
     }
 
     @Transactional(readOnly = true)
-    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionList(Long clubId, YearMonthRequest yearMonthRequest, String email) {
+    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionListConfirm(Long clubId, YearMonthRequest yearMonthRequest, String email) {
         List<ScheduleSuggestion> suggestions = scheduleSuggestionRepository.findAllByClubIdConfirm(clubId, yearMonthRequest);
+        List<SuggestionResponse> responseList = suggestions.stream()
+                .map(clubSchedule -> modelMapper.map(clubSchedule, SuggestionResponse.class))
+                .collect(Collectors.toList());
+
+        return SuggestionResource.getSuggestionListConfirmLink(responseList, clubId, email);
+    }
+
+    @Transactional(readOnly = true)
+    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionList(Long clubId, SuggestionListRequest suggestionListRequest, String email) {
+        List<ScheduleSuggestion> suggestions = scheduleSuggestionRepository.findAllByClubId(clubId, suggestionListRequest);
         List<SuggestionResponse> responseList = suggestions.stream()
                 .map(clubSchedule -> modelMapper.map(clubSchedule, SuggestionResponse.class))
                 .collect(Collectors.toList());
@@ -106,5 +116,4 @@ public class ScheduleSuggestionService {
         }
         return optionalScheduleSuggestion.get();
     }
-
 }

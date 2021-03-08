@@ -3,6 +3,7 @@ package com.schedulsharing.controller;
 import com.schedulsharing.dto.resource.SuggestionResource;
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
+import com.schedulsharing.dto.suggestion.SuggestionListRequest;
 import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
 import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.service.ScheduleSuggestionService;
@@ -31,11 +32,20 @@ public class ScheduleSuggestionController {
         return ResponseEntity.ok(scheduleSuggestionService.getSuggestion(id, authentication.getName()));
     }
 
+    @GetMapping("/confirmList/{clubId}")
+    public ResponseEntity getSuggestionListConfirm(@PathVariable("clubId") Long clubId,
+                                                   @RequestBody YearMonthRequest yearMonthRequest,
+                                                   Authentication authentication) {
+
+        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionListConfirm(clubId, yearMonthRequest, authentication.getName()));
+    }
+
     @GetMapping("/list/{clubId}")
-    public ResponseEntity getClubScheduleList(@PathVariable("clubId") Long clubId,
-                                              @RequestBody YearMonthRequest yearMonthRequest,
-                                              Authentication authentication) {
-        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, yearMonthRequest, authentication.getName()));
+    public ResponseEntity getSuggestionList(@PathVariable("clubId") Long clubId,
+                                                     @RequestBody SuggestionListRequest suggestionListRequest,
+                                                     Authentication authentication) {
+
+        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, suggestionListRequest, authentication.getName()));
     }
 
     @PutMapping("/{id}")
