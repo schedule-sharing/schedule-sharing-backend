@@ -3,6 +3,7 @@ package com.schedulsharing.entity.schedule;
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
 import com.schedulsharing.entity.Club;
+import com.schedulsharing.entity.VoteCheck;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -51,6 +54,9 @@ public class ScheduleSuggestion {
     @JoinColumn(name = "member_id")
     private Member member;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "scheduleSuggestion", cascade = CascadeType.REMOVE)
+    private List<VoteCheck> voteChecks = new ArrayList<>();
 
     public void setClub(Club club) {
         this.club = club;
