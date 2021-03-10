@@ -1,5 +1,6 @@
 package com.schedulsharing.entity;
 
+import com.schedulsharing.dto.suggestion.SuggestionVoteRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import lombok.AllArgsConstructor;
@@ -31,4 +32,12 @@ public class VoteCheck {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "schedule_suggestion_id")
     private ScheduleSuggestion scheduleSuggestion;
+
+    public static VoteCheck createVoteCheck(SuggestionVoteRequest suggestionVoteRequest, Member member, ScheduleSuggestion scheduleSuggestion) {
+        return VoteCheck.builder()
+                .agree(suggestionVoteRequest.isAgree())
+                .member(member)
+                .scheduleSuggestion(scheduleSuggestion)
+                .build();
+    }
 }

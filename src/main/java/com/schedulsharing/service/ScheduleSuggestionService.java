@@ -4,6 +4,7 @@ import com.schedulsharing.dto.resource.SuggestionResource;
 import com.schedulsharing.dto.suggestion.*;
 import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.Club;
+import com.schedulsharing.entity.VoteCheck;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
@@ -11,6 +12,7 @@ import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.scheduleSuggestion.SuggestionNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.repository.VoteCheckRepository;
 import com.schedulsharing.repository.suggestion.ScheduleSuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -30,7 +32,9 @@ public class ScheduleSuggestionService {
     private final ScheduleSuggestionRepository scheduleSuggestionRepository;
     private final MemberRepository memberRepository;
     private final ClubRepository clubRepository;
+    private final VoteCheckRepository voteCheckRepository;
     private final ModelMapper modelMapper;
+
 
     public EntityModel<SuggestionCreateResponse> create(SuggestionCreateRequest suggestionCreateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
@@ -101,6 +105,17 @@ public class ScheduleSuggestionService {
         return SuggestionResource.getSuggestionListLink(responseList, clubId, email);
     }
 
+    public EntityModel<SuggestionVoteResponse> vote(Long suggestionId, SuggestionVoteRequest suggestionVoteRequest, String email) {
+        //TODO 해당 멤버가 제안이된 클럽의 소속되어있는 지 체크해야함.
+        Member member = memberRepository.findByEmail(email).get();
+        ScheduleSuggestion suggestion = findSuggestionById(suggestionId);
+        VoteCheck voteCheck = VoteCheck.createVoteCheck(suggestionVoteRequest, member, suggestion);
+        VoteCheck vote = voteCheckRepository.save(voteCheck);
+        SuggestionVoteResponse response = modelMapper.map(vote, SuggestionVoteResponse.class);
+
+        return SuggestionResource.getSuggestionVoteLink(response, email, suggestionId);
+    }
+
     private Club findClubById(Long clubId) {
         Optional<Club> optionalClub = clubRepository.findById(clubId);
         if (optionalClub.isEmpty()) {
@@ -116,4 +131,5 @@ public class ScheduleSuggestionService {
         }
         return optionalScheduleSuggestion.get();
     }
+
 }

@@ -2,8 +2,8 @@ spring:
   datasource:
     #    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/schedule_sharing?useSSL=false&serverTimezone=Asia/Seoul
-    username: root
-    password:
+    username: test
+    password: test
 
   jpa:
     hibernate:

@@ -1,10 +1,7 @@
 package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.resource.SuggestionResource;
-import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
-import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
-import com.schedulsharing.dto.suggestion.SuggestionListRequest;
-import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
+import com.schedulsharing.dto.suggestion.*;
 import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.service.ScheduleSuggestionService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +23,14 @@ public class ScheduleSuggestionController {
         return ResponseEntity.created(SuggestionResource.getCreatedUri(entityModel.getContent().getId())).body(entityModel);
     }
 
+    @PostMapping("/{id}/vote")
+    public ResponseEntity voteSuggestion(@PathVariable("id") Long suggestionId,
+                                         @RequestBody SuggestionVoteRequest suggestionVoteRequest,
+                                         Authentication authentication) {
+
+        return ResponseEntity.ok(scheduleSuggestionService.vote(suggestionId, suggestionVoteRequest, authentication.getName()));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity getSuggestion(@PathVariable("id") Long id, Authentication authentication) {
 
@@ -42,8 +47,8 @@ public class ScheduleSuggestionController {
 
     @GetMapping("/list/{clubId}")
     public ResponseEntity getSuggestionList(@PathVariable("clubId") Long clubId,
-                                                     @RequestBody SuggestionListRequest suggestionListRequest,
-                                                     Authentication authentication) {
+                                            @RequestBody SuggestionListRequest suggestionListRequest,
+                                            Authentication authentication) {
 
         return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, suggestionListRequest, authentication.getName()));
     }
