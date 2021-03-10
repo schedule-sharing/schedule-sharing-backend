@@ -6,10 +6,7 @@ import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
-import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
-import com.schedulsharing.dto.suggestion.SuggestionListRequest;
-import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
+import com.schedulsharing.dto.suggestion.*;
 import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
@@ -178,20 +175,7 @@ class ScheduleSuggestionControllerTest {
     @DisplayName("작성자인 경우 클럽스케줄제안 단건조회")
     @Test
     public void 클럽스케줄제안_단건조회_작성자() throws Exception {
-        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
-        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
-        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                .title("테스트 제안 제목")
-                .contents("테스트 제안 내용")
-                .location("테스트 제안 위치")
-                .minMember(2)
-                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
-                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
-                .clubId(clubCreateResponse.getClubId())
-                .build();
-        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionCreateResponse createResponse = createSuggestion("test@example.com");
         mvc.perform(RestDocumentationRequestBuilders.get("/api/suggestion/{id}", createResponse.getId())
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
                 .andDo(print())
@@ -494,20 +478,7 @@ class ScheduleSuggestionControllerTest {
     @DisplayName("클럽스케줄제안 수정성공")
     @Test
     public void 클럽스케줄제안_수정성공() throws Exception {
-        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
-        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
-        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                .title("테스트 제안 제목")
-                .contents("테스트 제안 내용")
-                .location("테스트 제안 위치")
-                .minMember(2)
-                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
-                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
-                .clubId(clubCreateResponse.getClubId())
-                .build();
-        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionCreateResponse createResponse = createSuggestion("test@example.com");
         String updateTitle = "수정된 테스트 제안 제목";
         String updateContents = "수정된 테스트 제안 내용";
         String updateLocation = "수정된 제안 위치";
@@ -592,20 +563,7 @@ class ScheduleSuggestionControllerTest {
     @DisplayName("작성자가 아닌 다른사람인 경우 클럽스케줄제안 수정실패")
     @Test
     public void 클럽스케줄제안_수정실패_권한없음() throws Exception {
-        Member member = memberRepository.findByEmail("test2@example.com").get(); //setUp에서 생성한 멤버
-        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
-        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                .title("테스트 제안 제목")
-                .contents("테스트 제안 내용")
-                .location("테스트 제안 위치")
-                .minMember(2)
-                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
-                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
-                .clubId(clubCreateResponse.getClubId())
-                .build();
-        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionCreateResponse createResponse = createSuggestion("test2@example.com");
         String updateTitle = "수정된 테스트 제안 제목";
         String updateContents = "수정된 테스트 제안 내용";
         String updateLocation = "수정된 제안 위치";
@@ -633,20 +591,7 @@ class ScheduleSuggestionControllerTest {
     @DisplayName("클럽스케줄제안 삭제성공")
     @Test
     public void 클럽스케줄제안_삭제성공() throws Exception {
-        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
-        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
-        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                .title("테스트 제안 제목")
-                .contents("테스트 제안 내용")
-                .location("테스트 제안 위치")
-                .minMember(2)
-                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
-                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
-                .clubId(clubCreateResponse.getClubId())
-                .build();
-        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionCreateResponse createResponse = createSuggestion("test@example.com");
 
         mvc.perform(RestDocumentationRequestBuilders.delete("/api/suggestion/{id}", createResponse.getId())
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
@@ -682,25 +627,53 @@ class ScheduleSuggestionControllerTest {
     @DisplayName("작성자가 아닌 다른사람인 경우 클럽스케줄제안 삭제실패")
     @Test
     public void 클럽스케줄제안_삭제실패_권한없음() throws Exception {
-        Member member = memberRepository.findByEmail("test2@example.com").get(); //setUp에서 생성한 멤버
-        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
-        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                .title("테스트 제안 제목")
-                .contents("테스트 제안 내용")
-                .location("테스트 제안 위치")
-                .minMember(2)
-                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
-                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
-                .clubId(clubCreateResponse.getClubId())
-                .build();
-        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionCreateResponse createResponse = createSuggestion("test2@example.com");
 
         mvc.perform(RestDocumentationRequestBuilders.delete("/api/suggestion/{id}", createResponse.getId())
                 .header(HttpHeaders.AUTHORIZATION, getBearToken()))
                 .andDo(print())
                 .andExpect(status().isForbidden());
+    }
+
+    @DisplayName("클럽스케줄제안 투표하기 성공")
+    @Test
+    public void 클럽스케줄제안_투표_성공() throws Exception {
+        SuggestionCreateResponse suggestion = createSuggestion("test@example.com");
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        mvc.perform(RestDocumentationRequestBuilders.post("/api/suggestion/{id}/vote", suggestion.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(suggestionVoteRequest)))
+                .andDo(print())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("agree").exists())
+                .andDo(document("suggestion-vote",
+                        pathParameters(
+                                parameterWithName("id").description("투표가 진행되는 클럽스케줄제안 고유 아이디")
+                        ),
+                        links(
+                                linkWithRel("self").description("link to self"),
+                                linkWithRel("profile").description("link to profile")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("agree").description("투표의 찬성(true)/반대(false)")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("id").description("생성된 투표체크의 고유아이디"),
+                                fieldWithPath("agree").description("생성된 투표체크의 찬성 or 반대"),
+                                fieldWithPath("_links.self.href").description("link to self"),
+                                fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
     }
 
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {
@@ -730,5 +703,22 @@ class ScheduleSuggestionControllerTest {
         String responseBody = perform.andReturn().getResponse().getContentAsString();
         JacksonJsonParser parser = new JacksonJsonParser();
         return parser.parseMap(responseBody).get("access_token").toString();
+    }
+
+    private SuggestionCreateResponse createSuggestion(String email) {
+        Member member = memberRepository.findByEmail(email).get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        return scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
     }
 }

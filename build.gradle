@@ -52,7 +52,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.9'
 
-	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'com.h2database:h2:1.4.197'
 	runtimeOnly 'mysql:mysql-connector-java'
 
 	compileOnly 'org.projectlombok:lombok'

@@ -119,16 +119,16 @@ class ScheduleSuggestionServiceTest {
 
     @DisplayName("스케줄제안 confirm 리스트 조회")
     @Test
-    public void 스케줄제안_confirm_true_리스트(){
+    public void 스케줄제안_confirm_true_리스트() {
         Member member = memberRepository.findByEmail("test@example.com").get();
         ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
         for (int i = 0; i < 3; i++) {
             //2021-2월 시작 2021-3월 끝 3개
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                    .title("2021-2~2021-3 테스트 제안 제목"+i)
-                    .contents("2021-2~2021-3 테스트 제안 내용"+i)
-                    .location("2021-2~2021-3 테스트 제안 위치"+i)
-                    .minMember(3+i)
+                    .title("2021-2~2021-3 테스트 제안 제목" + i)
+                    .contents("2021-2~2021-3 테스트 제안 내용" + i)
+                    .location("2021-2~2021-3 테스트 제안 위치" + i)
+                    .minMember(3 + i)
                     .scheduleStartDate(LocalDateTime.of(2021, 2, 28, 0, 0).plusDays(i))
                     .scheduleEndDate(LocalDateTime.of(2021, 3, 2, 0, 0).plusDays(i))
                     .voteStartDate(LocalDateTime.of(2021, 2, 5, 0, 0).plusDays(i))
@@ -141,10 +141,10 @@ class ScheduleSuggestionServiceTest {
         for (int i = 0; i < 5; i++) {
             //2021-3월 시작 2021-3월 끝 5개 이 5개만 confirm
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                    .title("2021-3~2021-3 테스트 제안 제목"+i)
-                    .contents("2021-3~2021-3 테스트 제안 내용"+i)
-                    .location("2021-3~2021-3 테스트 제안 위치"+i)
-                    .minMember(3+i)
+                    .title("2021-3~2021-3 테스트 제안 제목" + i)
+                    .contents("2021-3~2021-3 테스트 제안 내용" + i)
+                    .location("2021-3~2021-3 테스트 제안 위치" + i)
+                    .minMember(3 + i)
                     .scheduleStartDate(LocalDateTime.of(2021, 3, 27, 0, 0).plusDays(i))
                     .scheduleEndDate(LocalDateTime.of(2021, 3, 28, 0, 0).plusDays(i))
                     .voteStartDate(LocalDateTime.of(2021, 3, 20, 0, 0).plusDays(i))
@@ -161,10 +161,10 @@ class ScheduleSuggestionServiceTest {
         for (int i = 0; i < 3; i++) {
             //2021-4월 시작 2021-4월 끝 3개
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                    .title("2021-4~2021-4 테스트 제안 제목"+i)
-                    .contents("2021-4~2021-4 테스트 제안 내용"+i)
-                    .location("2021-4~2021-4 테스트 제안 위치"+i)
-                    .minMember(3+i)
+                    .title("2021-4~2021-4 테스트 제안 제목" + i)
+                    .contents("2021-4~2021-4 테스트 제안 내용" + i)
+                    .location("2021-4~2021-4 테스트 제안 위치" + i)
+                    .minMember(3 + i)
                     .scheduleStartDate(LocalDateTime.of(2021, 4, 21, 0, 0).plusDays(i))
                     .scheduleEndDate(LocalDateTime.of(2021, 4, 23, 0, 0).plusDays(i))
                     .voteStartDate(LocalDateTime.of(2021, 4, 5, 0, 0).plusDays(i))
@@ -180,21 +180,21 @@ class ScheduleSuggestionServiceTest {
                 .build();
 
         Collection<EntityModel<SuggestionResponse>> result = scheduleSuggestionService.getSuggestionListConfirm(clubCreateResponse.getClubId(), yearMonthRequest, member.getEmail()).getContent();
-        assertEquals(result.size(),5);
+        assertEquals(result.size(), 5);
     }
 
     @DisplayName("스케줄제안 오늘날짜와 같거나 이후인 제안 리스트 조회")
     @Test
-    public void 스케줄제안_오늘날짜와_같거나_이후인_제안리스트(){
+    public void 스케줄제안_오늘날짜와_같거나_이후인_제안리스트() {
         Member member = memberRepository.findByEmail("test@example.com").get();
         ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
         for (int i = 0; i < 3; i++) {
             //2021-2월 시작 2021-3월 끝 3개
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                    .title("2021-2~2021-3 테스트 제안 제목"+i)
-                    .contents("2021-2~2021-3 테스트 제안 내용"+i)
-                    .location("2021-2~2021-3 테스트 제안 위치"+i)
-                    .minMember(3+i)
+                    .title("2021-2~2021-3 테스트 제안 제목" + i)
+                    .contents("2021-2~2021-3 테스트 제안 내용" + i)
+                    .location("2021-2~2021-3 테스트 제안 위치" + i)
+                    .minMember(3 + i)
                     .scheduleStartDate(LocalDateTime.of(2021, 2, 28, 0, 0).plusDays(i))
                     .scheduleEndDate(LocalDateTime.of(2021, 3, 2, 0, 0).plusDays(i))
                     .voteStartDate(LocalDateTime.of(2021, 2, 5, 0, 0).plusDays(i))
@@ -222,10 +222,10 @@ class ScheduleSuggestionServiceTest {
         for (int i = 0; i < 5; i++) {
             //2021-3월 시작 2021-3월 끝 5개 이 5개만 confirm
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                    .title("2021-3~2021-3 테스트 제안 제목"+i)
-                    .contents("2021-3~2021-3 테스트 제안 내용"+i)
-                    .location("2021-3~2021-3 테스트 제안 위치"+i)
-                    .minMember(3+i)
+                    .title("2021-3~2021-3 테스트 제안 제목" + i)
+                    .contents("2021-3~2021-3 테스트 제안 내용" + i)
+                    .location("2021-3~2021-3 테스트 제안 위치" + i)
+                    .minMember(3 + i)
                     .scheduleStartDate(LocalDateTime.of(2021, 3, 27, 0, 0).plusDays(i))
                     .scheduleEndDate(LocalDateTime.of(2021, 3, 28, 0, 0).plusDays(i))
                     .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0).plusDays(i))
@@ -239,10 +239,10 @@ class ScheduleSuggestionServiceTest {
         for (int i = 0; i < 3; i++) {
             //2021-4월 시작 2021-4월 끝 3개
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                    .title("2021-4~2021-4 테스트 제안 제목"+i)
-                    .contents("2021-4~2021-4 테스트 제안 내용"+i)
-                    .location("2021-4~2021-4 테스트 제안 위치"+i)
-                    .minMember(3+i)
+                    .title("2021-4~2021-4 테스트 제안 제목" + i)
+                    .contents("2021-4~2021-4 테스트 제안 내용" + i)
+                    .location("2021-4~2021-4 테스트 제안 위치" + i)
+                    .minMember(3 + i)
                     .scheduleStartDate(LocalDateTime.of(2021, 4, 21, 0, 0).plusDays(i))
                     .scheduleEndDate(LocalDateTime.of(2021, 4, 23, 0, 0).plusDays(i))
                     .voteStartDate(LocalDateTime.of(2021, 4, 5, 0, 0).plusDays(i))
@@ -258,7 +258,7 @@ class ScheduleSuggestionServiceTest {
                 .build();
 
         Collection<EntityModel<SuggestionResponse>> result = scheduleSuggestionService.getSuggestionList(clubCreateResponse.getClubId(), suggestionListRequest, member.getEmail()).getContent();
-        assertEquals(result.size(),6);
+        assertEquals(result.size(), 6);
     }
 
     @DisplayName("스케줄제안 수정 성공")
@@ -325,6 +325,30 @@ class ScheduleSuggestionServiceTest {
         assertEquals(result.isSuccess(), true);
         assertEquals(scheduleSuggestionRepository.findById(createResponse.getId()).isEmpty(), true);
 
+    }
+
+    @DisplayName("클럽 스케줄 제안 투표 성공")
+    @Test
+    public void 클럽스케줄제안_투표성공() {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        SuggestionVoteResponse result = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com").getContent();
+        assertEquals(result.isAgree(), true);
     }
 
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {

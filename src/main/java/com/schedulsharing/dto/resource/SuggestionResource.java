@@ -4,6 +4,7 @@ import com.schedulsharing.controller.ScheduleSuggestionController;
 import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
 import com.schedulsharing.dto.suggestion.SuggestionDeleteResponse;
 import com.schedulsharing.dto.suggestion.SuggestionResponse;
+import com.schedulsharing.dto.suggestion.SuggestionVoteResponse;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -30,7 +31,7 @@ public class SuggestionResource {
 
     public static EntityModel<SuggestionResponse> getSuggestionLink(SuggestionResponse suggestionResponse, String email) {
         List<Link> links = getSelfLink(suggestionResponse.getId());
-        if(suggestionResponse.getMemberEmail().equals(email)){
+        if (suggestionResponse.getMemberEmail().equals(email)) {
             links.add(selfLinkBuilder.slash(suggestionResponse.getId()).withRel("suggestion-update"));
             links.add(selfLinkBuilder.slash(suggestionResponse.getId()).withRel("suggestion-delete"));
         }
@@ -71,6 +72,13 @@ public class SuggestionResource {
         links.add(Link.of("/docs/index.html#resources-suggestion-list", "profile"));
 
         return CollectionModel.of(entityModelList, links);
+    }
+
+    public static EntityModel<SuggestionVoteResponse> getSuggestionVoteLink(SuggestionVoteResponse response, String email, Long suggestionId) {
+        List<Link> links = getSelfLink("vote", suggestionId);
+        links.add(Link.of("/docs/index.html#resources-suggestion-vote", "profile"));
+
+        return EntityModel.of(response, links);
     }
 
     private static List<EntityModel<SuggestionResponse>> getListLink(List<SuggestionResponse> responseList, String email) {

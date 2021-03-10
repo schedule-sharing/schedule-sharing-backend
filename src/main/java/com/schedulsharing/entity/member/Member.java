@@ -2,6 +2,7 @@ package com.schedulsharing.entity.member;
 
 import com.schedulsharing.dto.member.MemberUpdateRequest;
 import com.schedulsharing.entity.MemberClub;
+import com.schedulsharing.entity.VoteCheck;
 import com.schedulsharing.entity.schedule.ClubSchedule;
 import com.schedulsharing.entity.schedule.MySchedule;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
@@ -56,6 +57,10 @@ public class Member {
     @Builder.Default
     @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
     private List<ScheduleSuggestion> suggestions = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
+    private List<VoteCheck> voteChecks = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)

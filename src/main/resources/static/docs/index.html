@@ -805,6 +805,18 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#resources-suggestion-list-confirm_links">Links</a></li>
 </ul>
 </li>
+<li><a href="#resources-suggestion-vote">클럽스케줄 제안 투표</a>
+<ul class="sectlevel3">
+<li><a href="#resources-suggestion-vote_path_parameters">Path parameters</a></li>
+<li><a href="#resources-suggestion-vote_request_fields">Request fields</a></li>
+<li><a href="#resources-suggestion-vote_http_request">HTTP request</a></li>
+<li><a href="#resources-suggestion-vote_request_headers">Request headers</a></li>
+<li><a href="#resources-suggestion-vote_http_response">Example response</a></li>
+<li><a href="#resources-suggestion-vote_response_headers">Response headers</a></li>
+<li><a href="#resources-suggestion-vote_response_fields">Response fields</a></li>
+<li><a href="#resources-suggestion-vote_links">Links</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -1286,7 +1298,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1NH0.3xKBw6ogE_Dmf08Xfm4SvTlcjOGI8cfo5rH0VhecgY20xCIOkNVKo4rswc6UpahU2ApV2_YkVp5_w5SkBpQSwA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU1OX0.G5nM5Z2uPFm48TGEK7Ns0lEtzvq43zI8ZsMPz9IbHY647zbt0PDOrMleDsLb7LQVxSfjVFWhOwULiS9wMYdKLg
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -1301,7 +1313,7 @@ Content-Length: 503
   "name" : "tester",
   "email" : "test@example.com",
   "imagePath" : "imagePath",
-  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1NH0.3xKBw6ogE_Dmf08Xfm4SvTlcjOGI8cfo5rH0VhecgY20xCIOkNVKo4rswc6UpahU2ApV2_YkVp5_w5SkBpQSwA",
+  "access_token" : "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU1OX0.G5nM5Z2uPFm48TGEK7Ns0lEtzvq43zI8ZsMPz9IbHY647zbt0PDOrMleDsLb7LQVxSfjVFWhOwULiS9wMYdKLg",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/authenticate"
@@ -1596,7 +1608,7 @@ Content-Length: 143
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/search HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2MX0.R_VzcS_SH4ZGk3f39Dk4PjJiB0Dx_zuHyES28oKLLCMdJFF6MPUSBdNlo6C1_X9GeMB3NvJpfyICwEFtfUbYJA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2N30.jZATUq6prpiVAKnmclYDpPZUZ_ICRVev9Uv0LEB8gXuF-BNRSEBJ98rYMlc7OPAf-FnzZFTk74EtdrLg12ybFw
 Content-Length: 37
 Host: localhost:8080
 
@@ -1793,7 +1805,7 @@ Content-Length: 295
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/search HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2MH0.bxLW3HPyYLv8BrGuJF5U2syLpoYOB7_Vm_zbpgsw17PFjhqEQO3-7fIDcCW5iGwS-oFKp_bD0Ry9a0Keilnmaw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2Nn0.ur6Gm8QGoxoOyXxUML2wtUvHvuTD7mNfPLyH57ItAG9HsLPIKyOVOioo706129xNNqBdf2fT6Vh242-399YbJg
 Content-Length: 37
 Host: localhost:8080
 
@@ -1982,7 +1994,7 @@ Content-Length: 319
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/36 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2MH0.bxLW3HPyYLv8BrGuJF5U2syLpoYOB7_Vm_zbpgsw17PFjhqEQO3-7fIDcCW5iGwS-oFKp_bD0Ry9a0Keilnmaw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2Nn0.ur6Gm8QGoxoOyXxUML2wtUvHvuTD7mNfPLyH57ItAG9HsLPIKyOVOioo706129xNNqBdf2fT6Vh242-399YbJg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2145,7 +2157,7 @@ Content-Length: 287
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/member/getClubs HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2MX0.R_VzcS_SH4ZGk3f39Dk4PjJiB0Dx_zuHyES28oKLLCMdJFF6MPUSBdNlo6C1_X9GeMB3NvJpfyICwEFtfUbYJA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2N30.jZATUq6prpiVAKnmclYDpPZUZ_ICRVev9Uv0LEB8gXuF-BNRSEBJ98rYMlc7OPAf-FnzZFTk74EtdrLg12ybFw
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2345,7 +2357,7 @@ Content-Length: 611
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/member/43 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2MX0.R_VzcS_SH4ZGk3f39Dk4PjJiB0Dx_zuHyES28oKLLCMdJFF6MPUSBdNlo6C1_X9GeMB3NvJpfyICwEFtfUbYJA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2N30.jZATUq6prpiVAKnmclYDpPZUZ_ICRVev9Uv0LEB8gXuF-BNRSEBJ98rYMlc7OPAf-FnzZFTk74EtdrLg12ybFw
 Content-Length: 124
 Host: localhost:8080
 
@@ -2541,7 +2553,7 @@ Content-Length: 309
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/member/37 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2MH0.bxLW3HPyYLv8BrGuJF5U2syLpoYOB7_Vm_zbpgsw17PFjhqEQO3-7fIDcCW5iGwS-oFKp_bD0Ry9a0Keilnmaw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2Nn0.ur6Gm8QGoxoOyXxUML2wtUvHvuTD7mNfPLyH57ItAG9HsLPIKyOVOioo706129xNNqBdf2fT6Vh242-399YbJg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -2727,7 +2739,7 @@ Content-Length: 261
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1NX0.ovxhO2DnQYSwboC8ylQbHvioZsY5pDerr2pwlLiyoRSlJvnJUJV5n7bY7nIg5lLEbEuG7tSu2tnfGcBJscZPDA
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2MH0.70NojlPjYMOpssPq39PeJPi9LxonpbJY4ydPtJ1dWlJbGQ3T3npO1SRp3kaJqa2W2iBeWRS6Ti7_mv_l1W_Ixw
 Content-Length: 60
 Host: localhost:8080
 
@@ -2996,7 +3008,7 @@ Content-Length: 584
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/club/7/invite HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1N30.fp9x9EEzswxk8EcmFKhpcck0AdaBfulTNV3-7TURBiFqJUxyaK56u4jcuaVE7VHHBUgsZromHf8JLEV71t3WFQ
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2Mn0.ZJYE4PQw1eTmsQSncqAxuUc0vRQhBUFlY88ydnBxBP70tBI1uvIQCktDeVLByVnT1Qd0XB-uCzmMAjiJw0u3uw
 Content-Length: 32
 Host: localhost:8080
 
@@ -3226,7 +3238,7 @@ Content-Length: 554
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/club/3 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1Nn0.Yr6Sc654pDlqMbMK57dBImzGj74_tfbe-QwKD9p4SF9O_CcOZRTyHB-zsH2oP8jjVOKsRrBRqlDuqS7raHJa9Q
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2MX0.n7x1AWg9NFwerhG0pDVd_jyGRiOHL1Qm-hd23jXiXdH6CEaQs8mcGJ0MiYWfHo6dUN9jtRbHb359RBIA3qKULQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3460,7 +3472,7 @@ Content-Length: 582
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/club/6 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1Nn0.Yr6Sc654pDlqMbMK57dBImzGj74_tfbe-QwKD9p4SF9O_CcOZRTyHB-zsH2oP8jjVOKsRrBRqlDuqS7raHJa9Q
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2MX0.n7x1AWg9NFwerhG0pDVd_jyGRiOHL1Qm-hd23jXiXdH6CEaQs8mcGJ0MiYWfHo6dUN9jtRbHb359RBIA3qKULQ
 Content-Length: 95
 Host: localhost:8080
 
@@ -3703,7 +3715,7 @@ Content-Length: 618
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/club/4 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1Nn0.Yr6Sc654pDlqMbMK57dBImzGj74_tfbe-QwKD9p4SF9O_CcOZRTyHB-zsH2oP8jjVOKsRrBRqlDuqS7raHJa9Q
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2MX0.n7x1AWg9NFwerhG0pDVd_jyGRiOHL1Qm-hd23jXiXdH6CEaQs8mcGJ0MiYWfHo6dUN9jtRbHb359RBIA3qKULQ
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -3911,15 +3923,15 @@ Content-Length: 322
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/myschedule HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2Mn0.6nKaj3OjcPU_HS0cHoOapdPRa4IWtIKT7XR89byrRQy50ap3S4MpjIHYIgLq2OQyN_lu3Ta_jCCv2-Epc-wHBw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2OH0.lQt8COM_Nvadw8cfEQdyWWVrAssR6VBgtdACdnPyYTOC3ttndQpr60qEttG-JNoiecibWEdI1JuIyCdlG7pk2w
 Content-Length: 179
 Host: localhost:8080
 
 {
   "name" : "나 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "scheduleStartDate" : "2021-03-08T18:34:22",
-  "scheduleEndDate" : "2021-03-08T18:34:22"
+  "scheduleStartDate" : "2021-03-10T14:09:28",
+  "scheduleEndDate" : "2021-03-10T14:09:28"
 }</code></pre>
 </div>
 </div>
@@ -3971,8 +3983,8 @@ Content-Length: 658
   "myScheduleId" : 14,
   "name" : "나 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "scheduleStartDate" : "2021-03-08T18:34:22",
-  "scheduleEndDate" : "2021-03-08T18:34:22",
+  "scheduleStartDate" : "2021-03-10T14:09:28",
+  "scheduleEndDate" : "2021-03-10T14:09:28",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule"
@@ -4152,7 +4164,7 @@ Content-Length: 658
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/myschedule/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2Mn0.6nKaj3OjcPU_HS0cHoOapdPRa4IWtIKT7XR89byrRQy50ap3S4MpjIHYIgLq2OQyN_lu3Ta_jCCv2-Epc-wHBw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2OH0.lQt8COM_Nvadw8cfEQdyWWVrAssR6VBgtdACdnPyYTOC3ttndQpr60qEttG-JNoiecibWEdI1JuIyCdlG7pk2w
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -4199,8 +4211,8 @@ Content-Length: 655
   "myScheduleId" : 2,
   "name" : "나의 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startDate" : "2021-03-08T18:34:22.229171",
-  "endDate" : "2021-03-08T18:34:22.229171",
+  "startDate" : "2021-03-10T14:09:28.223102",
+  "endDate" : "2021-03-10T14:09:28.223102",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule/2"
@@ -4385,7 +4397,7 @@ Content-Length: 655
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/myschedule/list HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2Mn0.6nKaj3OjcPU_HS0cHoOapdPRa4IWtIKT7XR89byrRQy50ap3S4MpjIHYIgLq2OQyN_lu3Ta_jCCv2-Epc-wHBw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2OH0.lQt8COM_Nvadw8cfEQdyWWVrAssR6VBgtdACdnPyYTOC3ttndQpr60qEttG-JNoiecibWEdI1JuIyCdlG7pk2w
 Content-Length: 31
 Host: localhost:8080
 
@@ -4764,15 +4776,15 @@ Content-Length: 5656
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/myschedule/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2Mn0.6nKaj3OjcPU_HS0cHoOapdPRa4IWtIKT7XR89byrRQy50ap3S4MpjIHYIgLq2OQyN_lu3Ta_jCCv2-Epc-wHBw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2OH0.lQt8COM_Nvadw8cfEQdyWWVrAssR6VBgtdACdnPyYTOC3ttndQpr60qEttG-JNoiecibWEdI1JuIyCdlG7pk2w
 Content-Length: 199
 Host: localhost:8080
 
 {
   "name" : "수정된 나의 스케줄 이름",
   "contents" : "수정된 나의 스케줄 내용",
-  "scheduleStartDate" : "2021-03-09T18:34:21",
-  "scheduleEndDate" : "2021-03-09T18:34:21"
+  "scheduleStartDate" : "2021-03-11T14:09:27",
+  "scheduleEndDate" : "2021-03-11T14:09:27"
 }</code></pre>
 </div>
 </div>
@@ -4823,8 +4835,8 @@ Content-Length: 674
   "myScheduleId" : 1,
   "name" : "수정된 나의 스케줄 이름",
   "contents" : "수정된 나의 스케줄 내용",
-  "scheduleStartDate" : "2021-03-09T18:34:21",
-  "scheduleEndDate" : "2021-03-09T18:34:21",
+  "scheduleStartDate" : "2021-03-11T14:09:27",
+  "scheduleEndDate" : "2021-03-11T14:09:27",
   "_links" : {
     "self" : {
       "href" : "http://localhost/api/myschedule/1"
@@ -5003,7 +5015,7 @@ Content-Length: 674
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/myschedule/15 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2M30.FbErXZ0a-PB1b5rjZqKmXVz9BkvdnjuWttoiJ3TX1f1E6Q1PsJEUzd-iro4UVIOKbt855oumIpmI6oCs4eOOcw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2OX0.Um_0hZU-X5RP6jguWyOwmbNTtuvu4IiMz0YqLHjALaldYoy8IaUqYR1yxCBRO6Wcajb032_Se49B2Th3iDSgrg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -5216,15 +5228,15 @@ Content-Length: 360
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/clubSchedule HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1OH0.ncdfiKqfNmtxJR-DwYmTluE-ow5A0I-3OUgtJM4egkCnX4Za7ELa0whZG90PzIYgpfHpO42NZh6y78rErwoS1A
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2M30.OJy7v3KDZdBIutSsn3_kApR2GF5CgFuWrLvrR0HX6th_U5QAnHLKB1qphQ3SobJxb9exSNEg4ZIgyKlqRLQHZg
 Content-Length: 198
 Host: localhost:8080
 
 {
   "name" : "클럽 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startMeetingDate" : "2021-03-08T18:34:18",
-  "endMeetingDate" : "2021-03-08T18:34:18",
+  "startMeetingDate" : "2021-03-10T14:09:23",
+  "endMeetingDate" : "2021-03-10T14:09:23",
   "clubId" : 10
 }</code></pre>
 </div>
@@ -5277,8 +5289,8 @@ Content-Length: 681
   "id" : 1,
   "name" : "클럽 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startMeetingDate" : "2021-03-08T18:34:18",
-  "endMeetingDate" : "2021-03-08T18:34:18",
+  "startMeetingDate" : "2021-03-10T14:09:23",
+  "endMeetingDate" : "2021-03-10T14:09:23",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/clubSchedule"
@@ -5457,7 +5469,7 @@ Content-Length: 681
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/clubSchedule/15 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1OX0.MBoI1d9nW-o0Id-sK9O-TxbP7m0YByMAx6ZXxbildfRWT2R7ABuKp7crSgD8EDzBQGRiRCGeAPBSrMDPm7cAfg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2NX0.q8F4n-6_A_ANfS2znB2u4KP0UhkuFGjvDZll7Xtg4R_XFo436q-T-VlMfFW4lLs4QL8dZmPN6A7s4EiCB2xspg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -5504,8 +5516,8 @@ Content-Length: 769
   "id" : 15,
   "name" : "클럽 스케줄 생성 테스트",
   "contents" : "스터디 모임",
-  "startMeetingDate" : "2021-03-08T18:34:19.557922",
-  "endMeetingDate" : "2021-03-08T18:34:19.557922",
+  "startMeetingDate" : "2021-03-10T14:09:25.439556",
+  "endMeetingDate" : "2021-03-10T14:09:25.439556",
   "memberName" : "테스터",
   "memberEmail" : "test@example.com",
   "_links" : {
@@ -5724,7 +5736,7 @@ Content-Length: 769
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/clubSchedule/list/13 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1OX0.MBoI1d9nW-o0Id-sK9O-TxbP7m0YByMAx6ZXxbildfRWT2R7ABuKp7crSgD8EDzBQGRiRCGeAPBSrMDPm7cAfg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2NH0.1lNPzXS0Aoko38B1J74Mqa7Ex6m3iTpqejtL_p7KC9lgr2GMCgz793KyN91Gffi-wVa40HRReuiy6wB6DSsJPA
 Content-Length: 31
 Host: localhost:8080
 
@@ -6168,15 +6180,15 @@ Content-Length: 6481
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/clubSchedule/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1OH0.ncdfiKqfNmtxJR-DwYmTluE-ow5A0I-3OUgtJM4egkCnX4Za7ELa0whZG90PzIYgpfHpO42NZh6y78rErwoS1A
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2NH0.1lNPzXS0Aoko38B1J74Mqa7Ex6m3iTpqejtL_p7KC9lgr2GMCgz793KyN91Gffi-wVa40HRReuiy6wB6DSsJPA
 Content-Length: 197
 Host: localhost:8080
 
 {
   "name" : "수정된 클럽 스케줄 이름",
   "contents" : "수정된 클럽 스케줄 내용",
-  "startMeetingDate" : "2021-03-09T18:34:18",
-  "endMeetingDate" : "2021-03-09T18:34:18"
+  "startMeetingDate" : "2021-03-11T14:09:24",
+  "endMeetingDate" : "2021-03-11T14:09:24"
 }</code></pre>
 </div>
 </div>
@@ -6227,8 +6239,8 @@ Content-Length: 698
   "id" : 2,
   "name" : "수정된 클럽 스케줄 이름",
   "contents" : "수정된 클럽 스케줄 내용",
-  "startMeetingDate" : "2021-03-09T18:34:18",
-  "endMeetingDate" : "2021-03-09T18:34:18",
+  "startMeetingDate" : "2021-03-11T14:09:24",
+  "endMeetingDate" : "2021-03-11T14:09:24",
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/api/clubSchedule/2"
@@ -6407,7 +6419,7 @@ Content-Length: 698
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/clubSchedule/16 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY1OX0.MBoI1d9nW-o0Id-sK9O-TxbP7m0YByMAx6ZXxbildfRWT2R7ABuKp7crSgD8EDzBQGRiRCGeAPBSrMDPm7cAfg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2NX0.q8F4n-6_A_ANfS2znB2u4KP0UhkuFGjvDZll7Xtg4R_XFo436q-T-VlMfFW4lLs4QL8dZmPN6A7s4EiCB2xspg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -6640,7 +6652,7 @@ Content-Length: 378
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/suggestion HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2NH0.R6It9KRTRyF3NdOcTgnymbd5pBWJV-gpylsSzYc6wLieG4t5ctXon7qGqPxIehz0hlSrJueTg-Y0TRtO-EykTg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU3MH0.AjkSVfqmr26cLZ3qkQOXz-Xwbc-3A53ruCXnDEXL6IFADTq73Q4cy3DNwsPFH15oIe5b343IOlVU2IWfuF_rtA
 Content-Length: 347
 Host: localhost:8080
 
@@ -6691,7 +6703,7 @@ Host: localhost:8080
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Location: http://localhost/api/suggestion/15
+Location: http://localhost/api/suggestion/77
 Content-Type: application/hal+json;charset=UTF-8
 X-Content-Type-Options: nosniff
 X-XSS-Protection: 1; mode=block
@@ -6702,7 +6714,7 @@ X-Frame-Options: SAMEORIGIN
 Content-Length: 798
 
 {
-  "id" : 15,
+  "id" : 77,
   "title" : "테스트 제안 제목",
   "contents" : "테스트 제안 내용",
   "location" : "테스트 제안 위치",
@@ -6716,13 +6728,13 @@ Content-Length: 798
       "href" : "http://localhost/api/suggestion"
     },
     "suggestion-getOne" : {
-      "href" : "http://localhost/api/suggestion/15"
+      "href" : "http://localhost/api/suggestion/77"
     },
     "suggestion-update" : {
-      "href" : "http://localhost/api/suggestion/15"
+      "href" : "http://localhost/api/suggestion/77"
     },
     "suggestion-delete" : {
-      "href" : "http://localhost/api/suggestion/15"
+      "href" : "http://localhost/api/suggestion/77"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-suggestion-create"
@@ -6908,8 +6920,8 @@ Content-Length: 798
 <h4 id="resources-suggestion-getOne_http_request"><a class="link" href="#resources-suggestion-getOne_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/suggestion/16 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2NX0.D7hOaF5IKro0HJzMKCkMKXzJYty7Uthp2FQnSYuHRwIGmN4s96JsXtSVFRAciw8jDZQMehY61kdjgRuXL1DCFw
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/suggestion/78 HTTP/1.1
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU3MX0.Os1Dmv7KnqV55Ni7JXE6IIaY9LAMTC0qUA0RXpqKciLJbWCW2f4XpGFhwX9Oj7ipbvAFrobgjP7XL6W-FBWnEg
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -6953,7 +6965,7 @@ X-Frame-Options: SAMEORIGIN
 Content-Length: 890
 
 {
-  "id" : 16,
+  "id" : 78,
   "title" : "테스트 제안 제목",
   "contents" : "테스트 제안 내용",
   "location" : "테스트 제안 위치",
@@ -6967,13 +6979,13 @@ Content-Length: 890
   "memberEmail" : "test@example.com",
   "_links" : {
     "self" : {
-      "href" : "http://localhost/api/suggestion/16"
+      "href" : "http://localhost/api/suggestion/78"
     },
     "suggestion-update" : {
-      "href" : "http://localhost/api/suggestion/16"
+      "href" : "http://localhost/api/suggestion/78"
     },
     "suggestion-delete" : {
-      "href" : "http://localhost/api/suggestion/16"
+      "href" : "http://localhost/api/suggestion/78"
     },
     "suggestion-create" : {
       "href" : "http://localhost/api/suggestion"
@@ -7236,9 +7248,9 @@ Content-Length: 890
 <h4 id="resources-suggestion-update_http_request"><a class="link" href="#resources-suggestion-update_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/suggestion/14 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /api/suggestion/76 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2NH0.R6It9KRTRyF3NdOcTgnymbd5pBWJV-gpylsSzYc6wLieG4t5ctXon7qGqPxIehz0hlSrJueTg-Y0TRtO-EykTg
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU3MH0.AjkSVfqmr26cLZ3qkQOXz-Xwbc-3A53ruCXnDEXL6IFADTq73Q4cy3DNwsPFH15oIe5b343IOlVU2IWfuF_rtA
 Content-Length: 349
 Host: localhost:8080
 
@@ -7298,7 +7310,7 @@ X-Frame-Options: SAMEORIGIN
 Content-Length: 910
 
 {
-  "id" : 14,
+  "id" : 76,
   "title" : "수정된 테스트 제안 제목",
   "contents" : "수정된 테스트 제안 내용",
   "location" : "수정된 제안 위치",
@@ -7312,16 +7324,16 @@ Content-Length: 910
   "memberEmail" : "test@example.com",
   "_links" : {
     "self" : {
-      "href" : "http://localhost/api/suggestion/14"
+      "href" : "http://localhost/api/suggestion/76"
     },
     "suggestion-create" : {
       "href" : "http://localhost/api/suggestion"
     },
     "suggestion-getOne" : {
-      "href" : "http://localhost/api/suggestion/14"
+      "href" : "http://localhost/api/suggestion/76"
     },
     "suggestion-delete" : {
-      "href" : "http://localhost/api/suggestion/14"
+      "href" : "http://localhost/api/suggestion/76"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-suggestion-update"
@@ -7522,8 +7534,8 @@ Content-Length: 910
 <h4 id="resources-suggestion-delete_http_request"><a class="link" href="#resources-suggestion-delete_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/suggestion/13 HTTP/1.1
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2NH0.R6It9KRTRyF3NdOcTgnymbd5pBWJV-gpylsSzYc6wLieG4t5ctXon7qGqPxIehz0hlSrJueTg-Y0TRtO-EykTg
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /api/suggestion/75 HTTP/1.1
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU3MH0.AjkSVfqmr26cLZ3qkQOXz-Xwbc-3A53ruCXnDEXL6IFADTq73Q4cy3DNwsPFH15oIe5b343IOlVU2IWfuF_rtA
 Host: localhost:8080</code></pre>
 </div>
 </div>
@@ -7571,7 +7583,7 @@ Content-Length: 365
   "message" : "클럽스케줄제안을 삭제하였습니다.",
   "_links" : {
     "self" : {
-      "href" : "http://localhost/api/suggestion/13"
+      "href" : "http://localhost/api/suggestion/75"
     },
     "suggestion-create" : {
       "href" : "http://localhost/api/suggestion"
@@ -7734,9 +7746,9 @@ Content-Length: 365
 <h4 id="resources-suggestion-list_http_request"><a class="link" href="#resources-suggestion-list_http_request">HTTP request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/suggestion/list/27 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/suggestion/list/28 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2NX0.D7hOaF5IKro0HJzMKCkMKXzJYty7Uthp2FQnSYuHRwIGmN4s96JsXtSVFRAciw8jDZQMehY61kdjgRuXL1DCFw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU3Mn0.y4avYRzE7wcEIgoKmUjjSXn_Etv5lk27VqTLg6cB0qGtDUo5DL3SfGOvZh86kstnRuGGo7CW26oPuGUXTO-yXw
 Content-Length: 28
 Host: localhost:8080
 
@@ -7791,7 +7803,7 @@ Content-Length: 5081
 {
   "_embedded" : {
     "suggestionList" : [ {
-      "id" : 20,
+      "id" : 83,
       "title" : "2021-3~2021-3 테스트 제안 제목0",
       "contents" : "2021-3~2021-3 테스트 제안 내용0",
       "location" : "2021-3~2021-3 테스트 제안 위치0",
@@ -7808,17 +7820,17 @@ Content-Length: 5081
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/20"
+          "href" : "http://localhost/api/suggestion/83"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/20"
+          "href" : "http://localhost/api/suggestion/83"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/20"
+          "href" : "http://localhost/api/suggestion/83"
         }
       }
     }, {
-      "id" : 21,
+      "id" : 84,
       "title" : "2021-3~2021-3 테스트 제안 제목1",
       "contents" : "2021-3~2021-3 테스트 제안 내용1",
       "location" : "2021-3~2021-3 테스트 제안 위치1",
@@ -7835,17 +7847,17 @@ Content-Length: 5081
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/21"
+          "href" : "http://localhost/api/suggestion/84"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/21"
+          "href" : "http://localhost/api/suggestion/84"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/21"
+          "href" : "http://localhost/api/suggestion/84"
         }
       }
     }, {
-      "id" : 22,
+      "id" : 85,
       "title" : "2021-3~2021-3 테스트 제안 제목2",
       "contents" : "2021-3~2021-3 테스트 제안 내용2",
       "location" : "2021-3~2021-3 테스트 제안 위치2",
@@ -7862,17 +7874,17 @@ Content-Length: 5081
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/22"
+          "href" : "http://localhost/api/suggestion/85"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/22"
+          "href" : "http://localhost/api/suggestion/85"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/22"
+          "href" : "http://localhost/api/suggestion/85"
         }
       }
     }, {
-      "id" : 23,
+      "id" : 86,
       "title" : "2021-3~2021-3 테스트 제안 제목3",
       "contents" : "2021-3~2021-3 테스트 제안 내용3",
       "location" : "2021-3~2021-3 테스트 제안 위치3",
@@ -7889,17 +7901,17 @@ Content-Length: 5081
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/23"
+          "href" : "http://localhost/api/suggestion/86"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/23"
+          "href" : "http://localhost/api/suggestion/86"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/23"
+          "href" : "http://localhost/api/suggestion/86"
         }
       }
     }, {
-      "id" : 24,
+      "id" : 87,
       "title" : "2021-3~2021-3 테스트 제안 제목4",
       "contents" : "2021-3~2021-3 테스트 제안 내용4",
       "location" : "2021-3~2021-3 테스트 제안 위치4",
@@ -7916,20 +7928,20 @@ Content-Length: 5081
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/24"
+          "href" : "http://localhost/api/suggestion/87"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/24"
+          "href" : "http://localhost/api/suggestion/87"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/24"
+          "href" : "http://localhost/api/suggestion/87"
         }
       }
     } ]
   },
   "_links" : {
     "self" : {
-      "href" : "http://localhost/api/suggestion/list/27"
+      "href" : "http://localhost/api/suggestion/list/28"
     },
     "profile" : {
       "href" : "/docs/index.html#resources-suggestion-list"
@@ -8152,7 +8164,7 @@ Content-Length: 5081
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /api/suggestion/confirmList/20 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTE5OTY2M30.FbErXZ0a-PB1b5rjZqKmXVz9BkvdnjuWttoiJ3TX1f1E6Q1PsJEUzd-iro4UVIOKbt855oumIpmI6oCs4eOOcw
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU2OX0.Um_0hZU-X5RP6jguWyOwmbNTtuvu4IiMz0YqLHjALaldYoy8IaUqYR1yxCBRO6Wcajb032_Se49B2Th3iDSgrg
 Content-Length: 31
 Host: localhost:8080
 
@@ -8202,12 +8214,12 @@ Cache-Control: no-cache, no-store, max-age=0, must-revalidate
 Pragma: no-cache
 Expires: 0
 X-Frame-Options: SAMEORIGIN
-Content-Length: 5075
+Content-Length: 5095
 
 {
   "_embedded" : {
     "suggestionList" : [ {
-      "id" : 4,
+      "id" : 66,
       "title" : "2021-3~2021-3 테스트 제안 제목0",
       "contents" : "2021-3~2021-3 테스트 제안 내용0",
       "location" : "2021-3~2021-3 테스트 제안 위치0",
@@ -8224,17 +8236,17 @@ Content-Length: 5075
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/4"
+          "href" : "http://localhost/api/suggestion/66"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/4"
+          "href" : "http://localhost/api/suggestion/66"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/4"
+          "href" : "http://localhost/api/suggestion/66"
         }
       }
     }, {
-      "id" : 5,
+      "id" : 67,
       "title" : "2021-3~2021-3 테스트 제안 제목1",
       "contents" : "2021-3~2021-3 테스트 제안 내용1",
       "location" : "2021-3~2021-3 테스트 제안 위치1",
@@ -8251,17 +8263,17 @@ Content-Length: 5075
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/5"
+          "href" : "http://localhost/api/suggestion/67"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/5"
+          "href" : "http://localhost/api/suggestion/67"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/5"
+          "href" : "http://localhost/api/suggestion/67"
         }
       }
     }, {
-      "id" : 6,
+      "id" : 68,
       "title" : "2021-3~2021-3 테스트 제안 제목2",
       "contents" : "2021-3~2021-3 테스트 제안 내용2",
       "location" : "2021-3~2021-3 테스트 제안 위치2",
@@ -8278,17 +8290,17 @@ Content-Length: 5075
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/6"
+          "href" : "http://localhost/api/suggestion/68"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/6"
+          "href" : "http://localhost/api/suggestion/68"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/6"
+          "href" : "http://localhost/api/suggestion/68"
         }
       }
     }, {
-      "id" : 7,
+      "id" : 69,
       "title" : "2021-3~2021-3 테스트 제안 제목3",
       "contents" : "2021-3~2021-3 테스트 제안 내용3",
       "location" : "2021-3~2021-3 테스트 제안 위치3",
@@ -8305,17 +8317,17 @@ Content-Length: 5075
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/7"
+          "href" : "http://localhost/api/suggestion/69"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/7"
+          "href" : "http://localhost/api/suggestion/69"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/7"
+          "href" : "http://localhost/api/suggestion/69"
         }
       }
     }, {
-      "id" : 8,
+      "id" : 70,
       "title" : "2021-3~2021-3 테스트 제안 제목4",
       "contents" : "2021-3~2021-3 테스트 제안 내용4",
       "location" : "2021-3~2021-3 테스트 제안 위치4",
@@ -8332,13 +8344,13 @@ Content-Length: 5075
           "href" : "http://localhost/api/suggestion"
         },
         "suggestion-getOne" : {
-          "href" : "http://localhost/api/suggestion/8"
+          "href" : "http://localhost/api/suggestion/70"
         },
         "suggestion-update" : {
-          "href" : "http://localhost/api/suggestion/8"
+          "href" : "http://localhost/api/suggestion/70"
         },
         "suggestion-delete" : {
-          "href" : "http://localhost/api/suggestion/8"
+          "href" : "http://localhost/api/suggestion/70"
         }
       }
     } ]
@@ -8511,12 +8523,219 @@ Content-Length: 5075
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="resources-suggestion-vote"><a class="link" href="#resources-suggestion-vote">클럽스케줄 제안 투표</a></h3>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_path_parameters"><a class="link" href="#resources-suggestion-vote_path_parameters">Path parameters</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /api/suggestion/{id}/vote</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">투표가 진행되는 클럽스케줄제안 고유 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_request_fields"><a class="link" href="#resources-suggestion-vote_request_fields">Request fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>agree</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">투표의 찬성(true)/반대(false)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_http_request"><a class="link" href="#resources-suggestion-vote_http_request">HTTP request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/suggestion/80/vote HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+Authorization: Bearer  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0QGV4YW1wbGUuY29tIiwiYXV0aCI6IlJPTEVfVVNFUiIsImV4cCI6MTYxNTM1NjU3MX0.Os1Dmv7KnqV55Ni7JXE6IIaY9LAMTC0qUA0RXpqKciLJbWCW2f4XpGFhwX9Oj7ipbvAFrobgjP7XL6W-FBWnEg
+Content-Length: 22
+Host: localhost:8080
+
+{
+  "agree" : true
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_request_headers"><a class="link" href="#resources-suggestion-vote_request_headers">Request headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Content type</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">로그인한 유저의 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_http_response"><a class="link" href="#resources-suggestion-vote_http_response">Example response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/hal+json;charset=UTF-8
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: SAMEORIGIN
+Content-Length: 226
+
+{
+  "id" : 1,
+  "agree" : true,
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost/api/suggestion/vote/80"
+    },
+    "profile" : {
+      "href" : "/docs/index.html#resources-suggestion-vote"
+    }
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_response_headers"><a class="link" href="#resources-suggestion-vote_response_headers">Response headers</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Content-Type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Content type</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_response_fields"><a class="link" href="#resources-suggestion-vote_response_fields">Response fields</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성된 투표체크의 고유아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>agree</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">생성된 투표체크의 찬성 or 반대</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.self.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to self</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>_links.profile.href</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to profile</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="resources-suggestion-vote_links"><a class="link" href="#resources-suggestion-vote_links">Links</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Relation</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>self</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to self</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profile</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">link to profile</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-03-08 18:19:27 +0900
+Last updated 2021-03-10 14:08:41 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.13.1/styles/github.min.css">
