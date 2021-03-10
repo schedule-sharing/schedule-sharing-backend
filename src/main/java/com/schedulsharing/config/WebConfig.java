@@ -10,6 +10,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -40,4 +41,5 @@ public class WebConfig implements WebMvcConfigurer {
         characterEncodingFilter.setForceEncoding(true);
         return characterEncodingFilter;
     }
+
 }
