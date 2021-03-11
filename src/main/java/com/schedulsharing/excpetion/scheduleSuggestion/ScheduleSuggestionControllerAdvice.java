@@ -21,4 +21,17 @@ public class ScheduleSuggestionControllerAdvice {
 
         return new ResponseEntity(EntityModel.of(apiError), HttpStatus.NOT_FOUND);
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DuplicateVoteCheckException.class)
+    public ResponseEntity duplicateVoteCheck() {
+        ApiError apiError = ApiError.builder()
+                .httpStatus(HttpStatus.BAD_REQUEST)
+                .error("DuplicateVoteCheckException")
+                .message("중복 투표는 불가능 합니다.")
+                .build();
+
+        return new ResponseEntity(EntityModel.of(apiError), HttpStatus.BAD_REQUEST);
+    }
+
 }

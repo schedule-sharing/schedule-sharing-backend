@@ -25,7 +25,7 @@ public class MemberResource extends EntityModel<Member> {
 //        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-findById"));
 //        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-update"));
 //        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-delete"));
-        links.add(Link.of("/docs/index.html#resources-member-signUP", "profile"));
+        links.add(Link.of("/docs/index.html#resources-member-signup", "profile"));
         return EntityModel.of(signUpResponseDto, links);
     }
 
@@ -94,7 +94,5 @@ public class MemberResource extends EntityModel<Member> {
     public static URI getCreatedUri(Long clubScheduleId) {
         return selfLinkBuilder.slash(clubScheduleId).toUri();
     }
-
-
 
 }

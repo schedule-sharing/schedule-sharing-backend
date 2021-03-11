@@ -2,11 +2,15 @@ package com.schedulsharing.service;
 
 import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
+import com.schedulsharing.dto.Club.ClubInviteRequest;
 import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.dto.member.SignUpResponseDto;
 import com.schedulsharing.dto.suggestion.*;
 import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
+import com.schedulsharing.excpetion.common.InvalidGrantException;
+import com.schedulsharing.excpetion.scheduleSuggestion.DuplicateVoteCheckException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.suggestion.ScheduleSuggestionRepository;
@@ -21,8 +25,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Collection;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 class ScheduleSuggestionServiceTest {
@@ -54,7 +60,19 @@ class ScheduleSuggestionServiceTest {
                 .imagePath(imagePath)
                 .build();
 
-        memberService.signup(signUpRequestDto).getContent();
+        memberService.signup(signUpRequestDto);
+
+        String email2 = "test2@example.com";
+        String password2 = "1234";
+        String imagePath2 = "imagePath2";
+        SignUpRequestDto signUpRequestDto2 = SignUpRequestDto.builder()
+                .email(email2)
+                .password(password2)
+                .name("테스터2")
+                .imagePath(imagePath2)
+                .build();
+
+        memberService.signup(signUpRequestDto2);
     }
 
     @DisplayName("스케줄제안 생성 성공")
@@ -348,6 +366,97 @@ class ScheduleSuggestionServiceTest {
                 .agree(true)
                 .build();
         SuggestionVoteResponse result = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com").getContent();
+        assertEquals(result.isAgree(), true);
+    }
+
+    @DisplayName("클럽원이 아닐 경우클럽 스케줄 제안 투표 실패")
+    @Test
+    public void 클럽원이_아닌경우_클럽스케줄제안_투표실패() {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        assertThrows(InvalidGrantException.class,
+                () -> scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test2@example.com"));
+    }
+
+    @DisplayName("클럽 스케줄 제안 투표 중복투표인경우 실패")
+    @Test
+    public void 클럽스케줄제안_중복투표인경우_실패() {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com").getContent();
+        assertThrows(DuplicateVoteCheckException.class,
+                () -> scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com"));
+    }
+
+    @DisplayName("초대된 클럽원의 경우 클럽 스케줄 제안 투표 실패")
+    @Test
+    public void 초대된_클럽원은_클럽스케줄제안_투표성공() {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        String email3 = "test3@example.com";
+        String password3 = "1234";
+        String imagePath3 = "imagePath3";
+        SignUpRequestDto signUpRequestDto3 = SignUpRequestDto.builder()
+                .email(email3)
+                .password(password3)
+                .name("테스터3")
+                .imagePath(imagePath3)
+                .build();
+
+        SignUpResponseDto content = memberService.signup(signUpRequestDto3).getContent();
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+
+        ClubInviteRequest clubInviteRequest = ClubInviteRequest.builder()
+                .memberIds(List.of(content.getId()))
+                .build();
+        clubService.invite(clubInviteRequest, clubCreateResponse.getClubId(), "test@example.com");
+
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        SuggestionVoteResponse result = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test3@example.com").getContent();
         assertEquals(result.isAgree(), true);
     }
 

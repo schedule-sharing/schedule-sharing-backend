@@ -647,6 +647,7 @@ class ScheduleSuggestionControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(suggestionVoteRequest)))
                 .andDo(print())
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("agree").exists())
                 .andDo(document("suggestion-vote",
@@ -672,6 +673,81 @@ class ScheduleSuggestionControllerTest {
                                 fieldWithPath("agree").description("생성된 투표체크의 찬성 or 반대"),
                                 fieldWithPath("_links.self.href").description("link to self"),
                                 fieldWithPath("_links.profile.href").description("link to profile")
+                        )
+                ));
+    }
+
+    @DisplayName("클럽원이 아닌 경우 클럽스케줄제안 투표하기 실패")
+    @Test
+    public void 클럽원이_아닌_경우_클럽스케줄제안_투표_실패() throws Exception {
+        SuggestionCreateResponse suggestion = createSuggestion("test2@example.com");
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        mvc.perform(RestDocumentationRequestBuilders.post("/api/suggestion/{id}/vote", suggestion.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(suggestionVoteRequest)))
+                .andDo(print())
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("error").exists())
+                .andExpect(jsonPath("message").exists())
+                .andDo(document("suggestion-vote-fail-notClubMember",
+                        pathParameters(
+                                parameterWithName("id").description("투표가 진행되는 클럽스케줄제안 고유 아이디")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("agree").description("투표의 찬성(true)/반대(false)")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").description("httpStatus"),
+                                fieldWithPath("error").description("error code"),
+                                fieldWithPath("message").description("message")
+                        )
+                ));
+    }
+
+    @DisplayName("클럽스케줄제안 중복투표 실패")
+    @Test
+    public void 클럽스케줄제안_중복투표_실패() throws Exception {
+        SuggestionCreateResponse suggestion = createSuggestion("test@example.com");
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        scheduleSuggestionService.vote(suggestion.getId(), suggestionVoteRequest, "test@example.com");
+        mvc.perform(RestDocumentationRequestBuilders.post("/api/suggestion/{id}/vote", suggestion.getId())
+                .header(HttpHeaders.AUTHORIZATION, getBearToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(suggestionVoteRequest)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("error").exists())
+                .andExpect(jsonPath("message").exists())
+                .andDo(document("suggestion-vote-fail-duplicateVoteCheck",
+                        pathParameters(
+                                parameterWithName("id").description("투표가 진행되는 클럽스케줄제안 고유 아이디")
+                        ),
+                        requestHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("agree").description("투표의 찬성(true)/반대(false)")
+                        ),
+                        responseHeaders(
+                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
+                        ),
+                        responseFields(
+                                fieldWithPath("httpStatus").description("httpStatus"),
+                                fieldWithPath("error").description("error code"),
+                                fieldWithPath("message").description("message")
                         )
                 ));
     }

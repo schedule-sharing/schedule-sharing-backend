@@ -9,6 +9,7 @@ import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.member.EmailExistedException;
 import com.schedulsharing.excpetion.member.MemberNotFoundException;
+import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ import java.util.Optional;
 @Transactional
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final ClubRepository clubRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
@@ -49,7 +51,7 @@ public class MemberService {
 
     @Transactional(readOnly = true)
     public CollectionModel<GetClubsResponse> getClubs(String email) {
-        List<Club> clubs = memberRepository.findAllClub(email);
+        List<Club> clubs = clubRepository.findByMemberEmail(email);
         List<GetClubsResponse> getClubsResponse = new ArrayList<>();
         for (Club club : clubs) {
             getClubsResponse.add(modelMapper.map(club, GetClubsResponse.class));

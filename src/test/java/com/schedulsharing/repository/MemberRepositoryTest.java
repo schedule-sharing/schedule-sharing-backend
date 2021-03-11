@@ -58,7 +58,7 @@ class MemberRepositoryTest {
         createClub(email, "스터디 모임", "스터디");
         createClub(email2, "테스트2모임", "테스트2모임카테고리");
 
-        List<Club> clubs = memberRepository.findAllClub(email);
+        List<Club> clubs = clubRepository.findByMemberEmail(email);
         assertEquals(clubs.size(),2);
     }
 

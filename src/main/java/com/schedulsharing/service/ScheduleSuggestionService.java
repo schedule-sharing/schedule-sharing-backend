@@ -9,6 +9,7 @@ import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
+import com.schedulsharing.excpetion.scheduleSuggestion.DuplicateVoteCheckException;
 import com.schedulsharing.excpetion.scheduleSuggestion.SuggestionNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -35,10 +36,10 @@ public class ScheduleSuggestionService {
     private final VoteCheckRepository voteCheckRepository;
     private final ModelMapper modelMapper;
 
-
     public EntityModel<SuggestionCreateResponse> create(SuggestionCreateRequest suggestionCreateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
         Club club = findClubById(suggestionCreateRequest.getClubId());
+        checkClubMember(member, club);
         ScheduleSuggestion suggestion = ScheduleSuggestion.createSuggestion(suggestionCreateRequest, member, club);
         ScheduleSuggestion savedSuggestion = scheduleSuggestionRepository.save(suggestion);
         SuggestionCreateResponse createResponse = modelMapper.map(savedSuggestion, SuggestionCreateResponse.class);
@@ -106,14 +107,26 @@ public class ScheduleSuggestionService {
     }
 
     public EntityModel<SuggestionVoteResponse> vote(Long suggestionId, SuggestionVoteRequest suggestionVoteRequest, String email) {
-        //TODO 해당 멤버가 제안이된 클럽의 소속되어있는 지 체크해야함.
         Member member = memberRepository.findByEmail(email).get();
         ScheduleSuggestion suggestion = findSuggestionById(suggestionId);
+        Club club = suggestion.getClub();
+        checkClubMember(member, club); //클럽원인지 검사
+        if(!voteCheckRepository.findBySuggestionIdAndMemberId(suggestionId,member.getId()).isEmpty()){
+            throw new DuplicateVoteCheckException("중복투표는 불가능합니다.");
+        }
         VoteCheck voteCheck = VoteCheck.createVoteCheck(suggestionVoteRequest, member, suggestion);
         VoteCheck vote = voteCheckRepository.save(voteCheck);
         SuggestionVoteResponse response = modelMapper.map(vote, SuggestionVoteResponse.class);
 
         return SuggestionResource.getSuggestionVoteLink(response, email, suggestionId);
+    }
+
+    private void checkClubMember(Member member, Club club) {
+        List<Member> members = memberRepository.findAllByClubId(club.getId());
+        List<Long> memberIdList = members.stream().map(member1 -> member1.getId()).collect(Collectors.toList());
+        if (!memberIdList.contains(member.getId())) {
+            throw new InvalidGrantException("해당 클럽에 소속된 사람만 투표할 수 있습니다.");
+        }
     }
 
     private Club findClubById(Long clubId) {
@@ -131,5 +144,4 @@ public class ScheduleSuggestionService {
         }
         return optionalScheduleSuggestion.get();
     }
-
 }

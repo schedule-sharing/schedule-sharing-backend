@@ -161,3 +161,11 @@ operation::suggestion-confirmList[snippets='path-parameters,request-fields,http-
 [[resources-suggestion-vote]]
 === 클럽스케줄 제안 투표
 operation::suggestion-vote[snippets='path-parameters,request-fields,http-request,request-headers,http-response,response-headers,response-fields,links']
+
+[[resources-suggestion-vote-fail-notClubMember]]
+=== 클럽원이 아닌 경우 스케줄 제안 투표 실패
+operation::suggestion-vote-fail-notClubMember[snippets='path-parameters,request-fields,http-request,request-headers,http-response,response-headers,response-fields']
+
+[[resources-suggestion-vote-fail-duplicateVoteCheck]]
+=== 클럽스케줄 제안 중복 투표의 경우 실패
+operation::suggestion-vote-fail-duplicateVoteCheck[snippets='path-parameters,request-fields,http-request,request-headers,http-response,response-headers,response-fields']

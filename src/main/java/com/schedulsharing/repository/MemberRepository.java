@@ -1,6 +1,5 @@
 package com.schedulsharing.repository;
 
-import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +11,7 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByEmail(String username);
 
-    @Query("select c from Member m ,Club c, MemberClub mc " +
-            "where m.id=mc.member.id and c.id=mc.club.id and m.email=:email")
-    List<Club> findAllClub(@Param("email") String email);
+    @Query("select m from Member m ,Club c, MemberClub mc " +
+            "where m.id=mc.member.id and c.id=mc.club.id and c.id=:id")
+    List<Member> findAllByClubId(@Param("id") Long id);
 }
