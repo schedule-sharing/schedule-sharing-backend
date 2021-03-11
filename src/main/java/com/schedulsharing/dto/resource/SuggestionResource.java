@@ -94,6 +94,13 @@ public class SuggestionResource {
                 }).collect(Collectors.toList());
     }
 
+    public static EntityModel<SuggestionVoteUpdateResponse> updateVoteLink(SuggestionVoteUpdateResponse voteUpdateResponse) {
+        List<Link> links = getSelfLink(voteUpdateResponse.getId());
+        links.add(selfLinkBuilder.withRel("suggestion-vote"));
+        links.add(Link.of("/docs/index.html#resources-vote-update", "profile"));
+        return EntityModel.of(voteUpdateResponse, links);
+    }
+
     private static List<Link> getSelfLink() {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.withSelfRel());
@@ -115,5 +122,6 @@ public class SuggestionResource {
     public static URI getCreatedUri(Long suggestionId) {
         return selfLinkBuilder.slash(suggestionId).toUri();
     }
+
 
 }

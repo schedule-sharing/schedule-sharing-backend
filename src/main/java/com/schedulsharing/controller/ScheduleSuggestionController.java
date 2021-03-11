@@ -31,6 +31,7 @@ public class ScheduleSuggestionController {
         return ResponseEntity.ok(scheduleSuggestionService.vote(suggestionId, suggestionVoteRequest, authentication.getName()));
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity getSuggestion(@PathVariable("id") Long id, Authentication authentication) {
 
@@ -52,7 +53,6 @@ public class ScheduleSuggestionController {
 
         return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, suggestionListRequest, authentication.getName()));
     }
-
     @PutMapping("/{id}")
     public ResponseEntity updateSuggestion(@PathVariable("id") Long id,
                                            @RequestBody SuggestionUpdateRequest suggestionUpdateRequest,

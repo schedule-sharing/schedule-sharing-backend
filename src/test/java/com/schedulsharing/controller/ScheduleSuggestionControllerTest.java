@@ -756,6 +756,7 @@ class ScheduleSuggestionControllerTest {
                 ));
     }
 
+
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {
         ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()
                 .clubName(clubName)

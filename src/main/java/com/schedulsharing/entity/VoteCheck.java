@@ -1,6 +1,7 @@
 package com.schedulsharing.entity;
 
 import com.schedulsharing.dto.suggestion.SuggestionVoteRequest;
+import com.schedulsharing.dto.suggestion.SuggestionVoteUpdateRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import lombok.AllArgsConstructor;
@@ -39,5 +40,9 @@ public class VoteCheck {
                 .member(member)
                 .scheduleSuggestion(scheduleSuggestion)
                 .build();
+    }
+
+    public void update(SuggestionVoteUpdateRequest updateRequest) {
+        this.agree = updateRequest.isAgree();
     }
 }
