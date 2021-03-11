@@ -271,7 +271,7 @@ class ScheduleSuggestionControllerTest {
 
             SuggestionCreateResponse response = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
             ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(response.getId()).get();
-            scheduleSuggestion.setConfirmTrue();
+            scheduleSuggestion.updateConfirmTrue();
             scheduleSuggestionRepository.save(scheduleSuggestion);
         }
 
@@ -376,7 +376,7 @@ class ScheduleSuggestionControllerTest {
 
             SuggestionCreateResponse response = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
             ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(response.getId()).get();
-            scheduleSuggestion.setConfirmTrue();
+            scheduleSuggestion.updateConfirmTrue();
             scheduleSuggestionRepository.save(scheduleSuggestion);
         }
 
@@ -396,7 +396,7 @@ class ScheduleSuggestionControllerTest {
 
             SuggestionCreateResponse response = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
             ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(response.getId()).get();
-            scheduleSuggestion.setConfirmTrue();
+            scheduleSuggestion.updateConfirmTrue();
             scheduleSuggestionRepository.save(scheduleSuggestion);
         }
 

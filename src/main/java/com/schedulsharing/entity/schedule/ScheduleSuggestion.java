@@ -68,7 +68,7 @@ public class ScheduleSuggestion {
         member.getSuggestions().add(this);
     }
     //테스트를 위해 생성 추후에 따로 로직 처리해야함
-    public void setConfirmTrue(){
+    public void updateConfirmTrue(){
         this.isConfirm=true;
     }
 

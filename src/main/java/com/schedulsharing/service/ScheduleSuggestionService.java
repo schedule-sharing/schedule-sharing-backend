@@ -22,7 +22,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +65,7 @@ public class ScheduleSuggestionService {
             suggestionResponse.setVoteAgreeDto(VoteAgreeDto.builder().count(0).memberName(new ArrayList<>()).build());
         } else {
             List<String> memberNamesAgree = voteCheckAgree.get().stream().map(voteCheck -> voteCheck.getMember().getName()).collect(Collectors.toList());
-            System.out.println(""+voteCheckAgree.get().size());
+            System.out.println("" + voteCheckAgree.get().size());
             for (String s : memberNamesAgree) {
                 System.out.println("s = " + s);
             }
@@ -141,8 +141,16 @@ public class ScheduleSuggestionService {
         VoteCheck vote = voteCheckRepository.save(voteCheck);
         SuggestionVoteResponse response = modelMapper.map(vote, SuggestionVoteResponse.class);
 
+        if (voteCheckRepository.findBySuggestionIdAndAgreeTrue(suggestionId).isPresent()) {
+            if (suggestion.getMinMember() <= voteCheckRepository.findBySuggestionIdAndAgreeTrue(suggestionId).get().size()
+                    && suggestion.getVoteEndDate().isAfter(LocalDateTime.now())) {
+                suggestion.updateConfirmTrue();
+            }
+        }
+
         return SuggestionResource.getSuggestionVoteLink(response, email, suggestionId);
     }
+
 
     private void checkClubMember(Member member, Club club) {
         List<Member> members = memberRepository.findAllByClubId(club.getId());

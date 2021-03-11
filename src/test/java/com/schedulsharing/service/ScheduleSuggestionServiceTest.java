@@ -172,7 +172,7 @@ class ScheduleSuggestionServiceTest {
 
             SuggestionCreateResponse response = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
             ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(response.getId()).get();
-            scheduleSuggestion.setConfirmTrue();
+            scheduleSuggestion.updateConfirmTrue();
             scheduleSuggestionRepository.save(scheduleSuggestion);
         }
 
@@ -419,7 +419,7 @@ class ScheduleSuggestionServiceTest {
                 () -> scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com"));
     }
 
-    @DisplayName("초대된 클럽원의 경우 클럽 스케줄 제안 투표 실패")
+    @DisplayName("초대된 클럽원의 경우 클럽 스케줄 제안 투표 성공")
     @Test
     public void 초대된_클럽원은_클럽스케줄제안_투표성공() {
         Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
@@ -458,6 +458,32 @@ class ScheduleSuggestionServiceTest {
                 .build();
         SuggestionVoteResponse result = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test3@example.com").getContent();
         assertEquals(result.isAgree(), true);
+    }
+
+    @DisplayName("클럽 스케줄 제안 투표가 마감 날짜 이전에 찬성 수가 제안의 최소인원 이상이면 confrim이 true로 된다. ")
+    @Test
+    public void 클럽스케줄제안_투표_confirm_update() {
+        Member member = memberRepository.findByEmail("test@example.com").get(); //setUp에서 생성한 멤버
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(1)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.now().plusDays(1))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        SuggestionVoteResponse result = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com").getContent();
+        ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(createResponse.getId()).get();
+        assertEquals(result.isAgree(), true);
+        assertEquals(scheduleSuggestion.isConfirm(),true);
     }
 
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {
