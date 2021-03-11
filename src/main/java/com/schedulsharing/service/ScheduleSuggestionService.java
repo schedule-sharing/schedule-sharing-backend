@@ -22,6 +22,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -48,13 +50,34 @@ public class ScheduleSuggestionService {
     }
 
     @Transactional(readOnly = true)
-    public EntityModel<SuggestionResponse> getSuggestion(Long id, String email) {
+    public EntityModel<SuggestionVoteCheckResponse> getSuggestion(Long id, String email) {
         Optional<ScheduleSuggestion> optionalScheduleSuggestion = scheduleSuggestionRepository.findById(id);
         if (optionalScheduleSuggestion.isEmpty()) {
             throw new SuggestionNotFoundException("클럽스케줄제안이 없습니다.");
         }
         ScheduleSuggestion scheduleSuggestion = optionalScheduleSuggestion.get();
-        SuggestionResponse suggestionResponse = modelMapper.map(scheduleSuggestion, SuggestionResponse.class);
+        Optional<List<VoteCheck>> voteCheckAgree = voteCheckRepository.findBySuggestionIdAndAgreeTrue(id);
+
+        Optional<List<VoteCheck>> voteCheckDisagree = voteCheckRepository.findBySuggestionIdAndDisagree(id);
+
+        SuggestionVoteCheckResponse suggestionResponse = modelMapper.map(scheduleSuggestion, SuggestionVoteCheckResponse.class);
+        if (voteCheckAgree.isEmpty()) {
+            suggestionResponse.setVoteAgreeDto(VoteAgreeDto.builder().count(0).memberName(new ArrayList<>()).build());
+        } else {
+            List<String> memberNamesAgree = voteCheckAgree.get().stream().map(voteCheck -> voteCheck.getMember().getName()).collect(Collectors.toList());
+            System.out.println(""+voteCheckAgree.get().size());
+            for (String s : memberNamesAgree) {
+                System.out.println("s = " + s);
+            }
+            suggestionResponse.setVoteAgreeDto(VoteAgreeDto.builder().count(memberNamesAgree.size()).memberName(memberNamesAgree).build());
+        }
+
+        if (voteCheckDisagree.isEmpty()) {
+            suggestionResponse.setVoteDisagreeDto(VoteDisagreeDto.builder().count(0).memberName(new ArrayList<>()).build());
+        } else {
+            List<String> memberNamesAgree = voteCheckDisagree.get().stream().map(voteCheck -> voteCheck.getMember().getName()).collect(Collectors.toList());
+            suggestionResponse.setVoteDisagreeDto(VoteDisagreeDto.builder().count(memberNamesAgree.size()).memberName(memberNamesAgree).build());
+        }
 
         return SuggestionResource.getSuggestionLink(suggestionResponse, email);
     }
@@ -111,7 +134,7 @@ public class ScheduleSuggestionService {
         ScheduleSuggestion suggestion = findSuggestionById(suggestionId);
         Club club = suggestion.getClub();
         checkClubMember(member, club); //클럽원인지 검사
-        if(!voteCheckRepository.findBySuggestionIdAndMemberId(suggestionId,member.getId()).isEmpty()){
+        if (!voteCheckRepository.findBySuggestionIdAndMemberId(suggestionId, member.getId()).isEmpty()) {
             throw new DuplicateVoteCheckException("중복투표는 불가능합니다.");
         }
         VoteCheck voteCheck = VoteCheck.createVoteCheck(suggestionVoteRequest, member, suggestion);

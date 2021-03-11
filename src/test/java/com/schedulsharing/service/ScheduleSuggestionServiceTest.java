@@ -126,7 +126,7 @@ class ScheduleSuggestionServiceTest {
                 .build();
         SuggestionCreateResponse content = scheduleSuggestionService.create(suggestionCreateRequest, email).getContent();
 
-        SuggestionResponse result = scheduleSuggestionService.getSuggestion(content.getId(), email).getContent();
+        SuggestionVoteCheckResponse result = scheduleSuggestionService.getSuggestion(content.getId(), email).getContent();
         assertEquals(result.getTitle(), title);
         assertEquals(result.getContents(), contents);
         assertEquals(result.getLocation(), location);

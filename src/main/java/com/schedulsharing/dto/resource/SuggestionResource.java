@@ -1,10 +1,7 @@
 package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.ScheduleSuggestionController;
-import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
-import com.schedulsharing.dto.suggestion.SuggestionDeleteResponse;
-import com.schedulsharing.dto.suggestion.SuggestionResponse;
-import com.schedulsharing.dto.suggestion.SuggestionVoteResponse;
+import com.schedulsharing.dto.suggestion.*;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -29,7 +26,7 @@ public class SuggestionResource {
         return EntityModel.of(createResponse, links);
     }
 
-    public static EntityModel<SuggestionResponse> getSuggestionLink(SuggestionResponse suggestionResponse, String email) {
+    public static EntityModel<SuggestionVoteCheckResponse> getSuggestionLink(SuggestionVoteCheckResponse suggestionResponse, String email) {
         List<Link> links = getSelfLink(suggestionResponse.getId());
         if (suggestionResponse.getMemberEmail().equals(email)) {
             links.add(selfLinkBuilder.slash(suggestionResponse.getId()).withRel("suggestion-update"));
