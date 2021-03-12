@@ -1,7 +1,7 @@
 package com.schedulsharing.controller;
 
-import com.schedulsharing.dto.suggestion.SuggestionVoteUpdateRequest;
-import com.schedulsharing.service.ScheduleSuggestionService;
+import com.schedulsharing.dto.voteCheck.SuggestionVoteUpdateRequest;
+import com.schedulsharing.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class VoteController {
 
-    private final ScheduleSuggestionService scheduleSuggestionService;
+    private final VoteService voteService;
 
     @PutMapping("/{voteId}")
     public ResponseEntity updateVote(@PathVariable("voteId") Long id, @RequestBody SuggestionVoteUpdateRequest updateRequest, Authentication authentication) {
-        return ResponseEntity.ok(scheduleSuggestionService.updateVote(id, updateRequest, authentication.getName()));
+        return ResponseEntity.ok(voteService.updateVote(id, updateRequest, authentication.getName()));
     }
 }

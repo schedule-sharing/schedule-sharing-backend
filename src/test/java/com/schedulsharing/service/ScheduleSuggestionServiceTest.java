@@ -460,36 +460,7 @@ class ScheduleSuggestionServiceTest {
         assertEquals(result.isAgree(), true);
     }
 
-    @DisplayName("투표 수정 테스트")
-    @Test
-    public void 투표_수정_테스트() {
-        Member member = memberRepository.findByEmail("test@example.com").get();
-        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
-        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
-                .title("테스트 제안 제목")
-                .contents("테스트 제안 내용")
-                .location("테스트 제안 위치")
-                .minMember(2)
-                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
-                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
-                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
-                .clubId(clubCreateResponse.getClubId())
-                .build();
-        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
-        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
-                .agree(true)
-                .build();
-        SuggestionVoteResponse content = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com").getContent();
 
-
-        SuggestionVoteUpdateRequest updateRequest = SuggestionVoteUpdateRequest.builder()
-                .agree(false)
-                .build();
-
-        SuggestionVoteUpdateResponse updateResponse = scheduleSuggestionService.updateVote(content.getId(), updateRequest, "test@example.com").getContent();
-        assertEquals(updateResponse.isAgree(), false);
-    }
 
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {
         ClubCreateRequest clubCreateRequest = ClubCreateRequest.builder()

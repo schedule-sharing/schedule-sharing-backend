@@ -3,8 +3,9 @@ package com.schedulsharing.service;
 import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
-import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
+import com.schedulsharing.dto.suggestion.*;
+import com.schedulsharing.dto.voteCheck.SuggestionVoteUpdateRequest;
+import com.schedulsharing.dto.voteCheck.SuggestionVoteUpdateResponse;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 public class VoteServiceTest {
@@ -32,6 +35,8 @@ public class VoteServiceTest {
     private MemberService memberService;
     @Autowired
     private ClubService clubService;
+    @Autowired
+    private VoteService voteService;
     @Autowired
     private ScheduleSuggestionService scheduleSuggestionService;
 
@@ -54,10 +59,35 @@ public class VoteServiceTest {
         memberService.signup(signUpRequestDto).getContent();
     }
 
-    @DisplayName("vote check 조회")
+    @DisplayName("투표 수정 테스트")
     @Test
-    public void vote_check_조회() throws Exception {
+    public void 투표_수정_테스트() {
+        Member member = memberRepository.findByEmail("test@example.com").get();
+        ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
+        SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
+                .title("테스트 제안 제목")
+                .contents("테스트 제안 내용")
+                .location("테스트 제안 위치")
+                .minMember(2)
+                .scheduleStartDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .scheduleEndDate(LocalDateTime.of(2021, 3, 10, 0, 0))
+                .voteStartDate(LocalDateTime.of(2021, 3, 5, 0, 0))
+                .voteEndDate(LocalDateTime.of(2021, 3, 8, 0, 0))
+                .clubId(clubCreateResponse.getClubId())
+                .build();
+        SuggestionCreateResponse createResponse = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
+        SuggestionVoteRequest suggestionVoteRequest = SuggestionVoteRequest.builder()
+                .agree(true)
+                .build();
+        SuggestionVoteResponse content = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com").getContent();
 
+
+        SuggestionVoteUpdateRequest updateRequest = SuggestionVoteUpdateRequest.builder()
+                .agree(false)
+                .build();
+
+        SuggestionVoteUpdateResponse updateResponse = voteService.updateVote(content.getId(), updateRequest, "test@example.com").getContent();
+        assertEquals(updateResponse.isAgree(), false);
     }
 
 

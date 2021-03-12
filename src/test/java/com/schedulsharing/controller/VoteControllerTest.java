@@ -7,6 +7,7 @@ import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.dto.suggestion.*;
+import com.schedulsharing.dto.voteCheck.SuggestionVoteUpdateRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
@@ -29,7 +30,6 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
 

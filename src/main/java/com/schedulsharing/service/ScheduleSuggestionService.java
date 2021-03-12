@@ -144,17 +144,7 @@ public class ScheduleSuggestionService {
         return SuggestionResource.getSuggestionVoteLink(response, email, suggestionId);
     }
 
-    public EntityModel<SuggestionVoteUpdateResponse> updateVote(Long id, SuggestionVoteUpdateRequest updateRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
-        VoteCheck voteCheck = voteCheckRepository.findById(id).get();
-        if (!voteCheck.getMember().equals(member)) {
-            throw new InvalidGrantException("투표 수정 권한이 없습니다.");
-        }
-        voteCheck.update(updateRequest);
-        SuggestionVoteUpdateResponse voteUpdateResponse = modelMapper.map(voteCheck, SuggestionVoteUpdateResponse.class);
 
-        return SuggestionResource.updateVoteLink(voteUpdateResponse);
-    }
 
     private void checkClubMember(Member member, Club club) {
         List<Member> members = memberRepository.findAllByClubId(club.getId());

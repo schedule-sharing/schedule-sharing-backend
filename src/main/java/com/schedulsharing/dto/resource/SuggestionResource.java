@@ -2,6 +2,7 @@ package com.schedulsharing.dto.resource;
 
 import com.schedulsharing.controller.ScheduleSuggestionController;
 import com.schedulsharing.dto.suggestion.*;
+import com.schedulsharing.dto.voteCheck.SuggestionVoteUpdateResponse;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
