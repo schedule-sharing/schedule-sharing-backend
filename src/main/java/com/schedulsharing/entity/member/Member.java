@@ -1,6 +1,7 @@
 package com.schedulsharing.entity.member;
 
 import com.schedulsharing.dto.member.MemberUpdateRequest;
+import com.schedulsharing.entity.BaseTimeEntity;
 import com.schedulsharing.entity.MemberClub;
 import com.schedulsharing.entity.VoteCheck;
 import com.schedulsharing.entity.schedule.ClubSchedule;
@@ -20,8 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Table(name = "member")
-@EqualsAndHashCode(of = "id")
-public class Member {
+@EqualsAndHashCode(of = "id", callSuper = false)
+public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -65,5 +66,4 @@ public class Member {
     @Enumerated(EnumType.STRING)
     @ElementCollection(fetch = FetchType.EAGER)
     private List<MemberRole> roles;
-
 }

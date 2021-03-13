@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
+import com.schedulsharing.entity.BaseTimeEntity;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClubSchedule {
+public class ClubSchedule extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

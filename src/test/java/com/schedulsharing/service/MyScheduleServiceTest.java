@@ -19,7 +19,7 @@ import java.util.Collection;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-public class MyScheuldeServiceTest {
+public class MyScheduleServiceTest {
 
     @Autowired
     private MemberRepository memberRepository;

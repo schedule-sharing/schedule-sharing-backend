@@ -1,19 +1,17 @@
 package com.schedulsharing.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.Club.ClubCreateRequest;
 import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
+import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.service.ClubScheduleService;
 import com.schedulsharing.service.ClubService;
 import com.schedulsharing.service.MemberService;
@@ -22,26 +20,19 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -49,15 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@Import(RestDocsConfiguration.class)
-class ClubScheduleControllerTest {
-    @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private ObjectMapper objectMapper;
+class ClubScheduleControllerTest extends ApiDocumentationTest{
     @Autowired
     private ClubRepository clubRepository;
     @Autowired

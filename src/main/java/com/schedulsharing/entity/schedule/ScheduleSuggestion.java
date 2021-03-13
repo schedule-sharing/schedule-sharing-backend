@@ -2,6 +2,7 @@ package com.schedulsharing.entity.schedule;
 
 import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
 import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
+import com.schedulsharing.entity.BaseTimeEntity;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.VoteCheck;
 import com.schedulsharing.entity.member.Member;
@@ -21,7 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ScheduleSuggestion {
+public class ScheduleSuggestion extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

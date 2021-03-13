@@ -2,6 +2,7 @@ package com.schedulsharing.entity.schedule;
 
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
+import com.schedulsharing.entity.BaseTimeEntity;
 import com.schedulsharing.entity.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MySchedule {
+public class MySchedule extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "my_schedule_id")

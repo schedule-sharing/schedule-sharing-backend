@@ -1,7 +1,5 @@
 package com.schedulsharing.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.schedulsharing.config.RestDocsConfiguration;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
@@ -18,14 +16,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
@@ -43,16 +36,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureRestDocs
-@Import(RestDocsConfiguration.class)
-public class MyScheduleControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
-    @Autowired
-    private ObjectMapper objectMapper;
+public class MyScheduleControllerTest extends ApiDocumentationTest{
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
