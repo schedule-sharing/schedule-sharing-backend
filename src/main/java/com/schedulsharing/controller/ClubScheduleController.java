@@ -41,14 +41,14 @@ public class ClubScheduleController {
 
     @GetMapping("/list/{clubId}")
     public ResponseEntity getClubScheduleList(@PathVariable("clubId") Long clubId,
-                                              @RequestBody YearMonthRequest yearMonthRequest,
+                                              @RequestBody @Valid YearMonthRequest yearMonthRequest,
                                               Authentication authentication) {
         return ResponseEntity.ok(clubScheduleService.getClubScheduleList(clubId, yearMonthRequest, authentication.getName()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity updateClubSchedule(@PathVariable("id") Long id,
-                                             @Valid @RequestBody ClubScheduleUpdateRequest clubScheduleUpdateRequest,
+                                             @RequestBody @Valid  ClubScheduleUpdateRequest clubScheduleUpdateRequest,
                                              Authentication authentication) {
 
         return ResponseEntity.ok(clubScheduleService.update(id, clubScheduleUpdateRequest, authentication.getName()));

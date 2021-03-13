@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @RestController
 @RequestMapping("/api/suggestion")
 @RequiredArgsConstructor
@@ -17,7 +20,7 @@ public class ScheduleSuggestionController {
     private final ScheduleSuggestionService scheduleSuggestionService;
 
     @PostMapping
-    public ResponseEntity createSuggestion(@RequestBody SuggestionCreateRequest suggestionCreateRequest, Authentication authentication) {
+    public ResponseEntity createSuggestion(@RequestBody @Valid SuggestionCreateRequest suggestionCreateRequest, Authentication authentication) {
         EntityModel<SuggestionCreateResponse> entityModel = scheduleSuggestionService.create(suggestionCreateRequest, authentication.getName());
 
         return ResponseEntity.created(SuggestionResource.getCreatedUri(entityModel.getContent().getId())).body(entityModel);
@@ -39,7 +42,7 @@ public class ScheduleSuggestionController {
 
     @GetMapping("/confirmList/{clubId}")
     public ResponseEntity getSuggestionListConfirm(@PathVariable("clubId") Long clubId,
-                                                   @RequestBody YearMonthRequest yearMonthRequest,
+                                                   @RequestBody @Valid YearMonthRequest yearMonthRequest,
                                                    Authentication authentication) {
 
         return ResponseEntity.ok(scheduleSuggestionService.getSuggestionListConfirm(clubId, yearMonthRequest, authentication.getName()));
@@ -47,7 +50,7 @@ public class ScheduleSuggestionController {
 
     @GetMapping("/list/{clubId}")
     public ResponseEntity getSuggestionList(@PathVariable("clubId") Long clubId,
-                                            @RequestBody SuggestionListRequest suggestionListRequest,
+                                            @RequestBody @Valid SuggestionListRequest suggestionListRequest,
                                             Authentication authentication) {
 
         return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, suggestionListRequest, authentication.getName()));
@@ -55,7 +58,7 @@ public class ScheduleSuggestionController {
 
     @PutMapping("/{id}")
     public ResponseEntity updateSuggestion(@PathVariable("id") Long id,
-                                           @RequestBody SuggestionUpdateRequest suggestionUpdateRequest,
+                                           @RequestBody @Valid SuggestionUpdateRequest suggestionUpdateRequest,
                                            Authentication authentication) {
 
         return ResponseEntity.ok(scheduleSuggestionService.update(id, suggestionUpdateRequest, authentication.getName()));

@@ -39,7 +39,7 @@ public class MyScheduleController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity getMyScheduleList(@RequestBody YearMonthRequest yearMonthRequest, Authentication authentication) {
+    public ResponseEntity getMyScheduleList(@RequestBody @Valid YearMonthRequest yearMonthRequest, Authentication authentication) {
         return ResponseEntity.ok(myScheduleService.getMyScheduleList(yearMonthRequest, authentication.getName()));
     }
 

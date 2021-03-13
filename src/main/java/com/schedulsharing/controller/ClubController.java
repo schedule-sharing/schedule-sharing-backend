@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ClubController {
     private final ClubService clubService;
 
     @PostMapping
-    public ResponseEntity createClub(@RequestBody ClubCreateRequest clubCreateRequest, Authentication authentication) {
+    public ResponseEntity createClub(@RequestBody @Valid ClubCreateRequest clubCreateRequest, Authentication authentication) {
         EntityModel<ClubCreateResponse> entityModel = clubService.createClub(clubCreateRequest, authentication.getName());
 
         return ResponseEntity.created(ClubResource.getCreatedUri(entityModel.getContent().getClubId())).body(entityModel);
@@ -38,7 +39,7 @@ public class ClubController {
 
     @PutMapping("/{clubId}")
     public ResponseEntity updateClub(@PathVariable("clubId") Long clubId,
-                                     @RequestBody ClubUpdateRequest clubUpdateRequest,
+                                     @RequestBody @Valid ClubUpdateRequest clubUpdateRequest,
                                      Authentication authentication) {
         return ResponseEntity.ok(clubService.update(clubId,clubUpdateRequest, authentication.getName()));
     }
@@ -50,7 +51,7 @@ public class ClubController {
     }
 
     @PostMapping("/{clubId}/invite")
-    public ResponseEntity inviteClub(@RequestBody ClubInviteRequest clubInviteRequest,
+    public ResponseEntity inviteClub(@RequestBody @Valid ClubInviteRequest clubInviteRequest,
                                      @PathVariable("clubId") Long clubId,
                                      Authentication authentication) {
 

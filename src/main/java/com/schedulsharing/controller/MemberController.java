@@ -25,14 +25,14 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@Valid @RequestBody SignUpRequestDto signUpRequestDto) {
+    public ResponseEntity signup(@RequestBody @Valid  SignUpRequestDto signUpRequestDto) {
         log.info("signUpRequestDto: " + signUpRequestDto);
 
         return ResponseEntity.ok().body(memberService.signup(signUpRequestDto));
     }
 
     @PostMapping("/checkEmail")
-    public ResponseEntity existedEmailCheck(@RequestBody EmailCheckRequestDto emailCheckRequestDto) {
+    public ResponseEntity existedEmailCheck(@RequestBody @Valid EmailCheckRequestDto emailCheckRequestDto) {
 
         return ResponseEntity.ok(memberService.emailCheck(emailCheckRequestDto.getEmail()));
     }
@@ -44,7 +44,7 @@ public class MemberController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity getMemberByEmail(@RequestBody MemberSearchRequest memberSearchRequest) {
+    public ResponseEntity getMemberByEmail(@RequestBody @Valid MemberSearchRequest memberSearchRequest) {
 
         return ResponseEntity.ok(memberService.getMemberByEmail(memberSearchRequest));
     }
@@ -55,7 +55,9 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateMember(@PathVariable("id") Long id, @RequestBody MemberUpdateRequest memberUpdateRequest, Authentication authentication) {
+    public ResponseEntity updateMember(@PathVariable("id") Long id,
+                                       @RequestBody @Valid MemberUpdateRequest memberUpdateRequest,
+                                       Authentication authentication) {
         return ResponseEntity.ok(memberService.updateMember(id, memberUpdateRequest, authentication.getName()));
     }
 
