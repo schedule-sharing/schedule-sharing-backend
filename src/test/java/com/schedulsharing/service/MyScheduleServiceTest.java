@@ -1,6 +1,6 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
+
 import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.repository.MemberRepository;
@@ -118,11 +118,8 @@ public class MyScheduleServiceTest {
             myScheduleService.create(createRequest, member.getEmail()).getContent();
         }
 
-        YearMonthRequest yearMonthRequest = YearMonthRequest.builder()
-                .yearMonth(YearMonth.of(2021, 3))
-                .build();
-
-        Collection<EntityModel<MyScheduleResponse>> myScheduleList = myScheduleService.getMyScheduleList(yearMonthRequest, member.getEmail()).getContent();
+        YearMonth yearMonth = YearMonth.of(2021,3);
+        Collection<EntityModel<MyScheduleResponse>> myScheduleList = myScheduleService.getMyScheduleList(yearMonth, member.getEmail()).getContent();
         //3월시작 3월끝 = 30개
         assertEquals(myScheduleList.size(), 30);
     }

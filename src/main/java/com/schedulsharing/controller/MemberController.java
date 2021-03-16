@@ -44,9 +44,9 @@ public class MemberController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity getMemberByEmail(@RequestBody @Valid MemberSearchRequest memberSearchRequest) {
+    public ResponseEntity getMemberByEmail(@RequestParam("email") String email) {
 
-        return ResponseEntity.ok(memberService.getMemberByEmail(memberSearchRequest));
+        return ResponseEntity.ok(memberService.getMemberByEmail(email));
     }
 
     @GetMapping("/{id}")

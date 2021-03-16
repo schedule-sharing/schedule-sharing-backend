@@ -1,11 +1,11 @@
 package com.schedulsharing.repository.suggestion;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.schedulsharing.dto.suggestion.SuggestionListRequest;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 import static com.schedulsharing.entity.schedule.QScheduleSuggestion.scheduleSuggestion;
@@ -18,23 +18,23 @@ public class ScheduleSuggestionRepositoryImpl implements ScheduleSuggestionCusto
     }
 
     @Override
-    public List<ScheduleSuggestion> findAllByClubIdConfirm(Long clubId, YearMonthRequest yearMonthRequest) {
+    public List<ScheduleSuggestion> findAllByClubIdConfirm(Long clubId, YearMonth yearMonth) {
         return queryFactory.selectFrom(scheduleSuggestion)
-                .where(scheduleSuggestion.scheduleStartDate.year().eq(yearMonthRequest.getYearMonth().getYear())
-                        .and(scheduleSuggestion.scheduleStartDate.month().eq(yearMonthRequest.getYearMonth().getMonthValue()))
-                        .or(scheduleSuggestion.scheduleEndDate.year().eq(yearMonthRequest.getYearMonth().getYear())
-                                .and(scheduleSuggestion.scheduleEndDate.month().eq(yearMonthRequest.getYearMonth().getMonthValue())))
+                .where(scheduleSuggestion.scheduleStartDate.year().eq(yearMonth.getYear())
+                        .and(scheduleSuggestion.scheduleStartDate.month().eq(yearMonth.getMonthValue()))
+                        .or(scheduleSuggestion.scheduleEndDate.year().eq(yearMonth.getYear())
+                                .and(scheduleSuggestion.scheduleEndDate.month().eq(yearMonth.getMonthValue())))
                         .and(scheduleSuggestion.club.id.eq(clubId))
                         .and(scheduleSuggestion.isConfirm.eq(true)))
                 .fetch();
     }
 
     @Override
-    public List<ScheduleSuggestion> findAllByClubId(Long clubId, SuggestionListRequest suggestionListRequest) {
+    public List<ScheduleSuggestion> findAllByClubId(Long clubId, LocalDate now) {
         return queryFactory.selectFrom(scheduleSuggestion)
-                .where(scheduleSuggestion.voteEndDate.year().eq(suggestionListRequest.getNow().getYear())
-                        .and(scheduleSuggestion.voteEndDate.month().eq(suggestionListRequest.getNow().getMonthValue()))
-                        .and(scheduleSuggestion.voteEndDate.dayOfMonth().goe(suggestionListRequest.getNow().getDayOfMonth()))
+                .where(scheduleSuggestion.voteEndDate.year().eq(now.getYear())
+                        .and(scheduleSuggestion.voteEndDate.month().eq(now.getMonthValue()))
+                        .and(scheduleSuggestion.voteEndDate.dayOfMonth().goe(now.getDayOfMonth()))
                         .and(scheduleSuggestion.club.id.eq(clubId)))
                 .fetch();
     }

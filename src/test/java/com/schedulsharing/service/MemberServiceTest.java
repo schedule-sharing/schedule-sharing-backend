@@ -60,10 +60,8 @@ class MemberServiceTest {
                 .imagePath(imagePath2)
                 .build();
         memberService.signup(signUpRequestDto2);
-        MemberSearchRequest memberSearchRequest = MemberSearchRequest.builder()
-                .email(email2)
-                .build();
-        MemberResponse result = memberService.getMemberByEmail(memberSearchRequest).getContent();
+
+        MemberResponse result = memberService.getMemberByEmail(email2).getContent();
         assertEquals(result.getEmail(), email2);
         assertEquals(result.getName(), name2);
         assertEquals(result.getImagePath(), imagePath2);

@@ -1,6 +1,5 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.MySchedule.*;
 import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.entity.member.Member;
@@ -16,6 +15,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,9 +47,9 @@ public class MyScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleList(YearMonthRequest yearMonthRequest, String email) {
+    public CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleList(YearMonth yearMonth, String email) {
         Member member = memberRepository.findByEmail(email).get();
-        List<MySchedule> myScheduleList = myScheduleRepository.findAllByEmail(member.getEmail(), yearMonthRequest);
+        List<MySchedule> myScheduleList = myScheduleRepository.findAllByEmail(member.getEmail(), yearMonth);
         for (MySchedule mySchedule : myScheduleList) {
             if (!member.getEmail().equals(mySchedule.getMember().getEmail())) {
                 throw new InvalidGrantException("조회 권한이 없습니다.");

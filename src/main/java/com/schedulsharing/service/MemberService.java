@@ -72,8 +72,8 @@ public class MemberService {
     }
 
     @Transactional(readOnly = true)
-    public EntityModel<MemberResponse> getMemberByEmail(MemberSearchRequest memberSearchRequest) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(memberSearchRequest.getEmail());
+    public EntityModel<MemberResponse> getMemberByEmail(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if(optionalMember.isEmpty()){
             throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
         }

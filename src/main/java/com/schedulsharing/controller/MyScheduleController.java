@@ -1,12 +1,12 @@
 package com.schedulsharing.controller;
 
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
 import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
 import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
 import com.schedulsharing.dto.resource.MyScheduleResource;
 import com.schedulsharing.service.MyScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.YearMonth;
 
 @RestController
 @RequestMapping("api/myschedule")
@@ -39,13 +40,15 @@ public class MyScheduleController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity getMyScheduleList(@RequestBody @Valid YearMonthRequest yearMonthRequest, Authentication authentication) {
-        return ResponseEntity.ok(myScheduleService.getMyScheduleList(yearMonthRequest, authentication.getName()));
+    public ResponseEntity getMyScheduleList(@RequestParam("yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
+                                            Authentication authentication) {
+        return ResponseEntity.ok(myScheduleService.getMyScheduleList(yearMonth, authentication.getName()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity updateMySchedule(@PathVariable("id") Long id,
-                                           @RequestBody @Valid MyScheduleUpdateRequest updateRequest, Authentication authentication) {
+                                           @RequestBody @Valid MyScheduleUpdateRequest updateRequest,
+                                           Authentication authentication) {
         return ResponseEntity.ok(myScheduleService.update(id, updateRequest, authentication.getName()));
     }
 

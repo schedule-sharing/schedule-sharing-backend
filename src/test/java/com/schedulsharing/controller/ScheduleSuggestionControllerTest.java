@@ -5,7 +5,6 @@ import com.schedulsharing.dto.Club.ClubCreateResponse;
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.dto.suggestion.*;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import com.schedulsharing.repository.ClubRepository;
@@ -33,15 +32,14 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
+class ScheduleSuggestionControllerTest extends ApiDocumentationTest {
     @Autowired
     private MemberService memberService;
     @Autowired
@@ -278,14 +276,9 @@ class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
             scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
         }
 
-        YearMonthRequest yearMonthRequest = YearMonthRequest.builder()
-                .yearMonth(YearMonth.of(2021, 3))
-                .build();
-
         mvc.perform(RestDocumentationRequestBuilders.get("/api/suggestion/confirmList/{clubId}", clubCreateResponse.getClubId())
                 .header(HttpHeaders.AUTHORIZATION, getBearToken())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(yearMonthRequest)))
+                .param("yearMonth", String.valueOf(YearMonth.of(2021, 3))))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.suggestionList[0].id").exists())
@@ -308,11 +301,10 @@ class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
                         ),
-                        requestFields(
-                                fieldWithPath("yearMonth").description("클럽스케줄리스트를 조회할 year,month")
+                        requestParameters(
+                                parameterWithName("yearMonth").description("클럽스케줄리스트를 조회할 year,month")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
@@ -347,7 +339,7 @@ class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
         ClubCreateResponse clubCreateResponse = createClub(member, "testClubName", "밥");
 
         for (int i = 0; i < 2; i++) {
-            //2021-3월 시작 2021-3월 끝 5개 이 5개만 confirm
+            //2021-3월 시작 2021-3월 끝 3개
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
                     .title("2021-3~2021-3 테스트 제안 제목" + i)
                     .contents("2021-3~2021-3 테스트 제안 내용" + i)
@@ -362,12 +354,11 @@ class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
 
             SuggestionCreateResponse response = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
             ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(response.getId()).get();
-            scheduleSuggestion.updateConfirmTrue();
             scheduleSuggestionRepository.save(scheduleSuggestion);
         }
 
         for (int i = 0; i < 5; i++) {
-            //2021-3월 시작 2021-3월 끝 5개 이 5개만 confirm
+            //2021-3월 시작 2021-3월 끝 5개
             SuggestionCreateRequest suggestionCreateRequest = SuggestionCreateRequest.builder()
                     .title("2021-3~2021-3 테스트 제안 제목" + i)
                     .contents("2021-3~2021-3 테스트 제안 내용" + i)
@@ -382,7 +373,6 @@ class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
 
             SuggestionCreateResponse response = scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
             ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(response.getId()).get();
-            scheduleSuggestion.updateConfirmTrue();
             scheduleSuggestionRepository.save(scheduleSuggestion);
         }
 
@@ -403,14 +393,9 @@ class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
             scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
         }
 
-        SuggestionListRequest suggestionListRequest = SuggestionListRequest.builder()
-                .now(LocalDate.of(2021, 3, 8))
-                .build();
-
         mvc.perform(RestDocumentationRequestBuilders.get("/api/suggestion/list/{clubId}", clubCreateResponse.getClubId())
                 .header(HttpHeaders.AUTHORIZATION, getBearToken())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(suggestionListRequest)))
+                .param("now", String.valueOf(LocalDate.of(2021, 3, 8))))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("_embedded.suggestionList[0].id").exists())
@@ -433,11 +418,10 @@ class ScheduleSuggestionControllerTest extends ApiDocumentationTest{
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type"),
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
                         ),
-                        requestFields(
-                                fieldWithPath("now").description("오늘 날짜")
+                        requestParameters(
+                                parameterWithName("now").description("오늘 날짜")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")

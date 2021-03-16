@@ -2,7 +2,6 @@ package com.schedulsharing.service;
 
 import com.schedulsharing.dto.resource.SuggestionResource;
 import com.schedulsharing.dto.suggestion.*;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.VoteCheck;
 import com.schedulsharing.entity.member.Member;
@@ -22,7 +21,9 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -110,8 +111,8 @@ public class ScheduleSuggestionService {
     }
 
     @Transactional(readOnly = true)
-    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionListConfirm(Long clubId, YearMonthRequest yearMonthRequest, String email) {
-        List<ScheduleSuggestion> suggestions = scheduleSuggestionRepository.findAllByClubIdConfirm(clubId, yearMonthRequest);
+    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionListConfirm(Long clubId, YearMonth yearMonth, String email) {
+        List<ScheduleSuggestion> suggestions = scheduleSuggestionRepository.findAllByClubIdConfirm(clubId, yearMonth);
         List<SuggestionResponse> responseList = suggestions.stream()
                 .map(clubSchedule -> modelMapper.map(clubSchedule, SuggestionResponse.class))
                 .collect(Collectors.toList());
@@ -120,8 +121,8 @@ public class ScheduleSuggestionService {
     }
 
     @Transactional(readOnly = true)
-    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionList(Long clubId, SuggestionListRequest suggestionListRequest, String email) {
-        List<ScheduleSuggestion> suggestions = scheduleSuggestionRepository.findAllByClubId(clubId, suggestionListRequest);
+    public CollectionModel<EntityModel<SuggestionResponse>> getSuggestionList(Long clubId, LocalDate now, String email) {
+        List<ScheduleSuggestion> suggestions = scheduleSuggestionRepository.findAllByClubId(clubId, now);
         List<SuggestionResponse> responseList = suggestions.stream()
                 .map(clubSchedule -> modelMapper.map(clubSchedule, SuggestionResponse.class))
                 .collect(Collectors.toList());

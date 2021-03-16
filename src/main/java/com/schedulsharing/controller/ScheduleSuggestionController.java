@@ -1,17 +1,21 @@
 package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.resource.SuggestionResource;
-import com.schedulsharing.dto.suggestion.*;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
+import com.schedulsharing.dto.suggestion.SuggestionCreateRequest;
+import com.schedulsharing.dto.suggestion.SuggestionCreateResponse;
+import com.schedulsharing.dto.suggestion.SuggestionUpdateRequest;
+import com.schedulsharing.dto.suggestion.SuggestionVoteRequest;
 import com.schedulsharing.service.ScheduleSuggestionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.YearMonth;
 
 @RestController
 @RequestMapping("/api/suggestion")
@@ -43,19 +47,20 @@ public class ScheduleSuggestionController {
 
     @GetMapping("/confirmList/{clubId}")
     public ResponseEntity getSuggestionListConfirm(@PathVariable("clubId") Long clubId,
-                                                   @RequestBody @Valid YearMonthRequest yearMonthRequest,
+                                                   @RequestParam("yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
                                                    Authentication authentication) {
 
-        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionListConfirm(clubId, yearMonthRequest, authentication.getName()));
+        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionListConfirm(clubId, yearMonth, authentication.getName()));
     }
 
     @GetMapping("/list/{clubId}")
     public ResponseEntity getSuggestionList(@PathVariable("clubId") Long clubId,
-                                            @RequestBody @Valid SuggestionListRequest suggestionListRequest,
+                                            @RequestParam("now") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate now,
                                             Authentication authentication) {
 
-        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, suggestionListRequest, authentication.getName()));
+        return ResponseEntity.ok(scheduleSuggestionService.getSuggestionList(clubId, now, authentication.getName()));
     }
+
     @PutMapping("/{id}")
     public ResponseEntity updateSuggestion(@PathVariable("id") Long id,
                                            @RequestBody @Valid SuggestionUpdateRequest suggestionUpdateRequest,

@@ -1,10 +1,10 @@
 package com.schedulsharing.repository.clubSchedule;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.schedule.ClubSchedule;
 
 import javax.persistence.EntityManager;
+import java.time.YearMonth;
 import java.util.List;
 
 import static com.schedulsharing.entity.schedule.QClubSchedule.clubSchedule;
@@ -17,12 +17,12 @@ public class ClubScheduleRepositoryImpl implements ClubScheduleCustomRepository 
     }
 
     @Override
-    public List<ClubSchedule> findAllByClubId(Long clubId, YearMonthRequest yearMonthRequest) {
+    public List<ClubSchedule> findAllByClubId(Long clubId, YearMonth yearMonth) {
         return queryFactory.selectFrom(clubSchedule)
-                .where(clubSchedule.startMeetingDate.year().eq(yearMonthRequest.getYearMonth().getYear())
-                        .and(clubSchedule.startMeetingDate.month().eq(yearMonthRequest.getYearMonth().getMonthValue()))
-                        .or(clubSchedule.endMeetingDate.year().eq(yearMonthRequest.getYearMonth().getYear()))
-                        .and(clubSchedule.endMeetingDate.month().eq(yearMonthRequest.getYearMonth().getMonthValue()))
+                .where(clubSchedule.startMeetingDate.year().eq(yearMonth.getYear())
+                        .and(clubSchedule.startMeetingDate.month().eq(yearMonth.getMonthValue()))
+                        .or(clubSchedule.endMeetingDate.year().eq(yearMonth.getYear()))
+                        .and(clubSchedule.endMeetingDate.month().eq(yearMonth.getMonthValue()))
                         .and(clubSchedule.club.id.eq(clubId)))
                 .fetch();
     }

@@ -6,7 +6,6 @@ import com.schedulsharing.dto.Club.ClubInviteRequest;
 import com.schedulsharing.dto.member.SignUpRequestDto;
 import com.schedulsharing.dto.member.SignUpResponseDto;
 import com.schedulsharing.dto.suggestion.*;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
@@ -192,12 +191,8 @@ class ScheduleSuggestionServiceTest {
 
             scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
         }
-
-        YearMonthRequest yearMonthRequest = YearMonthRequest.builder()
-                .yearMonth(YearMonth.of(2021, 3))
-                .build();
-
-        Collection<EntityModel<SuggestionResponse>> result = scheduleSuggestionService.getSuggestionListConfirm(clubCreateResponse.getClubId(), yearMonthRequest, member.getEmail()).getContent();
+        YearMonth yearMonth = YearMonth.of(2021, 3);
+        Collection<EntityModel<SuggestionResponse>> result = scheduleSuggestionService.getSuggestionListConfirm(clubCreateResponse.getClubId(), yearMonth, member.getEmail()).getContent();
         assertEquals(result.size(), 5);
     }
 
@@ -271,11 +266,8 @@ class ScheduleSuggestionServiceTest {
             scheduleSuggestionService.create(suggestionCreateRequest, member.getEmail()).getContent();
         }
 
-        SuggestionListRequest suggestionListRequest = SuggestionListRequest.builder()
-                .now(LocalDate.of(2021, 3, 8))
-                .build();
-
-        Collection<EntityModel<SuggestionResponse>> result = scheduleSuggestionService.getSuggestionList(clubCreateResponse.getClubId(), suggestionListRequest, member.getEmail()).getContent();
+        LocalDate now = LocalDate.of(2021, 3, 8);
+        Collection<EntityModel<SuggestionResponse>> result = scheduleSuggestionService.getSuggestionList(clubCreateResponse.getClubId(), now, member.getEmail()).getContent();
         assertEquals(result.size(), 6);
     }
 
@@ -483,7 +475,7 @@ class ScheduleSuggestionServiceTest {
         SuggestionVoteResponse result = scheduleSuggestionService.vote(createResponse.getId(), suggestionVoteRequest, "test@example.com").getContent();
         ScheduleSuggestion scheduleSuggestion = scheduleSuggestionRepository.findById(createResponse.getId()).get();
         assertEquals(result.isAgree(), true);
-        assertEquals(scheduleSuggestion.isConfirm(),true);
+        assertEquals(scheduleSuggestion.isConfirm(), true);
     }
 
     private ClubCreateResponse createClub(Member savedMember, String clubName, String categories) {

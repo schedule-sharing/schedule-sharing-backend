@@ -20,8 +20,7 @@ import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.li
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-class MemberControllerTest extends ApiDocumentationTest{
+class MemberControllerTest extends ApiDocumentationTest {
     @Autowired
     private MemberService memberService;
 
@@ -229,14 +228,9 @@ class MemberControllerTest extends ApiDocumentationTest{
                 .build();
         memberService.signup(signUpRequestDto2);
 
-        MemberSearchRequest memberSearchRequest = MemberSearchRequest.builder()
-                .email("test2@example.com")
-                .build();
-
         mvc.perform(get("/api/member/search")
                 .header(HttpHeaders.AUTHORIZATION, getBearToken())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(memberSearchRequest)))
+                .param("email", email2))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("id").exists())
@@ -249,11 +243,10 @@ class MemberControllerTest extends ApiDocumentationTest{
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header"),
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
                         ),
-                        requestFields(
-                                fieldWithPath("email").description("검색할 멤버의 이메일")
+                        requestParameters(
+                                parameterWithName("email").description("검색할 멤버의 이메일")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")
@@ -282,14 +275,9 @@ class MemberControllerTest extends ApiDocumentationTest{
         memberService.signup(signUpRequestDto);
 
 
-        MemberSearchRequest memberSearchRequest = MemberSearchRequest.builder()
-                .email("test3@example.com")
-                .build();
-
         mvc.perform(get("/api/member/search")
                 .header(HttpHeaders.AUTHORIZATION, getBearToken())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(memberSearchRequest)))
+                .param("email", "test3@example.com"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("httpStatus").exists())
@@ -301,11 +289,10 @@ class MemberControllerTest extends ApiDocumentationTest{
                                 linkWithRel("profile").description("link to profile")
                         ),
                         requestHeaders(
-                                headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header"),
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
                         ),
-                        requestFields(
-                                fieldWithPath("email").description("검색할 멤버의 이메일")
+                        requestParameters(
+                                parameterWithName("email").description("검색할 멤버의 이메일")
                         ),
                         responseHeaders(
                                 headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type")

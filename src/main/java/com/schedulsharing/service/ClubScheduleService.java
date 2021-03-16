@@ -1,7 +1,6 @@
 package com.schedulsharing.service;
 
 import com.schedulsharing.dto.ClubSchedule.*;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.resource.ClubScheduleResource;
 import com.schedulsharing.entity.Club;
 import com.schedulsharing.entity.member.Member;
@@ -10,8 +9,8 @@ import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.clubSchedule.ClubScheduleNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -20,6 +19,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -55,8 +55,8 @@ public class ClubScheduleService {
     }
 
     @Transactional(readOnly = true)
-    public CollectionModel<EntityModel<ClubScheduleResponse>> getClubScheduleList(Long clubId, YearMonthRequest yearMonthRequest, String email) {
-        List<ClubSchedule> clubSchedules = clubScheduleRepository.findAllByClubId(clubId, yearMonthRequest);
+    public CollectionModel<EntityModel<ClubScheduleResponse>> getClubScheduleList(Long clubId, YearMonth yearMonth, String email) {
+        List<ClubSchedule> clubSchedules = clubScheduleRepository.findAllByClubId(clubId, yearMonth);
         List<ClubScheduleResponse> responseList = clubSchedules.stream()
                 .map(clubSchedule -> modelMapper.map(clubSchedule, ClubScheduleResponse.class))
                 .collect(Collectors.toList());

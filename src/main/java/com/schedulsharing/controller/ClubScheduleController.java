@@ -3,10 +3,10 @@ package com.schedulsharing.controller;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
 import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
-import com.schedulsharing.dto.yearMonth.YearMonthRequest;
 import com.schedulsharing.dto.resource.ClubScheduleResource;
 import com.schedulsharing.service.ClubScheduleService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -14,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.YearMonth;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,14 +42,14 @@ public class ClubScheduleController {
 
     @GetMapping("/list/{clubId}")
     public ResponseEntity getClubScheduleList(@PathVariable("clubId") Long clubId,
-                                              @RequestBody @Valid YearMonthRequest yearMonthRequest,
+                                              @RequestParam("yearMonth") @DateTimeFormat(pattern = "yyyy-MM") YearMonth yearMonth,
                                               Authentication authentication) {
-        return ResponseEntity.ok(clubScheduleService.getClubScheduleList(clubId, yearMonthRequest, authentication.getName()));
+        return ResponseEntity.ok(clubScheduleService.getClubScheduleList(clubId, yearMonth, authentication.getName()));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity updateClubSchedule(@PathVariable("id") Long id,
-                                             @RequestBody @Valid  ClubScheduleUpdateRequest clubScheduleUpdateRequest,
+                                             @RequestBody @Valid ClubScheduleUpdateRequest clubScheduleUpdateRequest,
                                              Authentication authentication) {
 
         return ResponseEntity.ok(clubScheduleService.update(id, clubScheduleUpdateRequest, authentication.getName()));
