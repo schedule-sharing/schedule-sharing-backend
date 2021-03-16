@@ -85,6 +85,9 @@ public class MemberService {
     @Transactional(readOnly = true)
     public EntityModel<MemberResponse> getMemberById(Long id) {
         Member member = memberRepository.findById(id).get();
+        if (!member.getId().equals(id)) {
+            throw new InvalidGrantException("조회 권한이 없습니다");
+        }
         MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
         return MemberResource.getMemberById(memberResponse);
     }

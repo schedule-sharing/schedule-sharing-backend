@@ -37,7 +37,9 @@ public class ClubScheduleService {
     public EntityModel<ClubScheduleCreateResponse> create(ClubScheduleCreateRequest createRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
         Club club = findById(createRequest.getClubId());
-
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("생성 권한이 없습니다.");
+        }
         ClubSchedule clubSchedule = ClubSchedule.createClubSchedule(createRequest, member, club);
         ClubSchedule savedClubSchedule = clubScheduleRepository.save(clubSchedule);
 
@@ -50,6 +52,9 @@ public class ClubScheduleService {
     public EntityModel<ClubScheduleResponse> getClubSchedule(Long id, String email) {
         Member member = memberRepository.findByEmail(email).get();
         ClubSchedule clubSchedule = clubScheduleFindById(id);
+        if (!member.equals(clubSchedule.getMember())) {
+            throw new InvalidGrantException("조회할 권한이 없습니다.");
+        }
         ClubScheduleResponse response = modelMapper.map(clubSchedule, ClubScheduleResponse.class);
         return ClubScheduleResource.getClubScheduleLink(response, member.getEmail());
     }

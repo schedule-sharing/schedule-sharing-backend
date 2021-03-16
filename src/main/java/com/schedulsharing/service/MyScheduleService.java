@@ -30,7 +30,9 @@ public class MyScheduleService {
 
     public EntityModel<MyScheduleCreateResponse> create(MyScheduleCreateRequest myScheduleCreateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
-
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("생성 권한이 없습니다.");
+        }
         MySchedule mySchedule = MySchedule.createMySchedule(myScheduleCreateRequest, member);
         MySchedule savedMySchedule = myScheduleRepository.save(mySchedule);
         MyScheduleCreateResponse myScheduleCreateResponse = modelMapper.map(savedMySchedule, MyScheduleCreateResponse.class);
@@ -41,6 +43,9 @@ public class MyScheduleService {
     @Transactional(readOnly = true)
     public EntityModel<MyScheduleResponse> getMySchedule(Long myScheduleId, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("조회 권한이 없습니다.");
+        }
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         MyScheduleResponse myScheduleResponse = modelMapper.map(mySchedule, MyScheduleResponse.class);
         return MyScheduleResource.getMyScheduleLink(myScheduleResponse);
@@ -49,6 +54,9 @@ public class MyScheduleService {
     @Transactional(readOnly = true)
     public CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleList(YearMonthRequest yearMonthRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("생성 권한이 없습니다.");
+        }
         List<MySchedule> myScheduleList = myScheduleRepository.findAllByEmail(member.getEmail(), yearMonthRequest);
         for (MySchedule mySchedule : myScheduleList) {
             if (!member.getEmail().equals(mySchedule.getMember().getEmail())) {
@@ -63,6 +71,9 @@ public class MyScheduleService {
 
     public EntityModel<MyScheduleUpdateResponse> update(Long myScheduleId, MyScheduleUpdateRequest updateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("수정 권한이 없습니다.");
+        }
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         if (!member.equals(mySchedule.getMember())) {
             throw new InvalidGrantException("수정 권한이 없습니다.");
@@ -74,6 +85,9 @@ public class MyScheduleService {
 
     public EntityModel<MyScheduleDeleteResponse> delete(Long myScheduleId, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("삭제 권한이 없습니다.");
+        }
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         if (!member.equals(mySchedule.getMember())) {
             throw new InvalidGrantException("삭제 권한이 없습니다.");

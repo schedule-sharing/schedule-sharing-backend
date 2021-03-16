@@ -24,6 +24,9 @@ public class VoteService {
 
     public EntityModel<SuggestionVoteUpdateResponse> updateVote(Long id, SuggestionVoteUpdateRequest updateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("투표 수정 권한이 없습니다.");
+        }
         VoteCheck voteCheck = voteCheckRepository.findById(id).get();
         if (!voteCheck.getMember().equals(member)) {
             throw new InvalidGrantException("투표 수정 권한이 없습니다.");

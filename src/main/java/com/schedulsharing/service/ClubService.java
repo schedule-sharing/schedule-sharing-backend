@@ -8,6 +8,7 @@ import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.club.InvalidInviteGrantException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
+import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +35,9 @@ public class ClubService {
 
     public EntityModel<ClubCreateResponse> createClub(ClubCreateRequest clubCreateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("생성 권한이 없습니다.");
+        }
         MemberClub memberClub = MemberClub.createMemberClub(member);
 
         Club club = Club.createClub(clubCreateRequest.getClubName(), member.getId(), clubCreateRequest.getCategories(), memberClub);
@@ -65,7 +69,13 @@ public class ClubService {
         List<Long> memberIds = clubInviteRequest.getMemberIds();
         List<Member> members = new ArrayList<>();
         for (Long memberId : memberIds) {
-            members.add(memberRepository.findById(memberId).get());
+            Member findMember = memberRepository.findById(memberId).get();
+            if (!findMember.getId().equals(memberId)) {
+                throw new MemberNotFoundException("해당 회원이 없습니다.");
+            }
+            else {
+                members.add(memberRepository.findById(memberId).get());
+            }
         }
         List<MemberClub> memberClubs = MemberClub.inviteMemberClub(members);
         Club.inviteClub(club, memberClubs);
@@ -78,6 +88,9 @@ public class ClubService {
 
     public EntityModel<ClubUpdateResponse> update(Long clubId, ClubUpdateRequest clubUpdateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("권한이 없습니다.");
+        }
         Club club = findById(clubId);
         if (!member.getId().equals(club.getLeaderId())) {
             throw new InvalidInviteGrantException("권한이 없습니다.");

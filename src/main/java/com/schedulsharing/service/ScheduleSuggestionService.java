@@ -40,6 +40,9 @@ public class ScheduleSuggestionService {
 
     public EntityModel<SuggestionCreateResponse> create(SuggestionCreateRequest suggestionCreateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("생성 권한이 없습니다.");
+        }
         Club club = findClubById(suggestionCreateRequest.getClubId());
         checkClubMember(member, club);
         ScheduleSuggestion suggestion = ScheduleSuggestion.createSuggestion(suggestionCreateRequest, member, club);
@@ -84,6 +87,9 @@ public class ScheduleSuggestionService {
 
     public EntityModel<SuggestionResponse> update(Long id, SuggestionUpdateRequest suggestionUpdateRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("수정 권한이 없습니다.");
+        }
         ScheduleSuggestion suggestion = findSuggestionById(id);
         if (!suggestion.getMember().equals(member)) {
             throw new InvalidGrantException("수정할 권한이 없습니다.");
@@ -96,6 +102,9 @@ public class ScheduleSuggestionService {
 
     public EntityModel<SuggestionDeleteResponse> delete(Long id, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("삭제 권한이 없습니다.");
+        }
         ScheduleSuggestion suggestion = findSuggestionById(id);
         if (!suggestion.getMember().equals(member)) {
             throw new InvalidGrantException("삭제 권한이 없습니다.");
@@ -131,6 +140,9 @@ public class ScheduleSuggestionService {
 
     public EntityModel<SuggestionVoteResponse> vote(Long suggestionId, SuggestionVoteRequest suggestionVoteRequest, String email) {
         Member member = memberRepository.findByEmail(email).get();
+        if (!member.getEmail().equals(email)) {
+            throw new InvalidGrantException("투표 권한이 없습니다.");
+        }
         ScheduleSuggestion suggestion = findSuggestionById(suggestionId);
         Club club = suggestion.getClub();
         checkClubMember(member, club); //클럽원인지 검사
