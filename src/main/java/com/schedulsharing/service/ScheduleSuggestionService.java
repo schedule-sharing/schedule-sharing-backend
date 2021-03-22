@@ -8,6 +8,7 @@ import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.ScheduleSuggestion;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
+import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.excpetion.scheduleSuggestion.DuplicateVoteCheckException;
 import com.schedulsharing.excpetion.scheduleSuggestion.SuggestionNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
@@ -40,7 +41,7 @@ public class ScheduleSuggestionService {
     private final ModelMapper modelMapper;
 
     public EntityModel<SuggestionCreateResponse> create(SuggestionCreateRequest suggestionCreateRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         Club club = findClubById(suggestionCreateRequest.getClubId());
         checkClubMember(member, club);
         ScheduleSuggestion suggestion = ScheduleSuggestion.createSuggestion(suggestionCreateRequest, member, club);
@@ -84,7 +85,7 @@ public class ScheduleSuggestionService {
     }
 
     public EntityModel<SuggestionResponse> update(Long id, SuggestionUpdateRequest suggestionUpdateRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         ScheduleSuggestion suggestion = findSuggestionById(id);
         if (!suggestion.getMember().equals(member)) {
             throw new InvalidGrantException("수정할 권한이 없습니다.");
@@ -96,7 +97,7 @@ public class ScheduleSuggestionService {
     }
 
     public EntityModel<SuggestionDeleteResponse> delete(Long id, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         ScheduleSuggestion suggestion = findSuggestionById(id);
         if (!suggestion.getMember().equals(member)) {
             throw new InvalidGrantException("삭제 권한이 없습니다.");
@@ -131,7 +132,7 @@ public class ScheduleSuggestionService {
     }
 
     public EntityModel<SuggestionVoteResponse> vote(Long suggestionId, SuggestionVoteRequest suggestionVoteRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         ScheduleSuggestion suggestion = findSuggestionById(suggestionId);
         Club club = suggestion.getClub();
         checkClubMember(member, club); //클럽원인지 검사
@@ -152,6 +153,13 @@ public class ScheduleSuggestionService {
         return SuggestionResource.getSuggestionVoteLink(response, email, suggestionId);
     }
 
+    private Member findMemberByEmail(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isEmpty()) {
+            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+        }
+        return optionalMember.get();
+    }
 
     private void checkClubMember(Member member, Club club) {
         List<Member> members = memberRepository.findAllByClubId(club.getId());

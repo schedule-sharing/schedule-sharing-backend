@@ -17,7 +17,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,31 +65,27 @@ public class MemberService {
         }
 
         EmailCheckResponseDto emailCheckResponseDto = new EmailCheckResponseDto(false, "사용가능한 이메일입니다.");
-        final List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "checkEmail", "/docs/index.html#resources-member-checkEmail");
+        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "checkEmail", "/docs/index.html#resources-member-checkEmail");
 
         return EntityModel.of(emailCheckResponseDto, links);
     }
 
     @Transactional(readOnly = true)
     public EntityModel<MemberResponse> getMemberByEmail(String email) {
-        Optional<Member> optionalMember = memberRepository.findByEmail(email);
-        if(optionalMember.isEmpty()){
-            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
-        }
-        Member member = optionalMember.get();
+        Member member = findMemberByEmail(email);
         MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
         return MemberResource.getMemberByEmailLink(memberResponse);
     }
 
     @Transactional(readOnly = true)
     public EntityModel<MemberResponse> getMemberById(Long id) {
-        Member member = memberRepository.findById(id).get();
+        Member member = findMemberById(id);
         MemberResponse memberResponse = modelMapper.map(member, MemberResponse.class);
         return MemberResource.getMemberById(memberResponse);
     }
 
     public EntityModel<MemberUpdateResponse> updateMember(Long id, MemberUpdateRequest memberUpdateRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         if (!member.getId().equals(id)) {
             throw new InvalidGrantException("권한이 없습니다.");
         }
@@ -100,7 +95,7 @@ public class MemberService {
     }
 
     public EntityModel<MemberDeleteResponse> deleteMember(Long id, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         if (!member.getId().equals(id)) {
             throw new InvalidGrantException("권한이 없습니다.");
         }
@@ -110,5 +105,21 @@ public class MemberService {
                 .message("성공적으로 탈퇴하셨습니다.")
                 .build();
         return MemberResource.deleteMemberLink(id, memberDeleteResponse);
+    }
+
+    private Member findMemberByEmail(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isEmpty()) {
+            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+        }
+        return optionalMember.get();
+    }
+
+    private Member findMemberById(Long memberId) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        if (optionalMember.isEmpty()) {
+            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+        }
+        return optionalMember.get();
     }
 }

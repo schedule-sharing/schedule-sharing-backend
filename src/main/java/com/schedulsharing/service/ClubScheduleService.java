@@ -8,6 +8,7 @@ import com.schedulsharing.entity.schedule.ClubSchedule;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.clubSchedule.ClubScheduleNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
+import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
@@ -35,7 +36,7 @@ public class ClubScheduleService {
     private final ModelMapper modelMapper;
 
     public EntityModel<ClubScheduleCreateResponse> create(ClubScheduleCreateRequest createRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         Club club = findById(createRequest.getClubId());
 
         ClubSchedule clubSchedule = ClubSchedule.createClubSchedule(createRequest, member, club);
@@ -48,7 +49,7 @@ public class ClubScheduleService {
 
     @Transactional(readOnly = true)
     public EntityModel<ClubScheduleResponse> getClubSchedule(Long id, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         ClubSchedule clubSchedule = clubScheduleFindById(id);
         ClubScheduleResponse response = modelMapper.map(clubSchedule, ClubScheduleResponse.class);
         return ClubScheduleResource.getClubScheduleLink(response, member.getEmail());
@@ -65,7 +66,7 @@ public class ClubScheduleService {
     }
 
     public EntityModel<ClubScheduleUpdateResponse> update(Long id, ClubScheduleUpdateRequest clubScheduleUpdateRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         ClubSchedule clubSchedule = clubScheduleFindById(id);
         if (!member.equals(clubSchedule.getMember())) {
             throw new InvalidGrantException("수정할 권한이 없습니다.");
@@ -76,7 +77,7 @@ public class ClubScheduleService {
     }
 
     public EntityModel<ClubScheduleDeleteResponse> delete(Long id, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         ClubSchedule clubSchedule = clubScheduleFindById(id);
         if (!member.equals(clubSchedule.getMember())) {
             throw new InvalidGrantException("삭제할 권한이 없습니다.");
@@ -88,6 +89,14 @@ public class ClubScheduleService {
                 .build();
 
         return ClubScheduleResource.deleteClubScheduleLink(id, clubScheduleDeleteResponse);
+    }
+
+    private Member findMemberByEmail(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isEmpty()) {
+            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+        }
+        return optionalMember.get();
     }
 
     private ClubSchedule clubScheduleFindById(Long id) {

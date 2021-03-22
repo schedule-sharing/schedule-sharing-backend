@@ -6,6 +6,7 @@ import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.entity.schedule.MySchedule;
 import com.schedulsharing.excpetion.MyScheduleNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
+import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.repository.MemberRepository;
 import com.schedulsharing.repository.myschedule.MyScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class MyScheduleService {
     private final ModelMapper modelMapper;
 
     public EntityModel<MyScheduleCreateResponse> create(MyScheduleCreateRequest myScheduleCreateRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
 
         MySchedule mySchedule = MySchedule.createMySchedule(myScheduleCreateRequest, member);
         MySchedule savedMySchedule = myScheduleRepository.save(mySchedule);
@@ -40,15 +41,15 @@ public class MyScheduleService {
 
     @Transactional(readOnly = true)
     public EntityModel<MyScheduleResponse> getMySchedule(Long myScheduleId, String email) {
-        Member member = memberRepository.findByEmail(email).get();
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         MyScheduleResponse myScheduleResponse = modelMapper.map(mySchedule, MyScheduleResponse.class);
+
         return MyScheduleResource.getMyScheduleLink(myScheduleResponse);
     }
 
     @Transactional(readOnly = true)
     public CollectionModel<EntityModel<MyScheduleResponse>> getMyScheduleList(YearMonth yearMonth, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         List<MySchedule> myScheduleList = myScheduleRepository.findAllByEmail(member.getEmail(), yearMonth);
         for (MySchedule mySchedule : myScheduleList) {
             if (!member.getEmail().equals(mySchedule.getMember().getEmail())) {
@@ -62,7 +63,7 @@ public class MyScheduleService {
     }
 
     public EntityModel<MyScheduleUpdateResponse> update(Long myScheduleId, MyScheduleUpdateRequest updateRequest, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         if (!member.equals(mySchedule.getMember())) {
             throw new InvalidGrantException("수정 권한이 없습니다.");
@@ -73,7 +74,7 @@ public class MyScheduleService {
     }
 
     public EntityModel<MyScheduleDeleteResponse> delete(Long myScheduleId, String email) {
-        Member member = memberRepository.findByEmail(email).get();
+        Member member = findMemberByEmail(email);
         MySchedule mySchedule = mySchedulefindById(myScheduleId);
         if (!member.equals(mySchedule.getMember())) {
             throw new InvalidGrantException("삭제 권한이 없습니다.");
@@ -92,5 +93,13 @@ public class MyScheduleService {
             throw new MyScheduleNotFoundException("내 스케줄이 존재하지 않습니다.");
         }
         return optionalMySchedule.get();
+    }
+
+    private Member findMemberByEmail(String email) {
+        Optional<Member> optionalMember = memberRepository.findByEmail(email);
+        if (optionalMember.isEmpty()) {
+            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+        }
+        return optionalMember.get();
     }
 }
