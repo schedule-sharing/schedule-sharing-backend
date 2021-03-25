@@ -2,14 +2,12 @@ package com.schedulsharing.controller;
 
 import com.schedulsharing.dto.member.LoginRequestDto;
 import com.schedulsharing.dto.member.LoginResponseDto;
+import com.schedulsharing.dto.resource.AuthResource;
 import com.schedulsharing.entity.member.Member;
 import com.schedulsharing.jwt.JwtFilter;
 import com.schedulsharing.jwt.TokenProvider;
 import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import java.util.List;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
 @RequestMapping("/api")
@@ -48,7 +43,7 @@ public class AuthController {
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + token);
         Member member = memberRepository.findByEmail(authentication.getName()).get();
 
-        LoginResponseDto loginResponseDto =LoginResponseDto.builder()
+        LoginResponseDto loginResponseDto = LoginResponseDto.builder()
                 .id(member.getId())
                 .name(member.getName())
                 .email(member.getEmail())
@@ -56,8 +51,6 @@ public class AuthController {
                 .access_token(token)
                 .build();
 
-        List<Link> links = LinkUtils.createSelfProfileLink(AuthController.class, "authenticate", "/docs/index.html#resources-member-login");
-
-        return new ResponseEntity(EntityModel.of(loginResponseDto, links), httpHeaders, HttpStatus.OK);
+        return new ResponseEntity(AuthResource.authorizeLink(loginResponseDto), httpHeaders, HttpStatus.OK);
     }
 }

@@ -20,11 +20,7 @@ public class MemberResource extends EntityModel<Member> {
 
     public static EntityModel<SignUpResponseDto> signUpLinks(SignUpResponseDto signUpResponseDto) {
         List<Link> links = getSelfLink();
-//        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-getClubs"));
-//        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-findByEmail"));
-//        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-findById"));
-//        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-update"));
-//        links.add(selfLinkBuilder.slash(signUpResponseDto.getId()).withRel("member-delete"));
+
         links.add(Link.of("/docs/index.html#resources-member-signup", "profile"));
         return EntityModel.of(signUpResponseDto, links);
     }
@@ -37,40 +33,36 @@ public class MemberResource extends EntityModel<Member> {
 
     public static EntityModel<MemberResponse> getMemberByEmailLink(MemberResponse memberResponse) {
         List<Link> links = getSelfLink("search");
-//        links.add(selfLinkBuilder.withRel("member-signUP"));
-//        links.add(selfLinkBuilder.slash(memberResponse.getId()).withRel("member-getClubs"));
-//        links.add(selfLinkBuilder.slash(memberResponse.getId()).withRel("member-findById"));
-//        links.add(selfLinkBuilder.slash(memberResponse.getId()).withRel("member-update"));
-//        links.add(selfLinkBuilder.slash(memberResponse.getId()).withRel("member-delete"));
+
         links.add(Link.of("/docs/index.html#resources-member-findByEmail", "profile"));
         return EntityModel.of(memberResponse, links);
     }
 
     public static EntityModel<MemberResponse> getMemberById(MemberResponse memberResponse) {
         List<Link> links = getSelfLink(memberResponse.getId());
-//        links.add(selfLinkBuilder.withRel("member-signUP"));
-//        links.add(selfLinkBuilder.slash(memberResponse.getId()).withRel("member-findByEmail"));
-//        links.add(selfLinkBuilder.slash(memberResponse.getId()).withRel("member-update"));
-//        links.add(selfLinkBuilder.slash(memberResponse.getId()).withRel("member-delete"));
+
         links.add(Link.of("/docs/index.html#resources-member-findById", "profile"));
         return EntityModel.of(memberResponse, links);
     }
 
     public static EntityModel<MemberUpdateResponse> updateMemberLink(MemberUpdateResponse memberUpdateResponse) {
         List<Link> links = getSelfLink(memberUpdateResponse.getId());
-//        links.add(selfLinkBuilder.withRel("member-signUP"));
-//        links.add(selfLinkBuilder.slash(memberUpdateResponse.getId()).withRel("member-findByEmail"));
-//        links.add(selfLinkBuilder.slash(memberUpdateResponse.getId()).withRel("member-findById"));
-//        links.add(selfLinkBuilder.slash(memberUpdateResponse.getId()).withRel("member-delete"));
+
         links.add(Link.of("/docs/index.html#resources-member-update", "profile"));
         return EntityModel.of(memberUpdateResponse, links);
     }
 
     public static EntityModel<MemberDeleteResponse> deleteMemberLink(Long id, MemberDeleteResponse memberDeleteResponse) {
         List<Link> links = getSelfLink(id);
-//        links.add(selfLinkBuilder.withRel("member-signUP"));
+
         links.add(Link.of("/docs/index.html#resources-member-delete", "profile"));
         return EntityModel.of(memberDeleteResponse, links);
+    }
+
+    public static EntityModel<EmailCheckResponseDto> emailCheckLink(EmailCheckResponseDto emailCheckResponseDto) {
+        List<Link> links = getSelfLink("checkEmail");
+        links.add(Link.of("/docs/index.html#resources-member-checkEmail", "profile"));
+        return EntityModel.of(emailCheckResponseDto, links);
     }
 
     private static List<Link> getSelfLink() {
@@ -89,10 +81,6 @@ public class MemberResource extends EntityModel<Member> {
         List<Link> links = new ArrayList<>();
         links.add(selfLinkBuilder.slash(slashNext).withSelfRel());
         return links;
-    }
-
-    public static URI getCreatedUri(Long clubScheduleId) {
-        return selfLinkBuilder.slash(clubScheduleId).toUri();
     }
 
 }

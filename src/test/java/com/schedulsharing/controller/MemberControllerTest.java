@@ -115,8 +115,7 @@ class MemberControllerTest extends ApiDocumentationTest {
                 .content(objectMapper.writeValueAsString(signUpRequestDto2)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("message").exists())
-                .andExpect(jsonPath("duplicate").value(true));
+                .andExpect(jsonPath("message").exists());
     }
 
     @DisplayName("중복된 이메일 체크")
@@ -136,9 +135,7 @@ class MemberControllerTest extends ApiDocumentationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(emailCheckRequestDto)))
                 .andDo(print())
-                .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("message").exists())
-                .andExpect(jsonPath("duplicate").value(true))
                 .andDo(document("member-checkEmail",
                         links(
                                 linkWithRel("self").description("link to self"),
@@ -284,10 +281,6 @@ class MemberControllerTest extends ApiDocumentationTest {
                 .andExpect(jsonPath("error").exists())
                 .andExpect(jsonPath("message").exists())
                 .andDo(document("member-findByEmail-fail",
-                        links(
-                                linkWithRel("self").description("link to self"),
-                                linkWithRel("profile").description("link to profile")
-                        ),
                         requestHeaders(
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("로그인한 유저의 토큰")
                         ),
@@ -300,9 +293,7 @@ class MemberControllerTest extends ApiDocumentationTest {
                         responseFields(
                                 fieldWithPath("httpStatus").description("httpStatus"),
                                 fieldWithPath("error").description("error 종류"),
-                                fieldWithPath("message").description("해당 이메일을 가진 멤버가 없다는 메시지"),
-                                fieldWithPath("_links.self.href").description("link to self"),
-                                fieldWithPath("_links.profile.href").description("link to profile")
+                                fieldWithPath("message").description("해당 이메일을 가진 멤버가 없다는 메시지")
                         )
                 ));
     }

@@ -36,7 +36,7 @@ operation::member-findByEmail[snippets='request-parameters,http-request,request-
 
 [[resources-member-findByEmail-fail]]
 === 존재하지 않는 이메일로 멤버 검색
-operation::member-findByEmail-fail[snippets='request-parameters,http-request,request-headers,http-response,response-headers,response-fields,links']
+operation::member-findByEmail-fail[snippets='request-parameters,http-request,request-headers,http-response,response-headers,response-fields']
 
 [[resources-member-findById]]
 === id값으로 멤버 조회

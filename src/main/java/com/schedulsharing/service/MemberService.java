@@ -1,7 +1,6 @@
 package com.schedulsharing.service;
 
 
-import com.schedulsharing.controller.MemberController;
 import com.schedulsharing.dto.member.*;
 import com.schedulsharing.dto.resource.MemberResource;
 import com.schedulsharing.entity.Club;
@@ -11,12 +10,10 @@ import com.schedulsharing.excpetion.member.EmailExistedException;
 import com.schedulsharing.excpetion.member.MemberNotFoundException;
 import com.schedulsharing.repository.ClubRepository;
 import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.utils.LinkUtils;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,13 +58,14 @@ public class MemberService {
     @Transactional(readOnly = true)
     public EntityModel<EmailCheckResponseDto> emailCheck(String email) {
         if (memberRepository.findByEmail(email).isPresent()) {
-            throw new EmailExistedException("이메일이 중복되었습니다.");
+            EmailCheckResponseDto emailCheckResponseDto = new EmailCheckResponseDto(true, "이메일이 중복되었습니다.");
+
+            return MemberResource.emailCheckLink(emailCheckResponseDto);
         }
 
         EmailCheckResponseDto emailCheckResponseDto = new EmailCheckResponseDto(false, "사용가능한 이메일입니다.");
-        List<Link> links = LinkUtils.createSelfProfileLink(MemberController.class, "checkEmail", "/docs/index.html#resources-member-checkEmail");
 
-        return EntityModel.of(emailCheckResponseDto, links);
+        return MemberResource.emailCheckLink(emailCheckResponseDto);
     }
 
     @Transactional(readOnly = true)
