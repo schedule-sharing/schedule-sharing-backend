@@ -21,7 +21,6 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody @Valid  SignUpRequestDto signUpRequestDto) {
-        log.info("signUpRequestDto: " + signUpRequestDto);
 
         return ResponseEntity.ok().body(memberService.signup(signUpRequestDto));
     }

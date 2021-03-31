@@ -28,8 +28,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
                          HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         // 유효한 자격증명을 제공하지 않고 접근하려 할때 401
-        log.info("commence authException.class: " + authException.getClass());
-        log.info(authException.getMessage());
         if (authException instanceof UsernameNotFoundException) {
             getResponse(response, "UsernameNotFoundException", "해당 이메일의 계정이 없습니다.");
         }
