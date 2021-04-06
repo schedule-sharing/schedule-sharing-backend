@@ -1,4 +1,4 @@
-# schedule-sharing-backend
+# Schedule Sharing Backend
 Schedule Sharing Spring RESTful API based on Spring, Spring Boot, JPA Hibernate ORM with MySQL, Spring HATEOAS, Spring REST DOCS, JWT, AWS EC2
 
 ## Requirements
