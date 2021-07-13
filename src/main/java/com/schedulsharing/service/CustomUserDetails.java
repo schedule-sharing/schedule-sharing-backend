@@ -1,6 +1,6 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.entity.member.Member;
+import com.schedulsharing.domain.member.Member;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

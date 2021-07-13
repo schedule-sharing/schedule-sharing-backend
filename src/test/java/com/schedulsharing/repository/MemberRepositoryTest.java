@@ -1,8 +1,10 @@
 package com.schedulsharing.repository;
 
-import com.schedulsharing.dto.Club.ClubCreateRequest;
-import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.entity.Club;
+import com.schedulsharing.domain.club.repository.ClubRepository;
+import com.schedulsharing.domain.member.repository.MemberRepository;
+import com.schedulsharing.web.club.dto.ClubCreateRequest;
+import com.schedulsharing.web.member.dto.SignUpRequestDto;
+import com.schedulsharing.domain.club.Club;
 import com.schedulsharing.service.ClubService;
 import com.schedulsharing.service.MemberService;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,8 @@
 package com.schedulsharing.config;
 
-import com.schedulsharing.jwt.JwtAccessDeniedHandler;
-import com.schedulsharing.jwt.JwtAuthenticationEntryPoint;
-import com.schedulsharing.jwt.JwtFilter;
+import com.schedulsharing.security.JwtAccessDeniedHandler;
+import com.schedulsharing.security.JwtAuthenticationEntryPoint;
+import com.schedulsharing.security.JwtFilter;
 import com.schedulsharing.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -46,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
-
 
     @Override
     @Bean

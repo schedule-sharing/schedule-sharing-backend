@@ -1,15 +1,15 @@
 package com.schedulsharing.service;
 
 
-import com.schedulsharing.dto.member.*;
-import com.schedulsharing.dto.resource.MemberResource;
-import com.schedulsharing.entity.Club;
-import com.schedulsharing.entity.member.Member;
+import com.schedulsharing.web.dto.resource.MemberResource;
+import com.schedulsharing.domain.club.Club;
+import com.schedulsharing.domain.member.Member;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.member.EmailExistedException;
 import com.schedulsharing.excpetion.member.MemberNotFoundException;
-import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.domain.club.repository.ClubRepository;
+import com.schedulsharing.domain.member.repository.MemberRepository;
+import com.schedulsharing.web.member.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;

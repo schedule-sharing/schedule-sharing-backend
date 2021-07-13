@@ -1,13 +1,13 @@
 package com.schedulsharing.controller;
 
-import com.schedulsharing.dto.MySchedule.MyScheduleCreateRequest;
-import com.schedulsharing.dto.MySchedule.MyScheduleCreateResponse;
-import com.schedulsharing.dto.MySchedule.MyScheduleUpdateRequest;
-import com.schedulsharing.dto.member.LoginRequestDto;
-import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.myschedule.MyScheduleRepository;
+import com.schedulsharing.web.schedule.my.dto.MyScheduleCreateRequest;
+import com.schedulsharing.web.schedule.my.dto.MyScheduleCreateResponse;
+import com.schedulsharing.web.schedule.my.dto.MyScheduleUpdateRequest;
+import com.schedulsharing.web.member.dto.LoginRequestDto;
+import com.schedulsharing.web.member.dto.SignUpRequestDto;
+import com.schedulsharing.domain.member.Member;
+import com.schedulsharing.domain.member.repository.MemberRepository;
+import com.schedulsharing.domain.schedule.repository.myschedule.MyScheduleRepository;
 import com.schedulsharing.service.MemberService;
 import com.schedulsharing.service.MyScheduleService;
 import org.junit.jupiter.api.BeforeEach;

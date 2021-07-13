@@ -1,14 +1,14 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.dto.MySchedule.*;
-import com.schedulsharing.dto.resource.MyScheduleResource;
-import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.entity.schedule.MySchedule;
+import com.schedulsharing.web.dto.resource.MyScheduleResource;
+import com.schedulsharing.domain.member.Member;
+import com.schedulsharing.domain.schedule.MySchedule;
 import com.schedulsharing.excpetion.MyScheduleNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.member.MemberNotFoundException;
-import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.myschedule.MyScheduleRepository;
+import com.schedulsharing.domain.member.repository.MemberRepository;
+import com.schedulsharing.domain.schedule.repository.myschedule.MyScheduleRepository;
+import com.schedulsharing.web.schedule.my.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.CollectionModel;

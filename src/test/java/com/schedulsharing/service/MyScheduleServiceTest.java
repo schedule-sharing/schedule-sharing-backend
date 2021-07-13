@@ -1,10 +1,10 @@
 package com.schedulsharing.service;
 
 
-import com.schedulsharing.dto.MySchedule.*;
-import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.myschedule.MyScheduleRepository;
+import com.schedulsharing.domain.member.Member;
+import com.schedulsharing.domain.member.repository.MemberRepository;
+import com.schedulsharing.domain.schedule.repository.myschedule.MyScheduleRepository;
+import com.schedulsharing.web.schedule.my.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

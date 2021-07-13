@@ -1,6 +1,6 @@
 package com.schedulsharing.excpetion.club;
 
-import com.schedulsharing.dto.Club.ClubInviteResponse;
+import com.schedulsharing.web.club.dto.ClubInviteResponse;
 import com.schedulsharing.excpetion.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;

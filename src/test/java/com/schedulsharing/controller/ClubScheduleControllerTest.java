@@ -1,16 +1,16 @@
 package com.schedulsharing.controller;
 
-import com.schedulsharing.dto.Club.ClubCreateRequest;
-import com.schedulsharing.dto.Club.ClubCreateResponse;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateRequest;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleCreateResponse;
-import com.schedulsharing.dto.ClubSchedule.ClubScheduleUpdateRequest;
-import com.schedulsharing.dto.member.LoginRequestDto;
-import com.schedulsharing.dto.member.SignUpRequestDto;
-import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
+import com.schedulsharing.web.club.dto.ClubCreateRequest;
+import com.schedulsharing.web.club.dto.ClubCreateResponse;
+import com.schedulsharing.web.schedule.club.dto.ClubScheduleCreateRequest;
+import com.schedulsharing.web.schedule.club.dto.ClubScheduleCreateResponse;
+import com.schedulsharing.web.schedule.club.dto.ClubScheduleUpdateRequest;
+import com.schedulsharing.web.member.dto.LoginRequestDto;
+import com.schedulsharing.web.member.dto.SignUpRequestDto;
+import com.schedulsharing.domain.member.Member;
+import com.schedulsharing.domain.club.repository.ClubRepository;
+import com.schedulsharing.domain.member.repository.MemberRepository;
+import com.schedulsharing.domain.schedule.repository.clubSchedule.ClubScheduleRepository;
 import com.schedulsharing.service.ClubScheduleService;
 import com.schedulsharing.service.ClubService;
 import com.schedulsharing.service.MemberService;

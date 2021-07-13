@@ -1,17 +1,17 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.dto.ClubSchedule.*;
-import com.schedulsharing.dto.resource.ClubScheduleResource;
-import com.schedulsharing.entity.Club;
-import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.entity.schedule.ClubSchedule;
+import com.schedulsharing.web.dto.resource.ClubScheduleResource;
+import com.schedulsharing.domain.club.Club;
+import com.schedulsharing.domain.member.Member;
+import com.schedulsharing.domain.schedule.ClubSchedule;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.clubSchedule.ClubScheduleNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
 import com.schedulsharing.excpetion.member.MemberNotFoundException;
-import com.schedulsharing.repository.ClubRepository;
-import com.schedulsharing.repository.MemberRepository;
-import com.schedulsharing.repository.clubSchedule.ClubScheduleRepository;
+import com.schedulsharing.domain.club.repository.ClubRepository;
+import com.schedulsharing.domain.member.repository.MemberRepository;
+import com.schedulsharing.domain.schedule.repository.clubSchedule.ClubScheduleRepository;
+import com.schedulsharing.web.schedule.club.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

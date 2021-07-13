@@ -1,7 +1,7 @@
 package com.schedulsharing.service;
 
-import com.schedulsharing.entity.member.Member;
-import com.schedulsharing.repository.MemberRepository;
+import com.schedulsharing.domain.member.Member;
+import com.schedulsharing.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
