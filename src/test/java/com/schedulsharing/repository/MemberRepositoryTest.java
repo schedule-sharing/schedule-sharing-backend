@@ -6,7 +6,7 @@ import com.schedulsharing.web.club.dto.ClubCreateRequest;
 import com.schedulsharing.web.member.dto.SignUpRequestDto;
 import com.schedulsharing.domain.club.Club;
 import com.schedulsharing.service.ClubService;
-import com.schedulsharing.service.MemberService;
+import com.schedulsharing.service.member.MemberService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

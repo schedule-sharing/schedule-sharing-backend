@@ -8,7 +8,7 @@ import com.schedulsharing.domain.member.Member;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.club.InvalidInviteGrantException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
-import com.schedulsharing.excpetion.member.MemberNotFoundException;
+import com.schedulsharing.service.member.exception.MemberNotFoundException;
 import com.schedulsharing.domain.club.repository.ClubRepository;
 import com.schedulsharing.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -105,7 +105,7 @@ public class ClubService {
     private Member findMemberById(Long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         if (optionalMember.isEmpty()) {
-            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+            throw new MemberNotFoundException();
         }
         return optionalMember.get();
     }
@@ -113,7 +113,7 @@ public class ClubService {
     private Member findMemberByEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isEmpty()) {
-            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+            throw new MemberNotFoundException();
         }
         return optionalMember.get();
     }

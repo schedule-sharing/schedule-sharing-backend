@@ -8,7 +8,7 @@ import com.schedulsharing.web.member.dto.SignUpRequestDto;
 import com.schedulsharing.domain.member.Member;
 import com.schedulsharing.domain.member.repository.MemberRepository;
 import com.schedulsharing.domain.schedule.repository.myschedule.MyScheduleRepository;
-import com.schedulsharing.service.MemberService;
+import com.schedulsharing.service.member.MemberService;
 import com.schedulsharing.service.MyScheduleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

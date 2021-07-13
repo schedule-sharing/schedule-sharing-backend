@@ -1,6 +1,8 @@
 package com.schedulsharing.excpetion.member;
 
-import com.schedulsharing.excpetion.ApiError;
+import com.schedulsharing.service.member.exception.EmailExistedException;
+import com.schedulsharing.service.member.exception.MemberNotFoundException;
+import com.schedulsharing.web.advice.ApiError;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -3,7 +3,7 @@ package com.schedulsharing.web.member;
 import com.schedulsharing.web.member.dto.EmailCheckRequestDto;
 import com.schedulsharing.web.member.dto.MemberUpdateRequest;
 import com.schedulsharing.web.member.dto.SignUpRequestDto;
-import com.schedulsharing.service.MemberService;
+import com.schedulsharing.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

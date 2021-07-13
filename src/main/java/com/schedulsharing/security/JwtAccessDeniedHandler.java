@@ -1,7 +1,7 @@
 package com.schedulsharing.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.schedulsharing.excpetion.ApiError;
+import com.schedulsharing.web.advice.ApiError;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;

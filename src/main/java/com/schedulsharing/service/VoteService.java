@@ -6,7 +6,7 @@ import com.schedulsharing.web.vote.dto.SuggestionVoteUpdateResponse;
 import com.schedulsharing.domain.vote.VoteCheck;
 import com.schedulsharing.domain.member.Member;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
-import com.schedulsharing.excpetion.member.MemberNotFoundException;
+import com.schedulsharing.service.member.exception.MemberNotFoundException;
 import com.schedulsharing.excpetion.vote.VoteNotFoundException;
 import com.schedulsharing.domain.member.repository.MemberRepository;
 import com.schedulsharing.domain.vote.repository.VoteCheckRepository;
@@ -41,7 +41,7 @@ public class VoteService {
     private Member findMemberByEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isEmpty()) {
-            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+            throw new MemberNotFoundException();
         }
         return optionalMember.get();
     }

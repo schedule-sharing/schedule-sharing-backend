@@ -1,7 +1,6 @@
 package com.schedulsharing.excpetion.clubSchedule;
 
-import com.schedulsharing.excpetion.ApiError;
-import com.schedulsharing.excpetion.club.ClubNotFoundException;
+import com.schedulsharing.web.advice.ApiError;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;

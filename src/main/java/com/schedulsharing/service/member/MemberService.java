@@ -1,12 +1,12 @@
-package com.schedulsharing.service;
+package com.schedulsharing.service.member;
 
 
 import com.schedulsharing.web.dto.resource.MemberResource;
 import com.schedulsharing.domain.club.Club;
 import com.schedulsharing.domain.member.Member;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
-import com.schedulsharing.excpetion.member.EmailExistedException;
-import com.schedulsharing.excpetion.member.MemberNotFoundException;
+import com.schedulsharing.service.member.exception.EmailExistedException;
+import com.schedulsharing.service.member.exception.MemberNotFoundException;
 import com.schedulsharing.domain.club.repository.ClubRepository;
 import com.schedulsharing.domain.member.repository.MemberRepository;
 import com.schedulsharing.web.member.dto.*;
@@ -34,7 +34,7 @@ public class MemberService {
 
     public EntityModel<SignUpResponseDto> signup(SignUpRequestDto signUpRequestDto) {
         if (memberRepository.findByEmail(signUpRequestDto.getEmail()).isPresent()) {
-            throw new EmailExistedException("이메일이 중복되었습니다.");
+            throw new EmailExistedException();
         }
 
         Member memberEntity = signUpRequestDto.toEntity(passwordEncoder);
@@ -108,7 +108,7 @@ public class MemberService {
     private Member findMemberByEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isEmpty()) {
-            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+            throw new MemberNotFoundException();
         }
         return optionalMember.get();
     }
@@ -116,7 +116,7 @@ public class MemberService {
     private Member findMemberById(Long memberId) {
         Optional<Member> optionalMember = memberRepository.findById(memberId);
         if (optionalMember.isEmpty()) {
-            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+            throw new MemberNotFoundException();
         }
         return optionalMember.get();
     }

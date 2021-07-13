@@ -7,7 +7,7 @@ import com.schedulsharing.domain.member.Member;
 import com.schedulsharing.domain.schedule.ScheduleSuggestion;
 import com.schedulsharing.excpetion.club.ClubNotFoundException;
 import com.schedulsharing.excpetion.common.InvalidGrantException;
-import com.schedulsharing.excpetion.member.MemberNotFoundException;
+import com.schedulsharing.service.member.exception.MemberNotFoundException;
 import com.schedulsharing.excpetion.scheduleSuggestion.DuplicateVoteCheckException;
 import com.schedulsharing.excpetion.scheduleSuggestion.SuggestionNotFoundException;
 import com.schedulsharing.domain.club.repository.ClubRepository;
@@ -156,7 +156,7 @@ public class ScheduleSuggestionService {
     private Member findMemberByEmail(String email) {
         Optional<Member> optionalMember = memberRepository.findByEmail(email);
         if (optionalMember.isEmpty()) {
-            throw new MemberNotFoundException("유저를 찾을 수 없습니다.");
+            throw new MemberNotFoundException();
         }
         return optionalMember.get();
     }
